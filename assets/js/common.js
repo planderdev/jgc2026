@@ -16,7 +16,7 @@
     { label: 'About', href: 'theme.html', key: 'aboutGroup', children: aboutLinks },
     { label: 'Speakers', href: 'speakers.html', key: 'speakers' },
     { label: 'Program', href: 'program.html', key: 'program' },
-    { label: 'Registration', href: 'register.html', key: 'registration', hot: true },
+    { label: 'Registration', href: 'register.html', key: 'registration' },
     { label: 'Business Meetup', href: 'meetup/index.html', key: 'meetup', children: meetupLinks },
     { label: 'Partners', href: 'partners.html', key: 'partners' },
     { label: 'FAQ', href: 'faq.html', key: 'faq' }
