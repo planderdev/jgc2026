@@ -1,0 +1,139 @@
+/* Base reset */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:host,
+html {
+  line-height: var(--line-height-base);
+  -webkit-text-size-adjust: 100%;
+  tab-size: var(--tab-size-default);
+  scroll-behavior: auto;
+}
+
+html.no-scroll,
+body.no-scroll {
+  overflow: hidden;
+}
+
+body {
+  margin: var(--space-0);
+  background: var(--color-white);
+  color: var(--color-text-primary);
+  font-family: var(--font-family-primary);
+  line-height: var(--line-height-base);
+  word-break: keep-all;
+}
+
+img,
+svg,
+video {
+  max-width: 100%;
+  display: block;
+  vertical-align: middle;
+}
+
+img,
+svg,
+video {
+  height: auto;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+p,
+blockquote,
+dl,
+dd,
+figure,
+pre {
+  margin: var(--space-0);
+}
+
+fieldset,
+legend,
+menu,
+ol,
+ul {
+  margin: var(--space-0);
+  padding: var(--space-0);
+}
+
+menu,
+ol,
+ul {
+  list-style: none;
+}
+
+fieldset {
+  border: 0;
+}
+
+dialog {
+  padding: var(--space-0);
+}
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+  margin: var(--space-0);
+  padding: var(--space-0);
+}
+
+button {
+  cursor: pointer;
+}
+
+button,
+select {
+  text-transform: none;
+}
+
+button,
+[type="button"],
+[type="reset"],
+[type="submit"] {
+  appearance: button;
+  background: transparent;
+  background-image: none;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--color-neutral-400);
+  opacity: 1;
+}
+
+textarea {
+  resize: vertical;
+}
+
+[hidden] {
+  display: none;
+}
+
+:focus-visible {
+  outline: var(--focus-outline-width) solid var(--color-focus-ring);
+  outline-offset: var(--focus-outline-offset);
+}

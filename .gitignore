@@ -1,0 +1,9 @@
+node_modules/
+tmp/
+docs/qa/
+docs/design-references/
+docs/research/
+
+*.log
+.DS_Store
+Thumbs.db

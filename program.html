@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
+  <title>Program | 제주 글로벌 콘텐츠 포럼</title>
+  <link rel="stylesheet" href="assets/css/design-system.css">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="assets/vendor/remixicon/remixicon.css">
+  <link rel="stylesheet" href="assets/vendor/aos/aos.css">
+</head>
+<body data-page="program">
+  <div id="site-header"></div>
+  <main class="site-main">
+    <section class="sub-hero"><h1>Program</h1></section>
+    <section class="program-head">
+      <div class="main-inner section-heading">
+        <div>
+          <p class="section-kicker">Schedule</p>
+          <h2>SCHEDULE</h2>
+          <p>2026. 9. 16. Wed 10:00-18:00 / 제주콘텐츠진흥원 일원</p>
+        </div>
+        <a class="ui-button secondary" href="register.html"><i class="ri-edit-box-line" aria-hidden="true"></i>행사 참가신청</a>
+      </div>
+    </section>
+    <div class="tabs-wrap">
+      <div class="main-inner">
+        <ul class="schedule-tabs" data-schedule-tabs></ul>
+      </div>
+    </div>
+    <section class="schedule-list">
+      <div class="main-inner" data-schedule-list></div>
+    </section>
+
+    <section class="program-company-section" aria-labelledby="program-companies-title">
+      <div class="main-inner">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">IR & Exhibition</p>
+            <h2 class="section-title" id="program-companies-title">참여 기업</h2>
+          </div>
+          <p class="section-subtitle">메인 IR 8개사, 라이징 IR 5개사, 기업 전시존 27개사를 원고 기준으로 반영했습니다.</p>
+        </div>
+
+        <div class="program-company-groups">
+          <section class="program-company-group" aria-labelledby="main-ir-title">
+            <h3 id="main-ir-title">Main IR Companies</h3>
+            <div class="program-company-grid" data-main-ir-companies></div>
+          </section>
+
+          <section class="program-company-group" aria-labelledby="rising-ir-title">
+            <h3 id="rising-ir-title">Rising IR Companies</h3>
+            <div class="program-company-grid compact" data-rising-ir-companies></div>
+          </section>
+
+          <section class="program-company-group" aria-labelledby="exhibition-title">
+            <h3 id="exhibition-title">Corporate Exhibition Zone</h3>
+            <div class="program-company-grid exhibition" data-exhibition-companies></div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </main>
+  <div id="site-footer"></div>
+  <script src="assets/js/data.js" defer></script>
+  <script src="assets/js/reservationService.js" defer></script>
+  <script src="assets/js/common.js" defer></script>
+  <script src="assets/vendor/gsap/gsap.min.js" defer></script>
+  <script src="assets/vendor/gsap/ScrollTrigger.min.js" defer></script>
+  <script src="assets/vendor/lenis/lenis.min.js" defer></script>
+  <script src="assets/vendor/aos/aos.js" defer></script>
+  <script src="assets/js/animations.js" defer></script>
+  <script src="assets/js/pages.js" defer></script>
+</body>
+</html>
+
+

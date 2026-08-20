@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
+  <title>행사 참가신청 | 제주 글로벌 콘텐츠 포럼</title>
+  <link rel="stylesheet" href="assets/css/design-system.css">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="assets/vendor/remixicon/remixicon.css">
+  <link rel="stylesheet" href="assets/vendor/aos/aos.css">
+</head>
+<body data-page="registration">
+  <div id="site-header"></div>
+  <main class="reserve-page event-register-page">
+    <div class="main-inner reserve-shell">
+      <aside class="reserve-side">
+        <p class="section-kicker">Registration</p>
+        <h1 class="side-title">행사 참가신청</h1>
+        <p class="section-subtitle">기업, 일반, 학생 구분에 따라 필요한 이름 정보를 입력해 주세요.</p>
+      </aside>
+
+      <form class="reserve-form event-register-form" data-event-register-form>
+        <section class="step-panel is-active">
+          <span class="ui-badge">JGCF 2026</span>
+          <h2 class="side-title">참가자 정보를 입력해 주세요</h2>
+          <p class="section-subtitle">2026. 9. 16. Wed 10:00-18:00 / 제주콘텐츠진흥원 일원</p>
+
+          <fieldset class="event-type-fieldset">
+            <legend class="form-label">구분</legend>
+            <div class="choice-grid event-type-grid">
+              <label class="choice-card">
+                <input type="radio" name="participantType" value="company" checked data-event-type-option>
+                <span>기업<i class="ri-building-line" aria-hidden="true"></i></span>
+              </label>
+              <label class="choice-card">
+                <input type="radio" name="participantType" value="general" data-event-type-option>
+                <span>일반<i class="ri-user-line" aria-hidden="true"></i></span>
+              </label>
+              <label class="choice-card">
+                <input type="radio" name="participantType" value="student" data-event-type-option>
+                <span>학생<i class="ri-graduation-cap-line" aria-hidden="true"></i></span>
+              </label>
+            </div>
+          </fieldset>
+
+          <div class="form-grid">
+            <div class="form-grid full event-type-fields" data-event-type-fields="company">
+              <label class="form-field">
+                <span class="form-label">기업명</span>
+                <input class="ui-input" type="text" name="companyName" autocomplete="organization">
+              </label>
+              <label class="form-field">
+                <span class="form-label">담당자 이름</span>
+                <input class="ui-input" type="text" name="companyManagerName" autocomplete="name">
+              </label>
+            </div>
+
+            <div class="form-grid full event-type-fields" data-event-type-fields="general" hidden>
+              <label class="form-field full">
+                <span class="form-label">이름</span>
+                <input class="ui-input" type="text" name="generalName" autocomplete="name">
+              </label>
+            </div>
+
+            <div class="form-grid full event-type-fields" data-event-type-fields="student" hidden>
+              <label class="form-field">
+                <span class="form-label">학교명</span>
+                <input class="ui-input" type="text" name="schoolName" autocomplete="organization">
+              </label>
+              <label class="form-field">
+                <span class="form-label">학생 이름</span>
+                <input class="ui-input" type="text" name="studentName" autocomplete="name">
+              </label>
+            </div>
+
+            <label class="form-field full">
+              <span class="form-label">연락처</span>
+              <input class="ui-input" type="tel" name="phone" autocomplete="tel" required>
+            </label>
+
+            <label class="ui-checkbox full">
+              <input type="checkbox" name="privacy">
+              <span>행사 참가신청을 위한 개인정보 제공에 동의합니다.</span>
+            </label>
+          </div>
+
+          <div class="step-actions">
+            <a class="ui-button secondary" href="index.html"><i class="ri-arrow-left-line" aria-hidden="true"></i>메인으로</a>
+            <button class="ui-button coral" type="submit">신청 완료 <i class="ri-check-line" aria-hidden="true"></i></button>
+          </div>
+        </section>
+      </form>
+
+      <section class="result-card event-register-result" data-register-result hidden></section>
+    </div>
+  </main>
+  <div id="site-footer"></div>
+  <script src="assets/js/data.js" defer></script>
+  <script src="assets/js/reservationService.js" defer></script>
+  <script src="assets/js/common.js" defer></script>
+  <script src="assets/vendor/gsap/gsap.min.js" defer></script>
+  <script src="assets/vendor/gsap/ScrollTrigger.min.js" defer></script>
+  <script src="assets/vendor/lenis/lenis.min.js" defer></script>
+  <script src="assets/vendor/aos/aos.js" defer></script>
+  <script src="assets/js/animations.js" defer></script>
+  <script src="assets/js/register.js" defer></script>
+</body>
+</html>

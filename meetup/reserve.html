@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/svg+xml" href="../assets/icons/favicon.svg">
+  <title>밋업 예약 | 제주 글로벌 콘텐츠 포럼</title>
+  <link rel="stylesheet" href="../assets/css/design-system.css">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+  <link rel="stylesheet" href="../assets/vendor/remixicon/remixicon.css">
+  <link rel="stylesheet" href="../assets/vendor/aos/aos.css">
+</head>
+<body data-page="meetup-reserve">
+  <div id="site-header"></div>
+  <main class="reserve-page">
+    <div class="main-inner reserve-shell">
+      <aside class="reserve-side">
+        <p class="section-kicker">Reservation</p>
+        <h1 class="side-title">비즈니스 밋업<br>예약 신청</h1>
+        <ol class="step-list" data-step-indicator>
+          <li><span>1</span>상담기관 선택</li>
+          <li><span>2</span>시간 선택</li>
+          <li><span>3</span>신청 기업 정보</li>
+          <li><span>4</span>신청 확인</li>
+          <li><span>5</span>예약 완료</li>
+        </ol>
+      </aside>
+
+      <form class="reserve-form" data-reserve-form>
+        <section class="step-panel" data-step="1">
+          <span class="ui-badge">Step 01</span>
+          <h2 class="side-title">상담 희망 기관을 선택해 주세요</h2>
+          <p class="section-subtitle">AC·VC 및 참여기관별 상담 가능 분야를 확인한 뒤 한 곳을 선택합니다.</p>
+          <div class="choice-grid" data-company-choices></div>
+          <div class="step-actions">
+            <span></span>
+            <button class="ui-button coral" type="button" data-step-action="next">다음 <i class="ri-arrow-right-line" aria-hidden="true"></i></button>
+          </div>
+        </section>
+
+        <section class="step-panel" data-step="2">
+          <span class="ui-badge">Step 02</span>
+          <h2 class="side-title">희망 시간대를 선택해 주세요</h2>
+          <p class="section-subtitle">선택한 상담기관 기준으로 이미 예약된 시간대는 비활성화됩니다.</p>
+          <div class="time-grid" data-time-choices></div>
+          <div class="step-actions">
+            <button class="ui-button secondary" type="button" data-step-action="prev"><i class="ri-arrow-left-line" aria-hidden="true"></i>이전</button>
+            <button class="ui-button coral" type="button" data-step-action="next">다음 <i class="ri-arrow-right-line" aria-hidden="true"></i></button>
+          </div>
+        </section>
+
+        <section class="step-panel" data-step="3">
+          <span class="ui-badge">Step 03</span>
+          <h2 class="side-title">신청 기업 정보를 입력해 주세요</h2>
+          <div class="form-grid">
+            <label class="form-field">
+              <span class="form-label">신청 기업명</span>
+              <input class="ui-input" type="text" name="applicantCompany" autocomplete="organization" required>
+            </label>
+            <label class="form-field">
+              <span class="form-label">담당자 이름</span>
+              <input class="ui-input" type="text" name="managerName" autocomplete="name" required>
+            </label>
+            <label class="form-field">
+              <span class="form-label">연락처</span>
+              <input class="ui-input" type="tel" name="phone" autocomplete="tel" required>
+            </label>
+            <label class="form-field">
+              <span class="form-label">메일 주소</span>
+              <input class="ui-input" type="email" name="email" autocomplete="email" required>
+            </label>
+            <label class="form-field full">
+              <span class="form-label">첨부파일</span>
+              <input class="ui-file-input" type="file" name="attachment" accept="application/pdf,.pdf" required>
+              <span class="form-help">회사 소개서 PDF 3페이지 이내</span>
+            </label>
+            <label class="form-field full">
+              <span class="form-label">상담 신청 내용</span>
+              <textarea class="ui-textarea" name="inquiry" rows="3" maxlength="240" placeholder="3줄 이내로 간단히 작성" required></textarea>
+            </label>
+            <label class="ui-checkbox full">
+              <input type="checkbox" name="privacy">
+              <span>비즈니스 밋업 예약 확인을 위한 개인정보 제공에 동의합니다.</span>
+            </label>
+          </div>
+          <div class="step-actions">
+            <button class="ui-button secondary" type="button" data-step-action="prev"><i class="ri-arrow-left-line" aria-hidden="true"></i>이전</button>
+            <button class="ui-button coral" type="button" data-step-action="next">다음 <i class="ri-arrow-right-line" aria-hidden="true"></i></button>
+          </div>
+        </section>
+
+        <section class="step-panel" data-step="4">
+          <span class="ui-badge">Step 04</span>
+          <h2 class="side-title">신청 내용을 확인해 주세요</h2>
+          <div data-confirm-box></div>
+          <div class="step-actions">
+            <button class="ui-button secondary" type="button" data-step-action="prev"><i class="ri-arrow-left-line" aria-hidden="true"></i>이전</button>
+            <button class="ui-button coral" type="submit">예약 완료 <i class="ri-check-line" aria-hidden="true"></i></button>
+          </div>
+        </section>
+      </form>
+    </div>
+  </main>
+  <div id="site-footer"></div>
+  <script src="../assets/js/data.js" defer></script>
+  <script src="../assets/js/reservationService.js" defer></script>
+  <script src="../assets/js/common.js" defer></script>
+  <script src="../assets/vendor/gsap/gsap.min.js" defer></script>
+  <script src="../assets/vendor/gsap/ScrollTrigger.min.js" defer></script>
+  <script src="../assets/vendor/lenis/lenis.min.js" defer></script>
+  <script src="../assets/vendor/aos/aos.js" defer></script>
+  <script src="../assets/js/animations.js" defer></script>
+  <script src="../assets/js/meetup.js" defer></script>
+</body>
+</html>
+
+

@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/svg+xml" href="../assets/icons/favicon.svg">
+  <title>예약 조회/취소 | 제주 글로벌 콘텐츠 포럼</title>
+  <link rel="stylesheet" href="../assets/css/design-system.css">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+  <link rel="stylesheet" href="../assets/vendor/remixicon/remixicon.css">
+</head>
+<body data-page="meetup-confirm">
+  <div id="site-header"></div>
+  <main class="reserve-page">
+    <div class="main-inner">
+      <div class="section-heading" style="margin-bottom:var(--space-32)">
+        <div>
+          <p class="section-kicker">Lookup</p>
+          <h1 class="side-title">비즈밋업 예약 조회/취소</h1>
+        </div>
+        <a class="ui-button secondary" href="reserve.html"><i class="ri-add-line" aria-hidden="true"></i>새 예약</a>
+      </div>
+      <div class="lookup-layout">
+        <form class="lookup-card" data-lookup-form>
+          <label class="form-field">
+            <span class="form-label">예약번호</span>
+            <input class="ui-input" name="reservationNumber" placeholder="JGCF-2026-000001" required>
+          </label>
+          <label class="form-field" style="margin-top:var(--space-16)">
+            <span class="form-label">담당자 연락처</span>
+            <input class="ui-input" name="phone" type="tel" placeholder="010-0000-0000" required>
+          </label>
+          <button class="ui-button coral" type="submit" style="margin-top:var(--space-24)"><i class="ri-search-line" aria-hidden="true"></i>조회하기</button>
+        </form>
+        <section class="lookup-result" data-lookup-result>
+          <p class="prose-block">예약번호와 신청 시 입력한 담당자 연락처를 입력하면 예약 상태를 확인할 수 있습니다.</p>
+        </section>
+      </div>
+    </div>
+  </main>
+  <div id="site-footer"></div>
+
+  <div class="dialog-backdrop" data-cancel-dialog role="dialog" aria-modal="true" aria-labelledby="cancel-title">
+    <div class="ui-dialog">
+      <h2 id="cancel-title">예약을 취소할까요?</h2>
+      <p>취소 후에는 같은 시간대가 다른 참가자에게 열릴 수 있습니다.</p>
+      <div class="dialog-actions">
+        <button class="ui-button secondary" type="button" data-dialog-close>닫기</button>
+        <button class="ui-button coral" type="button" data-confirm-cancel>취소 확정</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/data.js" defer></script>
+  <script src="../assets/js/reservationService.js" defer></script>
+  <script src="../assets/js/common.js" defer></script>
+  <script src="../assets/js/meetup.js" defer></script>
+</body>
+</html>
+
+

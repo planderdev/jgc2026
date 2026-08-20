@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
+  <title>Speakers | 제주 글로벌 콘텐츠 포럼</title>
+  <link rel="stylesheet" href="assets/css/design-system.css">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="assets/vendor/remixicon/remixicon.css">
+  <link rel="stylesheet" href="assets/vendor/aos/aos.css">
+</head>
+<body data-page="speakers">
+  <div id="site-header"></div>
+  <main class="site-main">
+    <section class="sub-hero"><h1>Speakers</h1></section>
+    <section class="sub-page">
+      <div class="main-inner">
+        <div class="speaker-tools">
+          <label class="speaker-filter-control">
+            <select class="speaker-filter" data-speaker-filter aria-label="Track filter">
+              <option value="all">All Tracks</option>
+              <option value="Forum">Forum</option>
+              <option value="LBE">LBE</option>
+              <option value="Startup">Startup</option>
+              <option value="Immersive">Immersive</option>
+              <option value="AI">AI</option>
+            </select>
+            <i class="ri-arrow-down-s-line" aria-hidden="true"></i>
+          </label>
+          <label class="speaker-search">
+            <i class="ri-search-line" aria-hidden="true"></i>
+            <input type="search" data-speaker-search placeholder="연사 검색" aria-label="Search speakers">
+          </label>
+        </div>
+        <div class="speaker-grid" data-speaker-grid></div>
+      </div>
+    </section>
+  </main>
+  <div id="site-footer"></div>
+  <script src="assets/js/data.js" defer></script>
+  <script src="assets/js/reservationService.js" defer></script>
+  <script src="assets/js/common.js" defer></script>
+  <script src="assets/vendor/gsap/gsap.min.js" defer></script>
+  <script src="assets/vendor/gsap/ScrollTrigger.min.js" defer></script>
+  <script src="assets/vendor/lenis/lenis.min.js" defer></script>
+  <script src="assets/vendor/aos/aos.js" defer></script>
+  <script src="assets/js/animations.js" defer></script>
+  <script src="assets/js/pages.js" defer></script>
+</body>
+</html>
+
+
