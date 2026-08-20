@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
+  <title>운영 관리 | 제주 글로벌 콘텐츠 포럼</title>
+  <link rel="stylesheet" href="assets/css/design-system.css">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="assets/vendor/remixicon/remixicon-subset.css">
+  <style>
+    /* 관리자 전용 화면. 공개 페이지 빌드 파이프라인과 분리해 여기 둔다. */
+    .admin-main { max-width: 1240px; margin: 0 auto; padding: 120px 24px 96px; }
+    .admin-login { max-width: 400px; margin: 160px auto 96px; padding: 0 24px; display: grid; gap: var(--space-16); }
+    .admin-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: var(--space-32); }
+    .admin-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
+    .admin-tabs button { padding: 8px 18px; border: 1px solid var(--color-border-muted); border-radius: var(--radius-full); background: var(--color-white); font-weight: var(--font-weight-bold); }
+    .admin-tabs button.is-active { background: var(--color-action-secondary); border-color: var(--color-action-secondary); color: var(--color-white); }
+    .admin-bar { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-bottom: var(--space-16); }
+    .admin-bar .ui-input { max-width: 260px; }
+    .admin-bar select.ui-input { max-width: 220px; }
+    .admin-count { margin-left: auto; color: var(--color-neutral-600); font-size: var(--font-size-14); }
+    .admin-table-wrap { overflow-x: auto; border: 1px solid var(--color-border-muted); border-radius: var(--radius-md); background: var(--color-white); }
+    .admin-table { width: 100%; border-collapse: collapse; font-size: var(--font-size-14); min-width: 900px; }
+    .admin-table th, .admin-table td { padding: 10px 14px; border-bottom: 1px solid var(--color-border-muted); text-align: left; vertical-align: top; white-space: nowrap; }
+    .admin-table td.wrap { white-space: normal; min-width: 220px; }
+    .admin-table thead th { background: var(--color-bg-soft); font-weight: var(--font-weight-extrabold); position: sticky; top: 0; }
+    .admin-badge { display: inline-block; padding: 2px 10px; border-radius: var(--radius-full); font-size: 12px; font-weight: var(--font-weight-extrabold); }
+    .admin-badge.ok { background: #e5f1eb; color: #1c6549; }
+    .admin-badge.off { background: #faebea; color: #b32a27; }
+    .admin-mini { padding: 4px 12px; font-size: 12px; border-radius: var(--radius-full); border: 1px solid var(--color-border-muted); background: var(--color-white); }
+    .admin-mini:hover { border-color: var(--color-action-secondary); color: var(--color-action-secondary); }
+    .admin-error { color: #b32a27; font-size: var(--font-size-14); min-height: 20px; }
+    .admin-empty { padding: 48px; text-align: center; color: var(--color-neutral-500); }
+    body.jgcf-admin { background: var(--color-bg-soft); }
+  </style>
+</head>
+<body class="jgcf-admin" data-page="admin">
+  <main>
+    <section class="admin-login" data-login-panel>
+      <div>
+        <p class="section-kicker">JGCF 2026 Admin</p>
+        <h1 class="side-title">운영 관리 로그인</h1>
+      </div>
+      <form data-login-form>
+        <div style="display:grid;gap:12px">
+          <label class="form-field"><span class="form-label">메일 주소</span>
+            <input class="ui-input" type="email" name="email" autocomplete="username" required></label>
+          <label class="form-field"><span class="form-label">비밀번호</span>
+            <input class="ui-input" type="password" name="password" autocomplete="current-password" required></label>
+          <p class="admin-error" data-login-error></p>
+          <button class="ui-button coral" type="submit">로그인</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="admin-main" data-admin-panel hidden>
+      <div class="admin-head">
+        <div>
+          <p class="section-kicker">JGCF 2026 Admin</p>
+          <h1 class="side-title">예약·신청 관리</h1>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span data-admin-email style="color:var(--color-neutral-600);font-size:14px"></span>
+          <button class="ui-button secondary" type="button" data-logout>로그아웃</button>
+        </div>
+      </div>
+
+      <div class="admin-tabs" role="tablist">
+        <button type="button" class="is-active" data-tab="reservations">밋업 예약</button>
+        <button type="button" data-tab="registrations">행사 참가신청</button>
+        <button type="button" data-tab="summary">기관별 현황</button>
+      </div>
+
+      <div style="margin-top:24px">
+        <div class="admin-bar">
+          <input class="ui-input" type="search" placeholder="검색 (기업·담당자·연락처·번호)" data-search>
+          <select class="ui-input" data-filter-company hidden><option value="">전체 상담기관</option></select>
+          <select class="ui-input" data-filter-status hidden>
+            <option value="">전체 상태</option>
+            <option value="confirmed">예약 확정</option>
+            <option value="cancelled">예약 취소</option>
+          </select>
+          <button class="ui-button secondary" type="button" data-refresh><i class="ri-arrow-right-line" aria-hidden="true"></i>새로고침</button>
+          <button class="ui-button secondary" type="button" data-csv>CSV 내려받기</button>
+          <span class="admin-count" data-count></span>
+        </div>
+        <div class="admin-table-wrap"><div data-table-mount></div></div>
+      </div>
+    </section>
+  </main>
+
+  <dialog class="dialog-backdrop" data-admin-cancel-dialog aria-labelledby="admin-cancel-title">
+    <div class="ui-dialog">
+      <h2 id="admin-cancel-title">이 예약을 취소할까요?</h2>
+      <p data-cancel-target></p>
+      <div class="dialog-actions">
+        <button class="ui-button secondary" type="button" data-dialog-close>닫기</button>
+        <button class="ui-button coral" type="button" data-confirm-cancel>취소 확정</button>
+      </div>
+    </div>
+  </dialog>
+
+  <script src="assets/js/supabaseConfig.js" defer></script>
+  <script src="assets/js/admin.js" defer></script>
+</body>
+</html>

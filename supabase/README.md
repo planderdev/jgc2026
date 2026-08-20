@@ -14,7 +14,21 @@
 
 ## 사무국 사용법
 
-대시보드 → **Table Editor** 또는 **SQL Editor**에서 아래 뷰를 조회합니다.
+**관리자 페이지(권장)**: https://jgc2026.vercel.app/admin.html
+
+사무국 계정으로 로그인하면 예약·참가신청 목록, 검색·필터, 기관별 현황,
+CSV 내려받기, 대신 취소, 첨부 PDF 열람을 쓸 수 있습니다.
+
+계정 추가는 두 단계입니다:
+1. 대시보드 → Authentication → Users → **Add user** (Auto Confirm 체크)
+2. SQL Editor에서 관리자 명단에 등록:
+   ```sql
+   insert into admin_users (user_id, note)
+   select id, '사무국 ○○○' from auth.users where email = '새계정@example.com';
+   ```
+등록하지 않은 계정은 로그인해도 "관리자 권한이 없습니다"만 봅니다.
+
+**대시보드(보조)**: 아래 뷰로도 직접 볼 수 있습니다. 대시보드 → **Table Editor** 또는 **SQL Editor**에서 아래 뷰를 조회합니다.
 
 | 뷰 | 내용 |
 | --- | --- |
