@@ -10,3 +10,7 @@ Thumbs.db
 
 # Claude Code 로컬 프리뷰 설정
 .claude/
+.vercel
+
+# Vercel
+.vercel
