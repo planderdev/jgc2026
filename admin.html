@@ -11,6 +11,9 @@
   <link rel="stylesheet" href="assets/vendor/remixicon/remixicon-subset.css">
   <style>
     /* 관리자 전용 화면. 공개 페이지 빌드 파이프라인과 분리해 여기 둔다. */
+    /* 아래에서 display를 직접 지정하는 패널들이 리셋의 [hidden] 규칙을
+       덮어쓰지 않도록, hidden이 항상 이기게 못박는다. */
+    [hidden] { display: none !important; }
     .admin-main { max-width: 1240px; margin: 0 auto; padding: 120px 24px 96px; }
     .admin-login { max-width: 400px; margin: 160px auto 96px; padding: 0 24px; display: grid; gap: var(--space-16); }
     .admin-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: var(--space-32); }
