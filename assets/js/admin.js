@@ -14,6 +14,8 @@
     .replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
 
   let session = null;   // { access_token, email }
+  let mode = 'admin';   // 'admin' | 'partner' — jgcf_whoami 결과로 정해진다
+  let partnerName = '';
   let tab = 'reservations';
   let reservations = [];
   let registrations = [];
@@ -72,6 +74,22 @@
   async function loadData() {
     const mount = $('[data-table-mount]');
     mount.innerHTML = '<p class="admin-empty">불러오는 중…</p>';
+
+    if (mode === 'partner') {
+      // 파트너는 자기 기관의 확정 예약만 받는다. 참가신청·타 기관 데이터는
+      // 서버가 아예 내려주지 않는다.
+      const r = await rpc('jgcf_partner_reservations');
+      if (!r.ok) {
+        if (r.reason === 'forbidden') { logout('이 계정은 조회 권한이 없습니다. 사무국에 문의하세요.'); return; }
+        mount.innerHTML = '<p class="admin-empty">목록을 불러오지 못했습니다. 새로고침을 눌러 주세요.</p>';
+        return;
+      }
+      reservations = r.rows;
+      registrations = [];
+      render();
+      return;
+    }
+
     const [r1, r2] = await Promise.all([rpc('jgcf_admin_reservations'), rpc('jgcf_admin_registrations')]);
     if (!r1.ok || !r2.ok) {
       if (r1.reason === 'forbidden' || r2.reason === 'forbidden') {
@@ -106,6 +124,9 @@
     const match = (row, fields) => !q || fields.some((f) => String(row[f] || '').toLowerCase().includes(q));
 
     if (tab === 'reservations') {
+      if (mode === 'partner') {
+        return reservations.filter((r) => match(r, ['reservation_no', 'applicant_company', 'manager_name', 'phone', 'email']));
+      }
       return reservations
         .filter((r) => (!company || r.company_name === company))
         .filter((r) => (!status || r.status === status))
@@ -129,11 +150,27 @@
   function render() {
     const rows = currentRows();
     $('[data-count]').textContent = `${rows.length}건`;
-    $('[data-filter-company]').hidden = tab !== 'reservations';
-    $('[data-filter-status]').hidden = tab !== 'reservations';
+    $('[data-filter-company]').hidden = mode === 'partner' || tab !== 'reservations';
+    $('[data-filter-status]').hidden = mode === 'partner' || tab !== 'reservations';
     const mount = $('[data-table-mount]');
 
     if (!rows.length) { mount.innerHTML = '<p class="admin-empty">표시할 항목이 없습니다.</p>'; return; }
+
+    if (mode === 'partner') {
+      // 취소·상태 열이 없다. 파트너에게 오는 것은 전부 확정 건이고,
+      // 취소 권한은 사무국과 신청자에게만 있다.
+      mount.innerHTML = `<table class="admin-table"><thead><tr>
+        <th>시간</th><th>신청기업</th><th>담당자</th><th>연락처</th><th>메일</th><th>상담내용</th><th>소개서</th><th>신청일시</th>
+      </tr></thead><tbody>${rows.map((r) => `<tr>
+        <td><strong>${esc(r.time_slot)}</strong></td>
+        <td>${esc(r.applicant_company)}</td><td>${esc(r.manager_name)}</td>
+        <td>${esc(r.phone)}</td><td>${esc(r.email)}</td>
+        <td class="wrap">${esc(r.inquiry)}</td>
+        <td>${r.attachment_path ? `<button class="admin-mini" data-download="${esc(r.attachment_path)}" data-filename="${esc(r.attachment_name || 'file.pdf')}">PDF</button>` : '-'}</td>
+        <td>${kst(r.created_at)}</td>
+      </tr>`).join('')}</tbody></table>`;
+      return;
+    }
 
     if (tab === 'reservations') {
       mount.innerHTML = `<table class="admin-table"><thead><tr>
@@ -176,7 +213,10 @@
   function downloadCsv() {
     const rows = currentRows();
     let header, line;
-    if (tab === 'reservations') {
+    if (mode === 'partner') {
+      header = ['시간','신청기업','담당자','연락처','메일','상담내용','소개서','신청일시'];
+      line = (r) => [r.time_slot, r.applicant_company, r.manager_name, r.phone, r.email, r.inquiry, r.attachment_name || '', kst(r.created_at)];
+    } else if (tab === 'reservations') {
       header = ['예약번호','상태','상담기관','시간','신청기업','담당자','연락처','메일','상담내용','첨부파일','신청일시','취소일시'];
       line = (r) => [r.reservation_no, r.status === 'confirmed' ? '확정' : '취소', r.company_name, r.time_slot,
         r.applicant_company, r.manager_name, r.phone, r.email, r.inquiry, r.attachment_name || '', kst(r.created_at), kst(r.cancelled_at)];
@@ -217,9 +257,25 @@
     let cancelTarget = null;
 
     async function enter() {
+      const who = await rpc('jgcf_whoami');
+      if (!who.ok || who.role === 'none') {
+        logout('이 계정은 조회 권한이 없습니다. 사무국에 문의하세요.');
+        return;
+      }
+      mode = who.role;
+      partnerName = who.company_name || '';
+
       loginPanel.hidden = true;
       adminPanel.hidden = false;
       $('[data-admin-email]').textContent = session.email;
+
+      if (mode === 'partner') {
+        document.querySelector('.admin-head .side-title').textContent = '상담 예약 현황';
+        document.querySelector('.admin-head .section-kicker').textContent = partnerName;
+        document.querySelector('.admin-tabs').hidden = true;
+        $('[data-search]').placeholder = '검색 (기업·담당자·연락처)';
+        tab = 'reservations';
+      }
       await loadData();
     }
 
