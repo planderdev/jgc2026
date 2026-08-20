@@ -2,6 +2,7 @@
   const common = () => window.JGCFCommon;
   const data = () => window.JGCF;
   const service = () => window.ReservationService;
+  const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   function escapeHtml(value) {
     return String(value ?? '')
@@ -54,7 +55,17 @@
 
     function renderTimes() {
       const companyId = state.companyId;
+      const breaks = data().reservationBreaks || {};
       timeMount.innerHTML = data().reservationTimes.map((time) => {
+        const breakLabel = breaks[time];
+        if (breakLabel) {
+          return `
+          <label class="choice-card">
+            <input type="radio" name="time" value="${escapeHtml(time)}" disabled>
+            <span>${escapeHtml(time)} ${escapeHtml(breakLabel)}</span>
+          </label>
+        `;
+        }
         const status = companyId ? service().availability(companyId, time) : { available: true, count: 0 };
         return `
           <label class="choice-card">
@@ -108,6 +119,12 @@
         const missing = required.find((field) => !state[field]);
         if (missing) {
           common().toast('필수 신청 정보를 입력해 주세요.');
+          form.elements[missing]?.focus();
+          return false;
+        }
+        if (!EMAIL_PATTERN.test(state.email)) {
+          common().toast('메일 주소를 정확하게 입력해 주세요.');
+          form.elements.email.focus();
           return false;
         }
         if (!state.attachmentName) {
@@ -214,9 +231,20 @@
 
     let currentReservation = null;
 
-    function closeDialog() {
-      dialog.classList.remove('is-open');
+    function openDialog() {
+      dialog.showModal();
+      document.documentElement.classList.add('no-scroll');
+      document.body.classList.add('no-scroll');
     }
+
+    function closeDialog() {
+      if (dialog.open) dialog.close();
+    }
+
+    dialog.addEventListener('close', () => {
+      document.documentElement.classList.remove('no-scroll');
+      document.body.classList.remove('no-scroll');
+    });
 
     function drawReservation(reservation) {
       if (!reservation) {
@@ -246,7 +274,7 @@
 
     result.addEventListener('click', (event) => {
       if (event.target.closest('[data-open-cancel]')) {
-        dialog.classList.add('is-open');
+        openDialog();
       }
     });
 
@@ -258,12 +286,9 @@
         currentReservation = service().cancel(currentReservation.id);
         closeDialog();
         drawReservation(currentReservation);
+        result.focus();
         common().toast('예약이 취소되었습니다.');
       }
-    });
-
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape') closeDialog();
     });
   }
 

@@ -5,9 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/svg+xml" href="../assets/icons/favicon.svg">
   <title>예약 조회/취소 | 제주 글로벌 콘텐츠 포럼</title>
+  <meta name="description" content="예약번호와 담당자 연락처로 비즈니스 밋업 예약 내역을 조회하고 취소할 수 있습니다.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="JGCF 2026">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:title" content="예약 조회/취소 | 제주 글로벌 콘텐츠 포럼">
+  <meta property="og:description" content="예약번호와 담당자 연락처로 비즈니스 밋업 예약 내역을 조회하고 취소할 수 있습니다.">
+  <meta property="og:image" content="../assets/images/og/og-default.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="stylesheet" href="../assets/css/design-system.css">
   <link rel="stylesheet" href="../assets/css/styles.css">
-  <link rel="stylesheet" href="../assets/vendor/remixicon/remixicon.css">
+  <link rel="stylesheet" href="../assets/vendor/remixicon/remixicon-subset.css">
 </head>
 <body data-page="meetup-confirm">
   <div id="site-header"></div>
@@ -32,7 +42,7 @@
           </label>
           <button class="ui-button coral" type="submit" style="margin-top:var(--space-24)"><i class="ri-search-line" aria-hidden="true"></i>조회하기</button>
         </form>
-        <section class="lookup-result" data-lookup-result>
+        <section class="lookup-result" data-lookup-result tabindex="-1">
           <p class="prose-block">예약번호와 신청 시 입력한 담당자 연락처를 입력하면 예약 상태를 확인할 수 있습니다.</p>
         </section>
       </div>
@@ -40,7 +50,7 @@
   </main>
   <div id="site-footer"></div>
 
-  <div class="dialog-backdrop" data-cancel-dialog role="dialog" aria-modal="true" aria-labelledby="cancel-title">
+  <dialog class="dialog-backdrop" data-cancel-dialog aria-labelledby="cancel-title">
     <div class="ui-dialog">
       <h2 id="cancel-title">예약을 취소할까요?</h2>
       <p>취소 후에는 같은 시간대가 다른 참가자에게 열릴 수 있습니다.</p>
@@ -49,7 +59,7 @@
         <button class="ui-button coral" type="button" data-confirm-cancel>취소 확정</button>
       </div>
     </div>
-  </div>
+  </dialog>
 
   <script src="../assets/js/data.js" defer></script>
   <script src="../assets/js/reservationService.js" defer></script>

@@ -93,11 +93,14 @@
     background: var(--color-white);
     color: var(--color-text-primary);
     transform: translateX(100%);
-    transition: var(--transition-transform);
+    visibility: hidden;
+    transition: var(--transition-transform), visibility var(--duration-instant) var(--ease-default) var(--duration-slower);
   }
 
   .site-header.is-open .mobile-menu {
     transform: translateX(0);
+    visibility: visible;
+    transition: var(--transition-transform), visibility var(--duration-instant) var(--ease-default);
   }
 
   .mobile-menu-inner {
@@ -417,6 +420,7 @@
   }
 
   .about-row {
+    grid-template-columns: minmax(0, 1fr);
     gap: var(--space-24);
   }
 

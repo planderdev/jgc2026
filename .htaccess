@@ -11,9 +11,6 @@ DirectoryIndex index.html
   AddType application/pdf .pdf
 </IfModule>
 
-<IfModule mod_rewrite.c>
-  RewriteEngine On
-  RewriteBase /jgc2026/
-
-  RewriteRule ^$ index.html [L]
-</IfModule>
+# 최상단의 DirectoryIndex가 "/" 요청을 index.html로 처리하므로
+# mod_rewrite 블록은 필요하지 않습니다. RewriteBase에 배포 경로를 하드코딩하면
+# 루트 도메인이나 다른 하위 경로로 옮길 때 규칙이 어긋나므로 제거했습니다.

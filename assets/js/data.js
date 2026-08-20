@@ -255,6 +255,15 @@
     { id: 'kibo-busan-content-finance', name: '기술보증기금 부산문화콘텐츠금융센터', field: '기술보증 및 문화콘텐츠 금융 상담', note: '콘텐츠 금융 및 보증 상담' }
   ];
 
+  // 상담을 받지 않는 시간대와 그 사유. 화면에는 남되 선택할 수 없게 표시됩니다.
+  // 운영 계획이 바뀌면 이 목록만 고치면 됩니다. 전 시간대를 열려면 빈 객체로 두세요.
+  const reservationBreaks = {
+    '12:00': '점심시간',
+    '12:15': '점심시간',
+    '12:30': '점심시간',
+    '12:45': '점심시간'
+  };
+
   const reservationTimes = [
     '10:00', '10:15', '10:30', '10:45',
     '11:00', '11:15', '11:30', '11:45',
@@ -518,6 +527,7 @@
     ],
     companies: consultationOrgs,
     reservationTimes,
+    reservationBreaks,
     partners: partnerGroups
   };
 })();

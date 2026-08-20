@@ -221,6 +221,11 @@
   margin-top: var(--space-120);
 }
 
+.about-stack {
+  display: grid;
+  gap: var(--space-32);
+}
+
 .side-title {
   margin: var(--space-0);
   color: var(--color-text-primary);
