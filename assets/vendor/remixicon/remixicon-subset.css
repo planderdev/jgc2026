@@ -1,0 +1,37 @@
+/*
+* Remix Icon v4.9.1 - subset build
+* https://remixicon.com | Released under the Remix Icon License 1.0
+*
+* 이 사이트가 실제로 사용하는 아이콘 17개만 포함합니다.
+* 아이콘 추가 시 tools/build-font-subsets.md 절차로 다시 생성하세요.
+*/
+@font-face {
+  font-family: "remixicon";
+  src: url("remixicon-subset.woff2") format("woff2");
+  font-display: swap;
+}
+
+[class^="ri-"], [class*=" ri-"] {
+  font-family: 'remixicon' !important;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.ri-add-line:before { content: "\ea13"; }
+.ri-arrow-down-s-line:before { content: "\ea4e"; }
+.ri-arrow-left-line:before { content: "\ea60"; }
+.ri-arrow-right-line:before { content: "\ea6c"; }
+.ri-arrow-right-up-line:before { content: "\ea70"; }
+.ri-blogger-line:before { content: "\f470"; }
+.ri-building-line:before { content: "\eb0f"; }
+.ri-calendar-check-line:before { content: "\eb23"; }
+.ri-check-line:before { content: "\eb7b"; }
+.ri-edit-box-line:before { content: "\ec82"; }
+.ri-graduation-cap-line:before { content: "\f333"; }
+.ri-instagram-line:before { content: "\ee66"; }
+.ri-map-pin-2-fill:before { content: "\ef09"; }
+.ri-search-line:before { content: "\f0d1"; }
+.ri-subtract-line:before { content: "\f1af"; }
+.ri-user-line:before { content: "\f264"; }
+.ri-youtube-fill:before { content: "\f2d4"; }

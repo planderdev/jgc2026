@@ -315,6 +315,11 @@
   position: fixed;
   inset: 0;
   z-index: var(--z-modal);
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  border: var(--space-0);
   display: none;
   align-items: center;
   justify-content: center;
@@ -322,8 +327,12 @@
   background: var(--color-alpha-brand-58);
 }
 
-.dialog-backdrop.is-open {
+.dialog-backdrop[open] {
   display: flex;
+}
+
+.dialog-backdrop::backdrop {
+  background: transparent;
 }
 
 .ui-dialog {

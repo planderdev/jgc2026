@@ -6,15 +6,32 @@
     { label: '행사 장소', href: 'venue.html', key: 'venue' }
   ];
 
+  const meetupLinks = [
+    { label: '밋업 안내', href: 'meetup/index.html', key: 'meetup' },
+    { label: '밋업 예약', href: 'meetup/reserve.html', key: 'meetupReserve' },
+    { label: '예약 조회·취소', href: 'meetup/confirm.html', key: 'meetupConfirm' }
+  ];
+
   const nav = [
     { label: 'About', href: 'theme.html', key: 'aboutGroup', children: aboutLinks },
     { label: 'Speakers', href: 'speakers.html', key: 'speakers' },
     { label: 'Program', href: 'program.html', key: 'program' },
     { label: 'Registration', href: 'register.html', key: 'registration', hot: true },
-    { label: 'Business Meetup', href: 'meetup/index.html', key: 'meetup' },
+    { label: 'Business Meetup', href: 'meetup/index.html', key: 'meetup', children: meetupLinks },
     { label: 'Partners', href: 'partners.html', key: 'partners' },
     { label: 'FAQ', href: 'faq.html', key: 'faq' }
   ];
+
+  // 실제 계정이 열리면 URL을 채우세요. 비어 있으면 아이콘을 렌더링하지 않습니다.
+  // 링크가 '#'으로 남아 클릭해도 아무 일이 없는 상태를 만들지 않기 위한 장치입니다.
+  const socialLinks = [
+    { label: 'JGCF YouTube', icon: 'ri-youtube-fill', href: '' },
+    { label: 'JGCF Instagram', icon: 'ri-instagram-line', href: '' },
+    { label: 'JGCF Blog', icon: 'ri-blogger-line', href: '' }
+  ];
+
+  // 영문 사이트가 준비되면 href를 채우고 enabled를 true로 바꾸세요.
+  const englishSite = { enabled: false, href: '' };
 
   const base = window.location.pathname.replace(/\\/g, '/').includes('/meetup/') ? '../' : '';
   const page = document.body.dataset.page || '';
@@ -33,6 +50,7 @@
     if (item.key === page) return true;
     if (item.key === 'aboutGroup') return ['theme', 'about', 'venue', 'history'].includes(page);
     if (item.key === 'meetup') return page.startsWith('meetup');
+    if (item.children) return item.children.some((child) => child.key === page);
     return false;
   }
 
@@ -89,11 +107,13 @@
             <div class="nav-menu">${desktopNav}</div>
           </nav>
           <div class="header-actions">
+            ${englishSite.enabled && englishSite.href ? `
             <div class="language-switch" aria-label="Language">
-              <a href="#" aria-current="true">KR</a>
+              <span aria-current="true">KR</span>
               <span>|</span>
-              <a href="#">EN</a>
+              <a href="${englishSite.href}">EN</a>
             </div>
+            ` : ''}
             <a class="header-cta" href="${link('register.html')}">
               <i class="ri-edit-box-line" aria-hidden="true"></i>
               참가 신청
@@ -120,6 +140,11 @@
     const mount = document.getElementById('site-footer');
     if (!mount) return;
 
+    const socials = socialLinks
+      .filter((item) => item.href)
+      .map((item) => `<a href="${item.href}" target="_blank" rel="noopener" aria-label="${item.label}"><i class="${item.icon}" aria-hidden="true"></i></a>`)
+      .join('');
+
     mount.innerHTML = `
       <footer class="site-footer">
         <div class="footer-inner">
@@ -133,9 +158,9 @@
                 </span>
               </div>
               <nav class="footer-policy" aria-label="Footer policy">
-                <a href="${link('faq.html')}">개인정보처리방침</a>
-                <a href="${link('faq.html')}">저작권 보호방침</a>
-                <a href="${link('faq.html')}">법적고지</a>
+                <a href="${link('privacy.html')}">개인정보처리방침</a>
+                <a href="${link('copyright.html')}">저작권 보호방침</a>
+                <a href="${link('legal.html')}">법적고지</a>
               </nav>
               <address class="footer-info">
                 <span>제주글로벌콘텐츠포럼 및 비즈니스 네트워킹 운영사무국</span>
@@ -151,18 +176,15 @@
             </p>
           </div>
           <div class="footer-actions">
-            <div class="footer-socials" aria-label="Social links">
-              <a href="#" aria-label="JGCF YouTube"><i class="ri-youtube-fill" aria-hidden="true"></i></a>
-              <a href="#" aria-label="JGCF Instagram"><i class="ri-instagram-line" aria-hidden="true"></i></a>
-              <a href="#" aria-label="JGCF Blog"><i class="ri-blogger-line" aria-hidden="true"></i></a>
-            </div>
+            ${socials ? `<div class="footer-socials" aria-label="Social links">${socials}</div>` : ''}
             <details class="footer-family">
-              <summary>패밀리 사이트 <i class="ri-arrow-down-s-line" aria-hidden="true"></i></summary>
+              <summary>바로가기 <i class="ri-arrow-down-s-line" aria-hidden="true"></i></summary>
               <div class="footer-family-menu">
-                <a href="${link('register.html')}">Registration</a>
-                <a href="${link('meetup/reserve.html')}">Business Meetup</a>
-                <a href="${link('program.html')}">Program</a>
-                <a href="${link('partners.html')}">Partners</a>
+                <a href="${link('register.html')}">행사 참가신청</a>
+                <a href="${link('meetup/reserve.html')}">밋업 예약</a>
+                <a href="${link('meetup/confirm.html')}">예약 조회·취소</a>
+                <a href="${link('program.html')}">프로그램</a>
+                <a href="${link('partners.html')}">파트너</a>
               </div>
             </details>
           </div>
@@ -182,18 +204,23 @@
     const toggle = document.querySelector('.menu-toggle');
     if (!header || !toggle) return;
 
-    const close = () => {
-      header.classList.remove('is-open');
-      toggle.setAttribute('aria-expanded', 'false');
-      document.documentElement.classList.remove('no-scroll');
-      document.body.classList.remove('no-scroll');
-    };
-
-    toggle.addEventListener('click', () => {
-      const isOpen = header.classList.toggle('is-open');
+    const setOpen = (isOpen) => {
+      header.classList.toggle('is-open', isOpen);
       toggle.setAttribute('aria-expanded', String(isOpen));
       document.documentElement.classList.toggle('no-scroll', isOpen);
       document.body.classList.toggle('no-scroll', isOpen);
+    };
+
+    const close = (restoreFocus) => {
+      if (!header.classList.contains('is-open')) return;
+      setOpen(false);
+      if (restoreFocus === true) toggle.focus();
+    };
+
+    toggle.addEventListener('click', () => {
+      const isOpen = !header.classList.contains('is-open');
+      setOpen(isOpen);
+      if (isOpen) header.querySelector('.mobile-menu a, .mobile-menu button')?.focus();
     });
 
     document.querySelectorAll('.mobile-sub-toggle').forEach((button) => {
@@ -208,11 +235,11 @@
     });
 
     document.querySelectorAll('.mobile-menu a').forEach((anchor) => {
-      anchor.addEventListener('click', close);
+      anchor.addEventListener('click', () => close());
     });
 
     document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape') close();
+      if (event.key === 'Escape') close(true);
     });
   }
 
