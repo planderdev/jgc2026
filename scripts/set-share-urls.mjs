@@ -59,7 +59,10 @@ for (const file of files) {
   );
 
   // og:url은 페이지 자신의 주소. 홈은 도메인 루트로 둔다.
-  const canonical = rel === 'index.html' ? `${base}/` : `${base}/${rel}`;
+  // cleanUrls 기준 정식 주소: 확장자 제거, index는 디렉터리 주소로
+  const cleanPath = rel === 'index.html' ? ''
+    : rel.replace(/\/index\.html$/, '').replace(/\.html$/, '');
+  const canonical = `${base}/${cleanPath}`;
   if (/<meta property="og:url"/.test(source)) {
     source = source.replace(/(<meta property="og:url" content=")[^"]*(")/, `$1${canonical}$2`);
   } else {

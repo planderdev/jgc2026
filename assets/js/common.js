@@ -38,7 +38,13 @@
 
   function link(path) {
     if (!path || path.startsWith('http') || path.startsWith('#')) return path;
-    return base + path;
+    // Vercel cleanUrls에 맞춰 확장자 없는 주소로 통일한다.
+    // 'index.html' -> './', 'meetup/index.html' -> 'meetup', 'about.html#x' -> 'about#x'
+    let clean = path
+      .replace(/(^|\/)index\.html(?=[#?]|$)/, (m, p1) => (p1 === '/' ? '' : './'))
+      .replace(/\.html(?=[#?]|$)/, '');
+    if (clean === './') return base || './';
+    return base + clean;
   }
 
   function asset(path) {

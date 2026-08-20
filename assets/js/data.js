@@ -371,7 +371,7 @@
       region: ['Main IR', company.field],
       title: company.name,
       note: company.points?.[0] || company.project || '',
-      href: 'program.html#main-ir-title',
+      href: 'program#main-ir-title',
       image: homeIrImages[index % homeIrImages.length],
       tone: homeIrTones[index % homeIrTones.length]
     })),
