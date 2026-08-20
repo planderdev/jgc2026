@@ -4,5 +4,18 @@
   "outputDirectory": ".",
   "installCommand": "npm install",
   "cleanUrls": false,
-  "trailingSlash": false
+  "trailingSlash": false,
+  "rewrites": [
+    {
+      "source": "/admin",
+      "destination": "/admin.html"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/admin.html",
+      "destination": "/admin",
+      "statusCode": 308
+    }
+  ]
 }
