@@ -376,7 +376,7 @@
         role: '제주특별자치도지사',
         org: '제주특별자치도',
         track: 'Forum',
-        image: image('assets/images/speakers/speaker-evi-sari.avif'),
+        image: image('assets/images/speakers/speaker-wi-sung-gon.webp'),
         bio: '2026 제주글로벌콘텐츠포럼 글로벌 포럼 토론연사.'
       },
       {
@@ -394,7 +394,7 @@
         role: '글로벌 LBE 부사장',
         org: 'WildBrain CPLG',
         track: 'LBE',
-        image: image('assets/images/speakers/speaker-kim-young-rok.webp'),
+        image: image('assets/images/speakers/speaker-evi-sari.avif'),
         bio: '글로벌 IP 기반 공간 경험, 라이선싱, LBE 사업 전략을 총괄하며 Peanuts, Teletubbies, Dr. Seuss 등 글로벌 IP의 공간형 엔터테인먼트 사업을 전개한다.'
       },
       {
@@ -403,7 +403,7 @@
         role: '대표',
         org: '넥스트챌린지',
         track: 'Startup',
-        image: image('assets/images/speakers/speaker-wi-sung-gon.avif'),
+        image: image('assets/images/speakers/speaker-kim-young-rok.avif'),
         bio: '글로벌 액셀러레이터 재단법인 넥스트챌린지 대표이자 벤처기업협회 부회장. 스타트업 액셀러레이팅과 글로벌 진출 전략을 다룬다.'
       },
       {
