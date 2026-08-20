@@ -96,6 +96,7 @@
     mount.innerHTML = `
       <header class="site-header ${page === 'home' ? 'is-home' : ''}" data-header>
         <div class="header-inner">
+          <div class="header-slot">
           <a class="brand" href="${link('index.html')}" aria-label="JGCF home">
             <span class="brand-mark">JG</span>
             <span class="brand-text">
@@ -103,6 +104,7 @@
               <span>JEJU GLOBAL CONTENT FORUM</span>
             </span>
           </a>
+          </div>
           <nav class="desktop-nav" aria-label="Primary navigation">
             <div class="nav-menu">${desktopNav}</div>
           </nav>

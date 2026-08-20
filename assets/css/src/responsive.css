@@ -1,8 +1,14 @@
 /* Responsive rules */
 
 @media (max-width: 1200px) {
-  .header-actions {
-    min-width: 210px;
+  /* 좁은 화면에서 메뉴가 정중앙을 유지하도록 알약 여백을 줄인다.
+     예전 min-width: 210px는 flex 1 0 0 컬럼 구조로 바뀌며 필요 없어졌다. */
+  .nav-pill {
+    padding: var(--space-0) var(--space-8);
+  }
+
+  .brand {
+    min-width: 0;
   }
 
   .language-switch {

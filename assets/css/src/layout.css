@@ -37,6 +37,12 @@
   position: relative;
 }
 
+.header-slot {
+  flex: 1 0 0;
+  display: flex;
+  align-items: center;
+}
+
 .brand {
   display: inline-flex;
   align-items: center;
@@ -69,7 +75,7 @@
 }
 
 .desktop-nav {
-  flex: 1 1 auto;
+  flex: 0 1 auto;
 }
 
 .nav-menu {
@@ -169,7 +175,7 @@
 }
 
 .header-actions {
-  min-width: 256px;
+  flex: 1 0 0;
   display: flex;
   align-items: center;
   justify-content: flex-end;
