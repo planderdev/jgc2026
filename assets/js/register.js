@@ -1,7 +1,6 @@
 (function () {
   const common = () => window.JGCFCommon;
-  const STORAGE_KEY = 'jgcf2026.eventApplications';
-  const SEQUENCE_KEY = 'jgcf2026.eventApplicationSequence';
+  const service = () => window.ReservationService;
 
   function escapeHtml(value) {
     return String(value ?? '')
@@ -10,28 +9,6 @@
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;')
       .replace(/'/g, '&#039;');
-  }
-
-  function nextNumber() {
-    const next = Number(localStorage.getItem(SEQUENCE_KEY) || '0') + 1;
-    localStorage.setItem(SEQUENCE_KEY, String(next));
-    return `JGCF-ATTEND-${String(next).padStart(6, '0')}`;
-  }
-
-  function readAll() {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      return raw ? JSON.parse(raw) : [];
-    } catch (error) {
-      console.warn('Event application storage could not be read.', error);
-      return [];
-    }
-  }
-
-  function writeApplication(application) {
-    const applications = readAll();
-    applications.unshift(application);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(applications));
   }
 
   function fieldValue(form, name) {
@@ -57,8 +34,6 @@
       student: '학생'
     };
     const payload = {
-      id: nextNumber(),
-      createdAt: new Date().toISOString(),
       type,
       typeLabel: typeLabels[type] || type,
       phone: fieldValue(form, 'phone')
@@ -93,8 +68,12 @@
       option.addEventListener('change', () => setActiveType(form, option.value));
     });
 
-    form.addEventListener('submit', (event) => {
+    const submitButton = form.querySelector('button[type=submit]');
+    let busy = false;
+
+    form.addEventListener('submit', async (event) => {
       event.preventDefault();
+      if (busy) return;
 
       if (!form.checkValidity()) {
         form.reportValidity();
@@ -107,24 +86,41 @@
       }
 
       const application = collectPayload(form);
-      writeApplication(application);
-      form.hidden = true;
-      result.hidden = false;
-      result.innerHTML = `
-        <span class="ui-badge">신청 완료</span>
-        <h2 class="section-title">행사 참가신청이 완료되었습니다</h2>
-        <div class="reservation-number">${escapeHtml(application.id)}</div>
-        <dl class="confirm-box">
-          <div class="confirm-row"><dt>구분</dt><dd>${escapeHtml(application.typeLabel)}</dd></div>
-          ${application.organization ? `<div class="confirm-row"><dt>소속</dt><dd>${escapeHtml(application.organization)}</dd></div>` : ''}
-          <div class="confirm-row"><dt>이름</dt><dd>${escapeHtml(application.name)}</dd></div>
-          <div class="confirm-row"><dt>연락처</dt><dd>${escapeHtml(application.phone)}</dd></div>
-        </dl>
-        <div class="step-actions">
-          <a class="ui-button secondary" href="${common().link('program.html')}">프로그램 보기</a>
-          <a class="ui-button coral" href="${common().link('meetup/reserve.html')}">비즈밋업 예약</a>
-        </div>
-      `;
+
+      busy = true;
+      submitButton.disabled = true;
+      const originalLabel = submitButton.innerHTML;
+      submitButton.textContent = '신청 처리 중…';
+
+      try {
+        const response = await service().createRegistration(application);
+        if (!response.ok) {
+          common().toast(service().messageFor(response.reason));
+          return;
+        }
+
+        form.hidden = true;
+        result.hidden = false;
+        result.innerHTML = `
+          <span class="ui-badge">신청 완료</span>
+          <h2 class="section-title">행사 참가신청이 완료되었습니다</h2>
+          <div class="reservation-number">${escapeHtml(response.registration_no)}</div>
+          <dl class="confirm-box">
+            <div class="confirm-row"><dt>구분</dt><dd>${escapeHtml(application.typeLabel)}</dd></div>
+            ${application.organization ? `<div class="confirm-row"><dt>소속</dt><dd>${escapeHtml(application.organization)}</dd></div>` : ''}
+            <div class="confirm-row"><dt>이름</dt><dd>${escapeHtml(application.name)}</dd></div>
+            <div class="confirm-row"><dt>연락처</dt><dd>${escapeHtml(application.phone)}</dd></div>
+          </dl>
+          <div class="step-actions">
+            <a class="ui-button secondary" href="${common().link('program.html')}">프로그램 보기</a>
+            <a class="ui-button coral" href="${common().link('meetup/reserve.html')}">비즈밋업 예약</a>
+          </div>
+        `;
+      } finally {
+        busy = false;
+        submitButton.disabled = false;
+        submitButton.innerHTML = originalLabel;
+      }
     });
   }
 

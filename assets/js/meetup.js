@@ -4,6 +4,10 @@
   const service = () => window.ReservationService;
   const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+  // 예약 완료 화면에 보여줄 내용을 넘기는 통로.
+  // 조회 함수는 담당자 연락처를 요구하므로 완료 페이지에서 다시 조회할 수 없다.
+  const COMPLETE_KEY = 'jgcf2026.lastReservation';
+
   function escapeHtml(value) {
     return String(value ?? '')
       .replace(/&/g, '&amp;')
@@ -33,12 +37,14 @@
     if (!form) return;
 
     let step = 1;
+    let busy = false;
     const state = {};
     const panels = Array.from(form.querySelectorAll('.step-panel'));
     const steps = Array.from(document.querySelectorAll('[data-step-indicator] li'));
     const companyMount = form.querySelector('[data-company-choices]');
     const timeMount = form.querySelector('[data-time-choices]');
     const confirmMount = form.querySelector('[data-confirm-box]');
+    const submitButton = form.querySelector('[data-step="4"] button[type=submit]');
 
     companyMount.innerHTML = data().companies.map((company) => `
       <label class="choice-card">
@@ -53,27 +59,27 @@
       </label>
     `).join('');
 
-    function renderTimes() {
-      const companyId = state.companyId;
+    function drawTimes(taken) {
       const breaks = data().reservationBreaks || {};
+      const takenSet = new Set(taken || []);
       timeMount.innerHTML = data().reservationTimes.map((time) => {
         const breakLabel = breaks[time];
-        if (breakLabel) {
-          return `
-          <label class="choice-card">
-            <input type="radio" name="time" value="${escapeHtml(time)}" disabled>
-            <span>${escapeHtml(time)} ${escapeHtml(breakLabel)}</span>
-          </label>
-        `;
-        }
-        const status = companyId ? service().availability(companyId, time) : { available: true, count: 0 };
+        const label = breakLabel ? `${time} ${breakLabel}` : (takenSet.has(time) ? `${time} 마감` : time);
+        const disabled = breakLabel || takenSet.has(time) ? 'disabled' : '';
         return `
           <label class="choice-card">
-            <input type="radio" name="time" value="${escapeHtml(time)}" ${status.available ? '' : 'disabled'}>
-            <span>${escapeHtml(time)}${status.available ? '' : ' 마감'}</span>
+            <input type="radio" name="time" value="${escapeHtml(time)}" ${disabled}>
+            <span>${escapeHtml(label)}</span>
           </label>
         `;
       }).join('');
+    }
+
+    /** 서버에서 마감 시간대를 받아 시간 선택지를 다시 그린다. */
+    async function refreshTimes() {
+      timeMount.innerHTML = '<p class="section-subtitle">예약 가능한 시간을 확인하는 중입니다…</p>';
+      const taken = await service().takenSlots(state.companyId);
+      drawTimes(taken);
     }
 
     function updateSteps() {
@@ -91,19 +97,20 @@
       fields.forEach((field) => {
         state[field] = form.elements[field] ? form.elements[field].value.trim() : '';
       });
-      state.attachmentName = form.elements.attachment?.files?.[0]?.name || '';
+      state.attachmentFile = form.elements.attachment?.files?.[0] || null;
+      state.attachmentName = state.attachmentFile?.name || '';
       state.privacy = form.elements.privacy.checked;
     }
 
-    function validateCurrentStep() {
+    async function validateCurrentStep() {
       if (step === 1) {
         const selected = form.elements.companyId.value;
         if (!selected) {
-            common().toast('상담을 희망하는 기관을 선택해 주세요.');
+          common().toast('상담을 희망하는 기관을 선택해 주세요.');
           return false;
         }
         state.companyId = selected;
-        renderTimes();
+        await refreshTimes();
       }
       if (step === 2) {
         const selected = form.elements.time.value;
@@ -155,49 +162,111 @@
       `;
     }
 
-    form.addEventListener('click', (event) => {
+    form.addEventListener('click', async (event) => {
       const action = event.target.closest('[data-step-action]');
-      if (!action) return;
+      if (!action || busy) return;
       const type = action.dataset.stepAction;
-      if (type === 'next' && validateCurrentStep()) {
-        step = Math.min(step + 1, 4);
-        updateSteps();
+
+      if (type === 'next') {
+        busy = true;
+        action.disabled = true;
+        try {
+          if (await validateCurrentStep()) {
+            step = Math.min(step + 1, 4);
+            updateSteps();
+          }
+        } finally {
+          busy = false;
+          action.disabled = false;
+        }
       }
+
       if (type === 'prev') {
         step = Math.max(step - 1, 1);
         updateSteps();
       }
     });
 
-    form.addEventListener('submit', (event) => {
+    form.addEventListener('submit', async (event) => {
       event.preventDefault();
-      if (step !== 4) return;
-      const company = companyById(state.companyId);
-      const reservation = service().create({
-        ...state,
-        companyName: company.name,
-        companyField: company.field
-      });
-      window.location.href = common().link(`meetup/complete.html?reservation=${encodeURIComponent(reservation.id)}`);
+      if (step !== 4 || busy) return;
+
+      busy = true;
+      submitButton.disabled = true;
+      const originalLabel = submitButton.innerHTML;
+      submitButton.textContent = '예약 처리 중…';
+
+      try {
+        const upload = await service().uploadAttachment(state.attachmentFile);
+        if (!upload.ok) {
+          common().toast(upload.reason === 'network'
+            ? service().messageFor('network')
+            : '첨부파일을 올리지 못했습니다. PDF 형식과 5MB 이하인지 확인해 주세요.');
+          return;
+        }
+
+        const company = companyById(state.companyId);
+        const result = await service().create({
+          ...state,
+          companyName: company.name,
+          companyField: company.field,
+          attachmentPath: upload.path,
+          attachmentName: upload.name
+        });
+
+        if (!result.ok) {
+          common().toast(service().messageFor(result.reason));
+          // 시간대를 뺏겼다면 2단계로 돌려보내 다시 고르게 한다.
+          if (result.reason === 'slot_taken') {
+            step = 2;
+            updateSteps();
+            await refreshTimes();
+          }
+          return;
+        }
+
+        sessionStorage.setItem(COMPLETE_KEY, JSON.stringify({
+          reservation_no: result.reservation_no,
+          company_name: company.name,
+          time_slot: state.time,
+          applicant_company: state.applicantCompany,
+          manager_name: state.managerName,
+          status: 'confirmed'
+        }));
+
+        window.location.href = common().link('meetup/complete.html');
+      } finally {
+        busy = false;
+        submitButton.disabled = false;
+        submitButton.innerHTML = originalLabel;
+      }
     });
 
-    renderTimes();
+    drawTimes([]);
     updateSteps();
   }
 
   function renderComplete() {
     const mount = document.querySelector('[data-complete-result]');
     if (!mount) return;
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get('reservation');
-    const reservation = service().findByNumber(id);
+
+    let reservation = null;
+    try {
+      reservation = JSON.parse(sessionStorage.getItem(COMPLETE_KEY) || 'null');
+    } catch (error) {
+      console.warn('예약 완료 정보를 읽지 못했습니다.', error);
+    }
+
     if (!reservation) {
       mount.innerHTML = `
         <div class="result-card">
           <span class="ui-badge">예약 확인</span>
-          <h1 class="section-title">예약 정보를 찾을 수 없습니다</h1>
-          <p class="section-subtitle">예약을 다시 진행하거나 조회 페이지에서 예약번호를 확인해 주세요.</p>
-          <a class="ui-button coral" href="${common().link('meetup/reserve.html')}">다시 예약하기</a>
+          <h1 class="section-title">표시할 예약 정보가 없습니다</h1>
+          <p class="section-subtitle">예약 완료 직후에만 이 화면에서 확인할 수 있습니다. 예약번호와 담당자 연락처로 조회해 주세요.</p>
+          <div class="step-actions">
+            <a class="ui-button secondary" href="${common().link('meetup/confirm.html')}">예약 조회</a>
+            <a class="ui-button coral" href="${common().link('meetup/reserve.html')}">다시 예약하기</a>
+          </div>
         </div>
       `;
       return;
@@ -207,13 +276,14 @@
       <div class="result-card">
         <span class="ui-badge">예약 완료</span>
         <h1 class="section-title">비즈니스 밋업 예약이 완료되었습니다</h1>
-        <div class="reservation-number">${escapeHtml(reservation.id)}</div>
+        <div class="reservation-number">${escapeHtml(reservation.reservation_no)}</div>
+        <p class="section-subtitle">예약번호는 조회와 취소에 필요합니다. 담당자 연락처와 함께 보관해 주세요.</p>
         <dl class="confirm-box">
-          <div class="confirm-row"><dt>상담기관</dt><dd>${escapeHtml(reservation.companyName)}</dd></div>
-          <div class="confirm-row"><dt>시간</dt><dd>${escapeHtml(reservation.time)}</dd></div>
-          <div class="confirm-row"><dt>신청 기업</dt><dd>${escapeHtml(reservation.applicantCompany)}</dd></div>
-          <div class="confirm-row"><dt>담당자</dt><dd>${escapeHtml(reservation.managerName)}</dd></div>
-          <div class="confirm-row"><dt>상태</dt><dd>${reservation.status === 'confirmed' ? '예약 확정' : '예약 취소'}</dd></div>
+          <div class="confirm-row"><dt>상담기관</dt><dd>${escapeHtml(reservation.company_name)}</dd></div>
+          <div class="confirm-row"><dt>시간</dt><dd>${escapeHtml(reservation.time_slot)}</dd></div>
+          <div class="confirm-row"><dt>신청 기업</dt><dd>${escapeHtml(reservation.applicant_company)}</dd></div>
+          <div class="confirm-row"><dt>담당자</dt><dd>${escapeHtml(reservation.manager_name)}</dd></div>
+          <div class="confirm-row"><dt>상태</dt><dd>예약 확정</dd></div>
         </dl>
         <div class="step-actions">
           <a class="ui-button secondary" href="${common().link('meetup/confirm.html')}">예약 조회</a>
@@ -229,7 +299,9 @@
     const dialog = document.querySelector('[data-cancel-dialog]');
     if (!form || !result || !dialog) return;
 
-    let currentReservation = null;
+    let current = null;
+    let currentPhone = '';
+    const submitButton = form.querySelector('button[type=submit]');
 
     function openDialog() {
       dialog.showModal();
@@ -247,47 +319,73 @@
     });
 
     function drawReservation(reservation) {
-      if (!reservation) {
-        result.innerHTML = '<p class="prose-block">예약번호와 담당자 연락처가 일치하는 예약이 없습니다.</p>';
-        return;
-      }
-      currentReservation = reservation;
+      current = reservation;
       result.innerHTML = `
         <span class="ui-badge">${reservation.status === 'confirmed' ? '예약 확정' : '예약 취소'}</span>
-        <h2 class="side-title">${escapeHtml(reservation.companyName)}</h2>
+        <h2 class="side-title">${escapeHtml(reservation.company_name)}</h2>
         <dl class="confirm-box">
-          <div class="confirm-row"><dt>예약번호</dt><dd>${escapeHtml(reservation.id)}</dd></div>
-          <div class="confirm-row"><dt>시간</dt><dd>${escapeHtml(reservation.time)}</dd></div>
-          <div class="confirm-row"><dt>신청 기업</dt><dd>${escapeHtml(reservation.applicantCompany)}</dd></div>
-          <div class="confirm-row"><dt>담당자</dt><dd>${escapeHtml(reservation.managerName)}</dd></div>
+          <div class="confirm-row"><dt>예약번호</dt><dd>${escapeHtml(reservation.reservation_no)}</dd></div>
+          <div class="confirm-row"><dt>시간</dt><dd>${escapeHtml(reservation.time_slot)}</dd></div>
+          <div class="confirm-row"><dt>신청 기업</dt><dd>${escapeHtml(reservation.applicant_company)}</dd></div>
+          <div class="confirm-row"><dt>담당자</dt><dd>${escapeHtml(reservation.manager_name)}</dd></div>
           <div class="confirm-row"><dt>연락처</dt><dd>${escapeHtml(reservation.phone)}</dd></div>
         </dl>
         ${reservation.status === 'confirmed' ? '<button class="ui-button ghost" type="button" data-open-cancel>예약 취소</button>' : ''}
       `;
     }
 
-    form.addEventListener('submit', (event) => {
+    function drawMessage(text) {
+      current = null;
+      result.innerHTML = `<p class="prose-block">${escapeHtml(text)}</p>`;
+    }
+
+    form.addEventListener('submit', async (event) => {
       event.preventDefault();
-      const reservation = service().findForLookup(form.elements.reservationNumber.value, form.elements.phone.value);
-      drawReservation(reservation);
+      const reservationNo = form.elements.reservationNumber.value;
+      const phone = form.elements.phone.value;
+
+      submitButton.disabled = true;
+      result.innerHTML = '<p class="prose-block">조회 중입니다…</p>';
+      try {
+        const response = await service().findForLookup(reservationNo, phone);
+        if (response.ok) {
+          currentPhone = phone;
+          drawReservation(response.reservation);
+        } else {
+          drawMessage(service().messageFor(response.reason));
+        }
+      } finally {
+        submitButton.disabled = false;
+      }
     });
 
     result.addEventListener('click', (event) => {
-      if (event.target.closest('[data-open-cancel]')) {
-        openDialog();
-      }
+      if (event.target.closest('[data-open-cancel]')) openDialog();
     });
 
-    dialog.addEventListener('click', (event) => {
+    dialog.addEventListener('click', async (event) => {
       if (event.target.matches('[data-dialog-close]') || event.target === dialog) {
         closeDialog();
+        return;
       }
-      if (event.target.matches('[data-confirm-cancel]') && currentReservation) {
-        currentReservation = service().cancel(currentReservation.id);
-        closeDialog();
-        drawReservation(currentReservation);
-        result.focus();
-        common().toast('예약이 취소되었습니다.');
+
+      if (event.target.matches('[data-confirm-cancel]') && current) {
+        const button = event.target;
+        button.disabled = true;
+        try {
+          const response = await service().cancel(current.reservation_no, currentPhone);
+          closeDialog();
+          if (response.ok) {
+            drawReservation(response.reservation);
+            common().toast('예약이 취소되었습니다.');
+          } else {
+            drawMessage(service().messageFor(response.reason));
+            common().toast(service().messageFor(response.reason));
+          }
+          result.focus();
+        } finally {
+          button.disabled = false;
+        }
       }
     });
   }

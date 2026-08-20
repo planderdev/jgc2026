@@ -1,84 +1,149 @@
 (function () {
-  const STORAGE_KEY = 'jgcf2026.reservations';
-  const SEQUENCE_KEY = 'jgcf2026.reservationSequence';
+  /**
+   * 예약/신청 저장소.
+   *
+   * Supabase의 jgcf_* 함수만 호출합니다. 테이블에는 직접 접근하지 않으며,
+   * 접근하려 해도 RLS가 막습니다. 중복 예약과 중복 신청 차단, 입력 검증은
+   * 모두 서버에서 처리하므로 브라우저 쪽 검증을 우회해도 통과하지 못합니다.
+   *
+   * 모든 함수는 Promise를 돌려줍니다.
+   */
+  const config = () => window.JGCFSupabase;
 
-  function readAll() {
+  const REASON_MESSAGES = {
+    slot_taken: '방금 다른 참가자가 이 시간대를 예약했습니다. 다른 시간을 선택해 주세요.',
+    already_reserved: '이미 예약이 있습니다. 한 담당자당 한 건만 신청할 수 있습니다. 예약 조회에서 기존 예약을 확인해 주세요.',
+    already_registered: '이미 참가신청이 접수된 연락처입니다.',
+    invalid_email: '메일 주소를 정확하게 입력해 주세요.',
+    invalid_phone: '연락처를 정확하게 입력해 주세요.',
+    missing_field: '필수 항목이 비어 있습니다.',
+    too_long: '입력 내용이 너무 깁니다.',
+    invalid_type: '참가 구분을 다시 선택해 주세요.',
+    not_found: '예약번호와 담당자 연락처가 일치하는 예약이 없습니다.',
+    not_found_or_already_cancelled: '이미 취소되었거나 일치하는 예약이 없습니다.',
+    code_generation_failed: '예약번호 발급에 실패했습니다. 잠시 후 다시 시도해 주세요.',
+    network: '서버에 연결하지 못했습니다. 네트워크를 확인하고 다시 시도해 주세요.'
+  };
+
+  function messageFor(reason) {
+    return REASON_MESSAGES[reason] || '처리 중 문제가 발생했습니다. 잠시 후 다시 시도해 주세요.';
+  }
+
+  async function callFunction(name, payload) {
+    const { url, publishableKey } = config();
+    let response;
     try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      return raw ? JSON.parse(raw) : [];
+      response = await fetch(`${url}/rest/v1/rpc/${name}`, {
+        method: 'POST',
+        headers: {
+          apikey: publishableKey,
+          Authorization: `Bearer ${publishableKey}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload || {})
+      });
     } catch (error) {
-      console.warn('Reservation storage could not be read.', error);
-      return [];
+      console.error(`${name} 호출 실패`, error);
+      return { ok: false, reason: 'network' };
     }
+
+    if (!response.ok) {
+      console.error(`${name} 응답 오류`, response.status, await response.text().catch(() => ''));
+      return { ok: false, reason: 'network' };
+    }
+
+    return response.json();
   }
 
-  function writeAll(items) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+  /** 선택한 상담기관에서 이미 예약된 시간대 목록. 개인정보는 오지 않는다. */
+  async function takenSlots(companyId) {
+    const result = await callFunction('jgcf_taken_slots', { p_company_id: companyId });
+    return Array.isArray(result) ? result : [];
   }
 
-  function nextNumber() {
-    const next = Number(localStorage.getItem(SEQUENCE_KEY) || '0') + 1;
-    localStorage.setItem(SEQUENCE_KEY, String(next));
-    return `JGCF-2026-${String(next).padStart(6, '0')}`;
+  /**
+   * 회사 소개서 PDF 업로드.
+   * 예약번호가 나오기 전에 올려야 하므로 임의 경로를 쓴다.
+   * 버킷은 비공개라 경로를 알아도 내려받을 수 없다.
+   */
+  async function uploadAttachment(file) {
+    if (!file) return { ok: true, path: null, name: null };
+
+    const { url, publishableKey, attachmentBucket } = config();
+    const safeName = file.name.replace(/[^\w.\-]/g, '_').slice(-80);
+    const path = `${crypto.randomUUID()}/${safeName}`;
+
+    try {
+      const response = await fetch(`${url}/storage/v1/object/${attachmentBucket}/${path}`, {
+        method: 'POST',
+        headers: {
+          apikey: publishableKey,
+          Authorization: `Bearer ${publishableKey}`,
+          'Content-Type': file.type || 'application/pdf'
+        },
+        body: file
+      });
+
+      if (!response.ok) {
+        const detail = await response.text().catch(() => '');
+        console.error('첨부파일 업로드 실패', response.status, detail);
+        // 5MB 초과나 PDF가 아닌 파일은 버킷 설정에서 거부된다.
+        return { ok: false, reason: 'upload_failed', status: response.status };
+      }
+    } catch (error) {
+      console.error('첨부파일 업로드 실패', error);
+      return { ok: false, reason: 'network' };
+    }
+
+    return { ok: true, path, name: file.name };
   }
 
-  function create(payload) {
-    const reservations = readAll();
-    const reservation = {
-      id: nextNumber(),
-      status: 'confirmed',
-      createdAt: new Date().toISOString(),
-      ...payload
-    };
-    reservations.unshift(reservation);
-    writeAll(reservations);
-    return reservation;
+  async function create(payload) {
+    return callFunction('jgcf_create_reservation', {
+      p_company_id: payload.companyId,
+      p_company_name: payload.companyName,
+      p_company_field: payload.companyField,
+      p_time_slot: payload.time,
+      p_applicant_company: payload.applicantCompany,
+      p_manager_name: payload.managerName,
+      p_phone: payload.phone,
+      p_email: payload.email,
+      p_inquiry: payload.inquiry,
+      p_attachment_path: payload.attachmentPath || null,
+      p_attachment_name: payload.attachmentName || null
+    });
   }
 
-  function findByNumber(number) {
-    const value = String(number || '').trim().toUpperCase();
-    return readAll().find((item) => item.id.toUpperCase() === value) || null;
+  async function findForLookup(reservationNo, phone) {
+    return callFunction('jgcf_lookup_reservation', {
+      p_reservation_no: reservationNo,
+      p_phone: phone
+    });
   }
 
-  function findForLookup(number, phone) {
-    const normalizedPhone = String(phone || '').replace(/\D/g, '');
-    const reservation = findByNumber(number);
-    if (!reservation) return null;
-    const reservationPhone = String(reservation.phone || '').replace(/\D/g, '');
-    return reservationPhone === normalizedPhone ? reservation : null;
+  async function cancel(reservationNo, phone) {
+    return callFunction('jgcf_cancel_reservation', {
+      p_reservation_no: reservationNo,
+      p_phone: phone
+    });
   }
 
-  function cancel(id) {
-    const reservations = readAll();
-    const index = reservations.findIndex((item) => item.id === id);
-    if (index === -1) return null;
-    reservations[index] = {
-      ...reservations[index],
-      status: 'cancelled',
-      cancelledAt: new Date().toISOString()
-    };
-    writeAll(reservations);
-    return reservations[index];
-  }
-
-  function availability(companyId, time) {
-    const reservations = readAll().filter((item) => (
-      item.companyId === companyId &&
-      item.time === time &&
-      item.status === 'confirmed'
-    ));
-    return {
-      count: reservations.length,
-      available: reservations.length < 1
-    };
+  async function createRegistration(payload) {
+    return callFunction('jgcf_create_registration', {
+      p_participant_type: payload.type,
+      p_name: payload.name,
+      p_organization: payload.organization || null,
+      p_phone: payload.phone
+    });
   }
 
   window.ReservationService = {
-    readAll,
+    takenSlots,
+    uploadAttachment,
     create,
-    findByNumber,
     findForLookup,
     cancel,
-    availability
+    createRegistration,
+    messageFor
   };
 })();
