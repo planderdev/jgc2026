@@ -104,12 +104,12 @@
 
   function renderHomeFaqItem(item, index) {
     return `
-      <article class="faq-item home-faq-item ${index === 0 ? 'is-open' : ''}">
-        <button class="faq-question home-faq-question" type="button">
+      <article class="faq-item ${index === 0 ? 'is-open' : ''}">
+        <button class="faq-question" type="button">
           <span>${escapeHtml(item.q)}</span>
           <i class="ri-arrow-down-s-line" aria-hidden="true"></i>
         </button>
-        <div class="faq-answer home-faq-answer">
+        <div class="faq-answer">
           <p>${escapeHtml(item.a)}</p>
         </div>
       </article>

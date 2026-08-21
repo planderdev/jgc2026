@@ -15,6 +15,37 @@
     return String(value || '').replace(/[^a-zA-Z0-9_-]/g, '');
   }
 
+  const programCompanyThumbnails = [
+    'https://cdn.pixabay.com/photo/2015/01/08/18/27/startup-593341_1280.jpg',
+    'https://images.unsplash.com/photo-1603201667141-5a2d4c673378?auto=format&fit=crop&w=640&q=80',
+    'https://cdn.pixabay.com/photo/2015/01/08/18/27/startup-593342_1280.jpg',
+    'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=640&q=80',
+    'https://cdn.pixabay.com/photo/2020/01/19/13/40/startup-4777863_1280.jpg',
+    'https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=640&q=80',
+    'https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=640&q=80',
+    'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=640&q=80'
+  ];
+
+  function getProgramCompanyThumbnail(index, variant) {
+    const offset = variant === 'is-compact' ? 3 : variant === 'is-exhibition' ? 6 : 0;
+    return programCompanyThumbnails[(index + offset) % programCompanyThumbnails.length];
+  }
+
+  const scheduleThumbnails = [
+    'assets/images/home/program-tour.jpg',
+    'assets/images/home/program-business.jpg',
+    'assets/images/home/event-opening.jpg',
+    'assets/images/program/session-stage.jpg',
+    'assets/images/home/event-conference.jpg',
+    'assets/images/home/event-networking.jpg',
+    'assets/images/home/event-showcase.jpg',
+    'assets/images/home/event-audience.jpg'
+  ];
+
+  function getScheduleThumbnail(chapterIndex, sessionIndex) {
+    return scheduleThumbnails[(chapterIndex + sessionIndex) % scheduleThumbnails.length];
+  }
+
   function renderPartnerLogo(item, index) {
     if (typeof item === 'string') {
       return `<span class="partner-logo-text">${escapeHtml(item)}</span>`;
@@ -29,33 +60,20 @@
   function renderSpeakerGrid() {
     const grid = document.querySelector('[data-speaker-grid]');
     if (!grid) return;
-    const filter = document.querySelector('[data-speaker-filter]');
-    const search = document.querySelector('[data-speaker-search]');
-
-    function draw() {
-      const track = filter && filter.value ? filter.value : 'all';
-      const keyword = search ? search.value.trim().toLowerCase() : '';
-      const speakers = data().speakers.filter((speaker) => {
-        const byTrack = track === 'all' || speaker.track === track;
-        const haystack = `${speaker.name} ${speaker.role} ${speaker.org} ${speaker.bio}`.toLowerCase();
-        return byTrack && (!keyword || haystack.includes(keyword));
-      });
-
-      grid.innerHTML = speakers.map((speaker) => `
-        <article class="speaker-profile-card" id="${escapeHtml(speaker.id)}" data-aos="fade-up">
-          <img src="${common().asset(speaker.image)}" alt="${escapeHtml(speaker.name)} portrait">
-          <div class="speaker-info">
-            <span class="ui-badge">${escapeHtml(speaker.track)}</span>
-            <h2 class="speaker-name">${escapeHtml(speaker.name)}</h2>
-            <p class="speaker-role">${escapeHtml(speaker.role)}<br>${escapeHtml(speaker.org)}</p>
-          </div>
-        </article>
-      `).join('') || '<p class="prose-block">조건에 맞는 연사가 없습니다.</p>';
-    }
-
-    if (filter) filter.addEventListener('change', draw);
-    if (search) search.addEventListener('input', draw);
-    draw();
+    grid.innerHTML = data().speakers.map((speaker) => `
+      <article class="speaker-profile-card" id="${escapeHtml(speaker.id)}" data-aos="fade-up">
+        <img src="${common().asset(speaker.image)}" alt="${escapeHtml(speaker.name)} portrait" loading="lazy" decoding="async">
+        <div class="speaker-info">
+          <span class="ui-badge">${escapeHtml(speaker.track)}</span>
+          <h2 class="speaker-name">${escapeHtml(speaker.name)}</h2>
+          <p class="speaker-role">
+            <span>${escapeHtml(speaker.role)}</span>
+            <span aria-hidden="true">|</span>
+            <span>${escapeHtml(speaker.org)}</span>
+          </p>
+        </div>
+      </article>
+    `).join('');
   }
 
   function renderSchedule() {
@@ -67,18 +85,29 @@
       <li><a href="#${escapeHtml(chapter.id)}" class="${index === 0 ? 'is-active' : ''}">${escapeHtml(chapter.tab)}</a></li>
     `).join('');
 
-    list.innerHTML = data().schedule.map((chapter) => `
+    list.innerHTML = data().schedule.map((chapter, chapterIndex) => `
       <section class="schedule-chapter" id="${escapeHtml(chapter.id)}" data-gsap-rise>
         <h2 class="chapter-title">${escapeHtml(chapter.title)}</h2>
-        ${chapter.sessions.map((session) => `
+        <div class="session-list">
+        ${chapter.sessions.map((session, sessionIndex) => {
+          const thumbnail = session.thumbnail || getScheduleThumbnail(chapterIndex, sessionIndex);
+          return `
           <article class="session-row">
-            <time class="session-time">${escapeHtml(session.time)}</time>
-            <div>
+            <div class="session-copy">
+              <div class="session-kicker">
+                <time class="session-time">${escapeHtml(session.time)}</time>
+                <span>Session ${String(sessionIndex + 1).padStart(2, '0')}</span>
+              </div>
               <h3 class="session-title">${escapeHtml(session.title)}</h3>
               <p class="session-meta">${escapeHtml(session.meta)}</p>
             </div>
+            <div class="session-thumb">
+              <img src="${common().asset(thumbnail)}" alt="${escapeHtml(session.title)} 썸네일" loading="lazy" decoding="async">
+            </div>
           </article>
-        `).join('')}
+        `;
+        }).join('')}
+        </div>
       </section>
     `).join('');
 
@@ -111,16 +140,22 @@
   function renderProgramCompanyCard(company, index, variant = '') {
     const points = Array.isArray(company.points) ? company.points : [];
     const note = company.note || '';
+    const thumbnail = company.thumbnail || getProgramCompanyThumbnail(index, variant);
     const body = points.length
       ? `<ul class="program-company-points">${points.map((point) => `<li>${escapeHtml(point)}</li>`).join('')}</ul>`
       : `<p class="program-company-note">${escapeHtml(note)}</p>`;
 
     return `
       <article class="program-company-card ${variant}">
-        <span class="ui-badge">${escapeHtml(company.field)}</span>
-        <h4>${escapeHtml(company.name)}</h4>
-        ${company.project ? `<p class="program-company-project">${escapeHtml(company.project)}</p>` : ''}
-        ${body}
+        <div class="program-company-thumb">
+          <img src="${escapeHtml(thumbnail)}" alt="${escapeHtml(company.name)} 임시 썸네일" loading="lazy" decoding="async">
+        </div>
+        <div class="program-company-content">
+          <span class="ui-badge">${escapeHtml(company.field)}</span>
+          <h4>${escapeHtml(company.name)}</h4>
+          ${company.project ? `<p class="program-company-project">${escapeHtml(company.project)}</p>` : ''}
+          ${body}
+        </div>
       </article>
     `;
   }
@@ -183,7 +218,7 @@
           <span>${item.q}</span>
           <i class="ri-arrow-down-s-line" aria-hidden="true"></i>
         </button>
-        <div class="faq-answer">${item.a}</div>
+        <div class="faq-answer"><p>${item.a}</p></div>
       </article>
     `).join('');
     common().initAccordions(mount);

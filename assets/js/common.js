@@ -2,7 +2,6 @@
   const aboutLinks = [
     { label: '2026 주제', href: 'theme.html', key: 'theme' },
     { label: 'JGCF 소개', href: 'about.html', key: 'about' },
-    { label: '운영 목적', href: 'about.html#history', key: 'history' },
     { label: '행사 장소', href: 'venue.html', key: 'venue' }
   ];
 
@@ -16,8 +15,7 @@
     { label: 'About', href: 'theme.html', key: 'aboutGroup', children: aboutLinks },
     { label: 'Speakers', href: 'speakers.html', key: 'speakers' },
     { label: 'Program', href: 'program.html', key: 'program' },
-    { label: 'Registration', href: 'register.html', key: 'registration' },
-    { label: 'Business Meetup', href: 'meetup/index.html', key: 'meetup', children: meetupLinks },
+    { label: 'Business Meetup', href: 'meetup/index.html', key: 'meetup' },
     { label: 'Partners', href: 'partners.html', key: 'partners' },
     { label: 'FAQ', href: 'faq.html', key: 'faq' }
   ];
@@ -54,7 +52,7 @@
 
   function isActive(item) {
     if (item.key === page) return true;
-    if (item.key === 'aboutGroup') return ['theme', 'about', 'venue', 'history'].includes(page);
+    if (item.key === 'aboutGroup') return ['theme', 'about', 'venue'].includes(page);
     if (item.key === 'meetup') return page.startsWith('meetup');
     if (item.children) return item.children.some((child) => child.key === page);
     return false;
@@ -66,7 +64,6 @@
 
     const desktopNav = nav.map((item) => {
       const active = isActive(item) ? ' is-active' : '';
-      const hot = item.hot ? ' hot' : '';
       const children = item.children ? `
         <div class="layer-menu" aria-label="${item.label} submenu">
           <ul>
@@ -76,7 +73,7 @@
       ` : '';
       return `
         <div class="nav-item${active}">
-          <a class="nav-pill${hot}" href="${link(item.href)}">${item.label}${item.children ? '<i class="ri-arrow-down-s-line" aria-hidden="true"></i>' : ''}</a>
+          <a class="nav-pill" href="${link(item.href)}">${item.label}${item.children ? '<i class="ri-arrow-down-s-line" aria-hidden="true"></i>' : ''}</a>
           ${children}
         </div>
       `;
@@ -172,7 +169,7 @@
               </nav>
               <address class="footer-info">
                 <span>제주글로벌콘텐츠포럼 및 비즈니스 네트워킹 운영사무국</span>
-                <span>제주콘텐츠진흥원 일원(BeIN 공연장 및 로비)</span>
+                <span>제주특별자치도 제주시 신산로 82 제주콘텐츠진흥원 내 1층 Be IN; (비인)</span>
                 <span>2026. 9. 16. Wed 10:00-18:00</span>
               </address>
               <p class="copyright">Copyright © 2026 JGCF. All rights reserved.</p>

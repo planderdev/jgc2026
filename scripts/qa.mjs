@@ -156,6 +156,7 @@ async function checkFaq(page) {
 async function checkRoutes(page) {
   const routes = [
     'index.html',
+    'design-system.html',
     'theme.html',
     'about.html',
     'speakers.html',
@@ -317,7 +318,7 @@ async function main() {
     report.homeRebuild.partnerGroups === 2 && report.homeRebuild.partnerGroupTitles.includes('Host/Organizer') && report.homeRebuild.partnerGroupTitles.includes('PARTNERS') && report.homeRebuild.partnerSubtitles.includes('주최/주관') && report.homeRebuild.partnerSubtitles.includes('협력기관') ? null : 'Partner grouped structure failed',
     report.homeRebuild.partners >= 9 ? null : 'Partner logos not rendered',
     report.homeRebuild.homeEventSwiper && report.homeRebuild.specialSwiper ? null : 'Required Swiper instances missing',
-    report.homeRebuild.homeFaqTitle === 'FAQ' && report.homeRebuild.homeFaqItems >= 4 && report.homeRebuild.homeFaqOpenItems === 1 && report.homeRebuild.homeFaqSecondOpen && report.homeRebuild.legacyInfoNodes === 0 ? null : 'Home FAQ failed',
+    report.homeRebuild.homeFaqTitle === '자주 묻는 질문' && report.homeRebuild.homeFaqItems >= 4 && report.homeRebuild.homeFaqOpenItems === 1 && report.homeRebuild.homeFaqSecondOpen && report.homeRebuild.legacyInfoNodes === 0 ? null : 'Home FAQ failed',
     report.mobileMenu.open ? null : 'Mobile menu did not open',
     report.mobileMenu.expanded === 'true' ? null : 'Mobile menu aria-expanded failed',
     report.faq.openItems === 1 && report.faq.secondOpen ? null : 'FAQ accordion failed',

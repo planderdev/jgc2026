@@ -2,8 +2,8 @@
   const image = (path) => path;
   const eventDate = '2026.09.16';
   const eventTime = '10:00-18:00';
-  const eventPlace = '제주콘텐츠진흥원 일원';
-  const eventVenueDetail = '제주콘텐츠진흥원 BeIN 공연장 및 로비';
+  const eventPlace = '제주특별자치도 제주시 신산로 82 제주콘텐츠진흥원 내 1층 Be IN; (비인)';
+  const eventVenueDetail = '제주특별자치도 제주시 신산로 82 제주콘텐츠진흥원 내 1층 Be IN; (비인)';
   const eventPeriod = `${eventDate} - ${eventDate}`;
 
   const partnerLogoLabels = {
@@ -471,7 +471,7 @@
       },
       {
         q: '행사 장소와 운영 공간은 어디인가요?',
-        a: '2026년 행사는 제주콘텐츠진흥원 일원에서 열리며, BeIN 공연장과 로비 등을 중심으로 포럼, IR 피칭, 전시, 상담 프로그램이 운영됩니다.'
+        a: '2026년 행사는 제주특별자치도 제주시 신산로 82 제주콘텐츠진흥원 내 1층 Be IN; (비인)에서 열리며, 포럼, IR 피칭, 전시, 상담 프로그램이 운영됩니다.'
       }
     ],
     schedule: [

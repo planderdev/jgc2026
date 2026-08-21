@@ -57,18 +57,59 @@
       });
     }
 
-    document.querySelectorAll('[data-gsap-rise]').forEach((item) => {
-      gsap.from(item, {
-        y: 48,
-        opacity: 0,
-        duration: 0.75,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: item,
-          start: 'top 82%'
-        }
+    if (window.ScrollTrigger) {
+      document.querySelectorAll('[data-gsap-rise]').forEach((item) => {
+        gsap.from(item, {
+          y: 32,
+          opacity: 0,
+          duration: 0.65,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: item,
+            start: 'top 84%',
+            once: true
+          }
+        });
       });
-    });
+
+      document.querySelectorAll('[data-gsap-stagger]').forEach((group) => {
+        const children = Array.from(group.children).filter((child) => child.nodeType === 1);
+        if (!children.length) return;
+
+        gsap.from(children, {
+          y: 24,
+          opacity: 0,
+          duration: 0.55,
+          stagger: 0.08,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: group,
+            start: 'top 84%',
+            once: true
+          }
+        });
+      });
+
+      document.querySelectorAll('[data-gsap-parallax]').forEach((item) => {
+        const target = item.querySelector('img') || item;
+
+        gsap.fromTo(target, {
+          y: -18,
+          scale: 1.04,
+          transformOrigin: 'center center'
+        }, {
+          y: 18,
+          scale: 1.04,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: item,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: true
+          }
+        });
+      });
+    }
 
     document.querySelectorAll('.stat-number').forEach((number) => {
       const raw = number.dataset.count;

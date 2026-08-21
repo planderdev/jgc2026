@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
+  <title>Design System | 제주 글로벌 콘텐츠 포럼</title>
+  <meta name="description" content="JGCF 2026 디자인 시스템 토큰과 공통 컴포넌트를 한눈에 확인하는 페이지">
+  <link rel="stylesheet" href="assets/css/design-system.css">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="assets/vendor/remixicon/remixicon.css">
+  <link rel="stylesheet" href="assets/vendor/aos/aos.css">
+</head>
+<body data-page="design-system">
+  <div id="site-header"></div>
+
+  <main class="site-main">
+    <section class="ds-page" aria-labelledby="ds-title">
+      <div class="main-inner">
+        <header class="ds-hero" data-gsap-rise>
+          <span class="subject-label">Design System</span>
+          <h1 id="ds-title">JGCF 2026<br>Design System</h1>
+          <p>색상, 타이포그래피, 간격, 반경, 그림자, 기본 컴포넌트를 한 페이지에서 점검할 수 있는 내부용 레퍼런스입니다.</p>
+        </header>
+
+        <section class="ds-summary-grid" aria-label="디자인 시스템 요약" data-gsap-stagger>
+          <article>
+            <span>Typeface</span>
+            <strong>SUIT Variable</strong>
+            <p>한국어 본문과 UI에 맞춘 단일 산세리프</p>
+          </article>
+          <article>
+            <span>Max Weight</span>
+            <strong>800</strong>
+            <p>900은 사용하지 않고 black 토큰도 800으로 제한</p>
+          </article>
+          <article>
+            <span>Spacing</span>
+            <strong>8px Grid</strong>
+            <p>8px 단위 토큰으로 섹션과 컴포넌트 리듬 관리</p>
+          </article>
+          <article>
+            <span>Radius</span>
+            <strong>8px Base</strong>
+            <p>카드와 입력 요소는 작고 단정한 반경 사용</p>
+          </article>
+        </section>
+
+        <section class="ds-section" aria-labelledby="ds-colors-title" data-gsap-rise>
+          <div class="ds-section-head">
+            <span>01 Colors</span>
+            <h2 id="ds-colors-title">Core Palette</h2>
+          </div>
+          <div class="ds-swatch-grid" data-gsap-stagger>
+            <article class="ds-swatch" style="--ds-swatch-color: var(--color-brand-ink);">
+              <span class="ds-swatch-chip"></span>
+              <strong>Brand Ink</strong>
+              <code>--color-brand-ink</code>
+              <small>#111111</small>
+            </article>
+            <article class="ds-swatch" style="--ds-swatch-color: var(--color-secondary);">
+              <span class="ds-swatch-chip"></span>
+              <strong>Secondary</strong>
+              <code>--color-secondary</code>
+              <small>#5934e9</small>
+            </article>
+            <article class="ds-swatch" style="--ds-swatch-color: var(--color-action-coral);">
+              <span class="ds-swatch-chip"></span>
+              <strong>Coral</strong>
+              <code>--color-action-coral</code>
+              <small>#ff315f</small>
+            </article>
+            <article class="ds-swatch" style="--ds-swatch-color: var(--color-accent-mint);">
+              <span class="ds-swatch-chip"></span>
+              <strong>Mint</strong>
+              <code>--color-accent-mint</code>
+              <small>#00a6a6</small>
+            </article>
+            <article class="ds-swatch" style="--ds-swatch-color: var(--color-accent-yellow);">
+              <span class="ds-swatch-chip"></span>
+              <strong>Yellow</strong>
+              <code>--color-accent-yellow</code>
+              <small>#ffba4a</small>
+            </article>
+            <article class="ds-swatch" style="--ds-swatch-color: var(--color-bg-soft);">
+              <span class="ds-swatch-chip"></span>
+              <strong>Soft Surface</strong>
+              <code>--color-bg-soft</code>
+              <small>#f7f7f9</small>
+            </article>
+            <article class="ds-swatch" style="--ds-swatch-color: var(--color-border-muted);">
+              <span class="ds-swatch-chip"></span>
+              <strong>Muted Border</strong>
+              <code>--color-border-muted</code>
+              <small>#d9d9df</small>
+            </article>
+          </div>
+        </section>
+
+        <section class="ds-section" aria-labelledby="ds-type-title" data-gsap-rise>
+          <div class="ds-section-head">
+            <span>02 Typography</span>
+            <h2 id="ds-type-title">Type Scale</h2>
+          </div>
+          <div class="ds-type-grid">
+            <article class="ds-type-card ds-type-display">
+              <span>Display / 800</span>
+              <p>CONNECT JEJU, CREATE GLOBAL</p>
+              <code>--font-size-hero-fluid / --font-weight-black</code>
+            </article>
+            <article class="ds-type-card ds-type-section">
+              <span>Section / 800</span>
+              <p>로컬 콘텐츠의 글로벌 경쟁력을 연결하다</p>
+              <code>--font-size-section-fluid / --line-height-tightest</code>
+            </article>
+            <article class="ds-type-card ds-type-body">
+              <span>Body / 400</span>
+              <p>본문은 16px, 1.5 이상의 줄간격을 기준으로 읽기 편한 밀도를 유지합니다.</p>
+              <code>--font-size-16 / --line-height-base</code>
+            </article>
+          </div>
+          <div class="ds-weight-strip" aria-label="폰트 굵기 토큰">
+            <span class="is-weight-regular">400 Regular</span>
+            <span class="is-weight-medium">500 Medium</span>
+            <span class="is-weight-semibold">600 Semibold</span>
+            <span class="is-weight-bold">700 Bold</span>
+            <span class="is-weight-black">800 Black</span>
+          </div>
+        </section>
+
+        <section class="ds-section" aria-labelledby="ds-foundation-title" data-gsap-rise>
+          <div class="ds-section-head">
+            <span>03 Foundation</span>
+            <h2 id="ds-foundation-title">Spacing, Radius, Shadow</h2>
+          </div>
+          <div class="ds-foundation-grid">
+            <article class="ds-foundation-panel">
+              <h3>Spacing Scale</h3>
+              <div class="ds-space-list">
+                <div style="--ds-space-size: var(--space-8);"><span></span><strong>8px</strong><code>--space-8</code></div>
+                <div style="--ds-space-size: var(--space-16);"><span></span><strong>16px</strong><code>--space-16</code></div>
+                <div style="--ds-space-size: var(--space-24);"><span></span><strong>24px</strong><code>--space-24</code></div>
+                <div style="--ds-space-size: var(--space-32);"><span></span><strong>32px</strong><code>--space-32</code></div>
+                <div style="--ds-space-size: var(--space-48);"><span></span><strong>48px</strong><code>--space-48</code></div>
+                <div style="--ds-space-size: var(--space-64);"><span></span><strong>64px</strong><code>--space-64</code></div>
+              </div>
+            </article>
+            <article class="ds-foundation-panel">
+              <h3>Radius</h3>
+              <div class="ds-radius-list">
+                <div style="--ds-radius-size: var(--radius-sm);"><span></span><strong>8px</strong><code>--radius-sm</code></div>
+                <div style="--ds-radius-size: var(--radius-md);"><span></span><strong>16px</strong><code>--radius-md</code></div>
+                <div style="--ds-radius-size: var(--radius-lg);"><span></span><strong>24px</strong><code>--radius-lg</code></div>
+                <div style="--ds-radius-size: var(--radius-xl);"><span></span><strong>32px</strong><code>--radius-xl</code></div>
+                <div style="--ds-radius-size: var(--radius-pill);"><span></span><strong>Pill</strong><code>--radius-pill</code></div>
+              </div>
+            </article>
+            <article class="ds-foundation-panel">
+              <h3>Shadow</h3>
+              <div class="ds-shadow-list">
+                <span class="is-shadow-xs">XS</span>
+                <span class="is-shadow-sm">SM</span>
+                <span class="is-shadow-md">MD</span>
+              </div>
+              <p>강한 장식보다 정보 계층을 보조하는 얕은 그림자를 기본값으로 사용합니다.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="ds-section" aria-labelledby="ds-components-title" data-gsap-rise>
+          <div class="ds-section-head">
+            <span>04 Components</span>
+            <h2 id="ds-components-title">Reusable UI</h2>
+          </div>
+          <div class="ds-component-grid">
+            <article class="ds-component-panel">
+              <h3>Buttons & Badges</h3>
+              <div class="ds-button-row">
+                <a class="ui-button" href="register.html"><i class="ri-edit-box-line" aria-hidden="true"></i>Primary</a>
+                <a class="ui-button secondary" href="program.html">Secondary</a>
+                <a class="ui-button coral" href="meetup/reserve.html">Accent</a>
+                <button class="ui-icon-button" type="button" aria-label="샘플 아이콘 버튼"><i class="ri-arrow-right-up-line" aria-hidden="true"></i></button>
+              </div>
+              <div class="ds-badge-row">
+                <span class="ui-badge">Program</span>
+                <span class="ui-badge">Business Meetup</span>
+                <span class="ui-badge">FAQ</span>
+              </div>
+            </article>
+            <article class="ds-component-panel">
+              <h3>Form Controls</h3>
+              <div class="form-grid">
+                <label class="form-field">
+                  <span class="form-label">Company</span>
+                  <input class="ui-input" type="text" value="Jeju Content Lab">
+                </label>
+                <label class="form-field">
+                  <span class="form-label">Category</span>
+                  <span class="ui-select-wrap">
+                    <select class="ui-select">
+                      <option>콘텐츠 기업</option>
+                      <option>기관/파트너</option>
+                    </select>
+                    <i class="ri-arrow-down-s-line" aria-hidden="true"></i>
+                  </span>
+                </label>
+                <label class="form-field full">
+                  <span class="form-label">Message</span>
+                  <textarea class="ui-textarea">디자인 시스템 확인용 입력 영역입니다.</textarea>
+                </label>
+              </div>
+            </article>
+            <article class="ds-component-panel is-wide">
+              <h3>FAQ Accordion</h3>
+              <div class="faq-list js-accordion">
+                <article class="faq-item is-open">
+                  <button class="faq-question" type="button">
+                    <span>FAQ 아코디언은 어떤 클래스를 사용하나요?</span>
+                    <i class="ri-arrow-down-s-line" aria-hidden="true"></i>
+                  </button>
+                  <div class="faq-answer"><p><code>.faq-list</code>, <code>.faq-item</code>, <code>.faq-question</code>, <code>.faq-answer</code> 구조를 공통으로 사용합니다.</p></div>
+                </article>
+                <article class="faq-item">
+                  <button class="faq-question" type="button">
+                    <span>메인과 서브 페이지에서 동일하게 적용되나요?</span>
+                    <i class="ri-arrow-down-s-line" aria-hidden="true"></i>
+                  </button>
+                  <div class="faq-answer"><p>메인 FAQ, FAQ 페이지, 밋업 유의사항까지 같은 클래스와 인터랙션을 공유합니다.</p></div>
+                </article>
+              </div>
+            </article>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="assets/js/data.js" defer></script>
+  <script src="assets/js/reservationService.js" defer></script>
+  <script src="assets/js/common.js" defer></script>
+  <script src="assets/vendor/gsap/gsap.min.js" defer></script>
+  <script src="assets/vendor/gsap/ScrollTrigger.min.js" defer></script>
+  <script src="assets/vendor/lenis/lenis.min.js" defer></script>
+  <script src="assets/vendor/aos/aos.js" defer></script>
+  <script src="assets/js/animations.js" defer></script>
+</body>
+</html>
