@@ -1964,10 +1964,6 @@ body[data-page="registration-complete"] .result-card .ui-badge {
   margin-bottom: var(--space-16);
 }
 
-body[data-page="registration-complete"] .result-card .ui-badge + .section-title {
-  margin-top: var(--space-16);
-}
-
 body[data-page="registration-complete"] .result-card .section-title {
   font-size: var(--font-size-50);
 }
