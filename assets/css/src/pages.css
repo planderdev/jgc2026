@@ -728,7 +728,7 @@
   line-height: var(--line-height-none);
 }
 
-.about-studio-intro h2 {
+.about-studio-intro h1 {
   margin: var(--space-32) var(--space-0) var(--space-0);
   color: var(--color-text-primary);
   font-size: var(--font-size-68);

@@ -1,5 +1,6 @@
 (function () {
   const common = () => window.JGCFCommon;
+  const service = () => window.ReservationService;
   const COMPLETE_KEY = 'jgcf.registration.complete';
 
   function escapeHtml(value) {
@@ -92,9 +93,17 @@
       submitButton.textContent = '신청 처리 중…';
 
       try {
+        // 서버에 저장하고 실제 발급된 신청번호를 받는다. 저장 없이 완료
+        // 페이지로 넘어가면 사무국 명단에 남지 않고 번호도 가짜가 된다.
+        const response = await service().createRegistration(application);
+        if (!response.ok) {
+          common().toast(service().messageFor(response.reason));
+          return;
+        }
+
         try {
           sessionStorage.setItem(COMPLETE_KEY, JSON.stringify({
-            registration_no: 'JGCF-ATTEND-2026',
+            registration_no: response.registration_no,
             type_label: application.typeLabel,
             organization: application.organization,
             name: application.name,
@@ -104,7 +113,7 @@
           console.warn('참가신청 완료 정보를 저장하지 못했습니다.', error);
         }
 
-        window.location.href = 'register-complete.html';
+        window.location.href = common().link('register-complete.html');
       } finally {
         busy = false;
         submitButton.disabled = false;
@@ -124,13 +133,20 @@
       console.warn('참가신청 완료 정보를 읽지 못했습니다.', error);
     }
 
-    registration = registration || {
-      registration_no: 'JGCF-ATTEND-2026',
-      type_label: '기업',
-      organization: '제주 콘텐츠 기업',
-      name: '홍길동',
-      phone: '010-0000-0000'
-    };
+    if (!registration) {
+      mount.innerHTML = `
+        <div class="result-card">
+          <span class="ui-badge">참가신청 확인</span>
+          <h1 class="section-title">표시할 신청 정보가 없습니다</h1>
+          <p class="section-subtitle">신청 완료 직후에만 이 화면에서 확인할 수 있습니다. 참가신청을 진행해 주세요.</p>
+          <div class="step-actions">
+            <a class="ui-button coral" href="${common().link('register.html')}">참가신청 하기</a>
+            <a class="ui-button secondary" href="${common().link('index.html')}">메인으로</a>
+          </div>
+        </div>
+      `;
+      return;
+    }
 
     mount.innerHTML = `
       <div class="result-card">
