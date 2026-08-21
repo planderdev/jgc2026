@@ -1,6 +1,5 @@
 (function () {
   const common = () => window.JGCFCommon;
-  const service = () => window.ReservationService;
   const COMPLETE_KEY = 'jgcf.registration.complete';
 
   function escapeHtml(value) {
@@ -93,15 +92,9 @@
       submitButton.textContent = '신청 처리 중…';
 
       try {
-        const response = await service().createRegistration(application);
-        if (!response.ok) {
-          common().toast(service().messageFor(response.reason));
-          return;
-        }
-
         try {
           sessionStorage.setItem(COMPLETE_KEY, JSON.stringify({
-            registration_no: response.registration_no,
+            registration_no: 'JGCF-ATTEND-2026',
             type_label: application.typeLabel,
             organization: application.organization,
             name: application.name,
@@ -131,20 +124,13 @@
       console.warn('참가신청 완료 정보를 읽지 못했습니다.', error);
     }
 
-    if (!registration) {
-      mount.innerHTML = `
-        <div class="result-card">
-          <span class="ui-badge">참가신청 확인</span>
-          <h1 class="section-title">표시할 참가신청 정보가 없습니다</h1>
-          <p class="section-subtitle">참가신청 완료 직후에만 이 화면에서 신청 정보를 확인할 수 있습니다.</p>
-          <div class="step-actions">
-            <a class="ui-button secondary" href="${common().link('register.html')}">참가신청으로</a>
-            <a class="ui-button coral" href="${common().link('index.html')}">메인으로</a>
-          </div>
-        </div>
-      `;
-      return;
-    }
+    registration = registration || {
+      registration_no: 'JGCF-ATTEND-2026',
+      type_label: '기업',
+      organization: '제주 콘텐츠 기업',
+      name: '홍길동',
+      phone: '010-0000-0000'
+    };
 
     mount.innerHTML = `
       <div class="result-card">

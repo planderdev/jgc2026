@@ -1960,6 +1960,26 @@
   box-shadow: var(--shadow-md);
 }
 
+body[data-page="registration-complete"] .result-card .ui-badge {
+  margin-bottom: var(--space-16);
+}
+
+body[data-page="registration-complete"] .result-card .ui-badge + .section-title {
+  margin-top: var(--space-16);
+}
+
+body[data-page="registration-complete"] .result-card .section-title {
+  font-size: var(--font-size-50);
+}
+
+body[data-page="registration-complete"] .reservation-number {
+  font-size: var(--font-size-18);
+}
+
+body[data-page="registration-complete"] .confirm-row dd {
+  font-weight: var(--font-weight-regular);
+}
+
 .reservation-number {
   display: inline-flex;
   align-items: center;
