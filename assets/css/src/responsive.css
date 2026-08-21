@@ -1070,6 +1070,15 @@
     width: 252px;
   }
 
+  .home-speakers .swiper-slide {
+    width: 232px;
+    padding-right: var(--space-16);
+  }
+
+  .home-event-card.home-speaker-card {
+    width: 216px;
+  }
+
   .home-event-title {
     font-size: var(--font-size-22);
   }
@@ -1207,6 +1216,15 @@
   .home-event-card,
   .home-special-card {
     width: 205px;
+  }
+
+  .home-speakers .swiper-slide {
+    width: 196px;
+    padding-right: var(--space-16);
+  }
+
+  .home-event-card.home-speaker-card {
+    width: 182px;
   }
 
   .home-event-media {
