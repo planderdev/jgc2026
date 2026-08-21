@@ -162,11 +162,6 @@
                   <small>JEJU GLOBAL CONTENT FORUM & BUSINESS NETWORKING</small>
                 </span>
               </div>
-              <nav class="footer-policy" aria-label="Footer policy">
-                <a href="${link('privacy.html')}">개인정보처리방침</a>
-                <a href="${link('copyright.html')}">저작권 보호방침</a>
-                <a href="${link('legal.html')}">법적고지</a>
-              </nav>
               <address class="footer-info">
                 <span>제주글로벌콘텐츠포럼 및 비즈니스 네트워킹 운영사무국</span>
                 <span>제주특별자치도 제주시 신산로 82 제주콘텐츠진흥원 내 1층 Be IN; (비인)</span>
@@ -192,6 +187,11 @@
                 <a href="${link('partners.html')}">파트너</a>
               </div>
             </details>
+            <nav class="footer-policy" aria-label="Footer policy">
+              <a href="${link('privacy.html')}">개인정보처리방침</a>
+              <a href="${link('copyright.html')}">저작권 보호방침</a>
+              <a href="${link('legal.html')}">법적고지</a>
+            </nav>
           </div>
         </div>
       </footer>

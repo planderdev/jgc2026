@@ -428,6 +428,18 @@
   gap: var(--space-40);
 }
 
+/* 정책 링크는 바로가기 아래, 오른쪽 정렬로 붙는다 */
+.footer-actions .footer-policy {
+  justify-content: flex-end;
+  gap: var(--space-32);
+  margin-top: calc(var(--space-16) * -1);
+}
+
+.footer-actions .footer-policy a + a::before {
+  left: calc(var(--space-16) * -1);
+  height: var(--font-size-14);
+}
+
 .footer-socials {
   display: flex;
   align-items: center;
