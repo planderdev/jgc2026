@@ -441,7 +441,7 @@
   }
 
   .footer-wordmark {
-    font-size: var(--font-size-40);
+    font-size: var(--font-size-36);
   }
 
   .footer-policy {
@@ -449,7 +449,7 @@
   }
 
   .footer-policy a {
-    font-size: var(--font-size-16);
+    font-size: var(--font-size-14);
   }
 
   .footer-policy a + a::before {
