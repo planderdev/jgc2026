@@ -1,6 +1,7 @@
 (function () {
   const common = () => window.JGCFCommon;
   const service = () => window.ReservationService;
+  const COMPLETE_KEY = 'jgcf.registration.complete';
 
   function escapeHtml(value) {
     return String(value ?? '')
@@ -59,8 +60,7 @@
 
   function initEventRegistration() {
     const form = document.querySelector('[data-event-register-form]');
-    const result = document.querySelector('[data-register-result]');
-    if (!form || !result) return;
+    if (!form) return;
 
     setActiveType(form, form.elements.participantType.value);
 
@@ -99,23 +99,19 @@
           return;
         }
 
-        form.hidden = true;
-        result.hidden = false;
-        result.innerHTML = `
-          <span class="ui-badge">신청 완료</span>
-          <h2 class="section-title">행사 참가신청이 완료되었습니다</h2>
-          <div class="reservation-number">${escapeHtml(response.registration_no)}</div>
-          <dl class="confirm-box">
-            <div class="confirm-row"><dt>구분</dt><dd>${escapeHtml(application.typeLabel)}</dd></div>
-            ${application.organization ? `<div class="confirm-row"><dt>소속</dt><dd>${escapeHtml(application.organization)}</dd></div>` : ''}
-            <div class="confirm-row"><dt>이름</dt><dd>${escapeHtml(application.name)}</dd></div>
-            <div class="confirm-row"><dt>연락처</dt><dd>${escapeHtml(application.phone)}</dd></div>
-          </dl>
-          <div class="step-actions">
-            <a class="ui-button secondary" href="${common().link('program.html')}">프로그램 보기</a>
-            <a class="ui-button coral" href="${common().link('meetup/reserve.html')}">비즈밋업 예약</a>
-          </div>
-        `;
+        try {
+          sessionStorage.setItem(COMPLETE_KEY, JSON.stringify({
+            registration_no: response.registration_no,
+            type_label: application.typeLabel,
+            organization: application.organization,
+            name: application.name,
+            phone: application.phone
+          }));
+        } catch (error) {
+          console.warn('참가신청 완료 정보를 저장하지 못했습니다.', error);
+        }
+
+        window.location.href = 'register-complete.html';
       } finally {
         busy = false;
         submitButton.disabled = false;
@@ -124,5 +120,56 @@
     });
   }
 
-  document.addEventListener('DOMContentLoaded', initEventRegistration);
+  function renderRegistrationComplete() {
+    const mount = document.querySelector('[data-register-complete-result]');
+    if (!mount) return;
+
+    let registration = null;
+    try {
+      registration = JSON.parse(sessionStorage.getItem(COMPLETE_KEY) || 'null');
+    } catch (error) {
+      console.warn('참가신청 완료 정보를 읽지 못했습니다.', error);
+    }
+
+    if (!registration) {
+      mount.innerHTML = `
+        <div class="result-card">
+          <span class="ui-badge">참가신청 확인</span>
+          <h1 class="section-title">표시할 참가신청 정보가 없습니다</h1>
+          <p class="section-subtitle">참가신청 완료 직후에만 이 화면에서 신청 정보를 확인할 수 있습니다.</p>
+          <div class="step-actions">
+            <a class="ui-button secondary" href="${common().link('register.html')}">참가신청으로</a>
+            <a class="ui-button coral" href="${common().link('index.html')}">메인으로</a>
+          </div>
+        </div>
+      `;
+      return;
+    }
+
+    mount.innerHTML = `
+      <div class="result-card">
+        <span class="ui-badge">참가신청 완료</span>
+        <h1 class="section-title">행사 참가신청이 완료되었습니다</h1>
+        <div class="reservation-number">${escapeHtml(registration.registration_no)}</div>
+        <p class="section-subtitle">신청번호는 현장 확인 시 필요할 수 있으니 보관해 주세요.</p>
+        <dl class="confirm-box">
+          <div class="confirm-row"><dt>구분</dt><dd>${escapeHtml(registration.type_label)}</dd></div>
+          ${registration.organization ? `<div class="confirm-row"><dt>소속</dt><dd>${escapeHtml(registration.organization)}</dd></div>` : ''}
+          <div class="confirm-row"><dt>이름</dt><dd>${escapeHtml(registration.name)}</dd></div>
+          <div class="confirm-row"><dt>연락처</dt><dd>${escapeHtml(registration.phone)}</dd></div>
+          <div class="confirm-row"><dt>행사 일시</dt><dd>2026. 9. 16. Wed 10:00-18:00</dd></div>
+          <div class="confirm-row"><dt>행사 장소</dt><dd>제주특별자치도 제주시 신산로 82 제주콘텐츠진흥원 내 1층 Be IN; (비인)</dd></div>
+        </dl>
+        <div class="step-actions">
+          <a class="ui-button secondary" href="${common().link('program.html')}">프로그램 보기</a>
+          <a class="ui-button coral" href="${common().link('meetup/reserve.html')}">비즈밋업 예약</a>
+        </div>
+      </div>
+    `;
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    initEventRegistration();
+    renderRegistrationComplete();
+  });
 })();

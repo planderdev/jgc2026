@@ -109,7 +109,7 @@
   gap: var(--space-8);
   margin: var(--space-0);
   font-size: var(--font-size-24);
-  font-weight: var(--font-weight-extrabold);
+  font-weight: var(--font-weight-medium);
   line-height: var(--line-height-meta);
 }
 
@@ -162,7 +162,7 @@
 
 .home-section-title span {
   display: inline-block;
-  font-size: var(--font-size-68);
+  font-size: var(--font-size-55);
   line-height: var(--line-height-display-68);
 }
 
@@ -452,8 +452,8 @@
   gap: var(--space-8);
   margin: var(--space-0);
   color: var(--color-white);
-  font-size: var(--font-size-14);
-  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-16);
+  font-weight: var(--font-weight-regular);
   line-height: var(--line-height-meta);
 }
 

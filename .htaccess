@@ -11,6 +11,19 @@ DirectoryIndex index.html
   AddType application/pdf .pdf
 </IfModule>
 
-# 최상단의 DirectoryIndex가 "/" 요청을 index.html로 처리하므로
-# mod_rewrite 블록은 필요하지 않습니다. RewriteBase에 배포 경로를 하드코딩하면
-# 루트 도메인이나 다른 하위 경로로 옮길 때 규칙이 어긋나므로 제거했습니다.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # about.html처럼 직접 들어온 요청은 /about 형태로 정리합니다.
+  RewriteCond %{THE_REQUEST} \s/+(.+?)\.html[\s?] [NC]
+  RewriteRule ^(.+)\.html$ $1 [R=301,L,NE]
+
+  # /faq/처럼 파일용 clean URL 뒤에 붙은 슬래시는 제거합니다.
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^(.+)/$ $1 [R=301,L]
+
+  # /about, /program, /meetup/reserve 등을 실제 html 파일로 연결합니다.
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME}.html -f
+  RewriteRule ^(.+)$ $1.html [L]
+</IfModule>

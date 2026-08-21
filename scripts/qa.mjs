@@ -162,6 +162,7 @@ async function checkRoutes(page) {
     'speakers.html',
     'program.html',
     'register.html',
+    'register-complete.html',
     'venue.html',
     'partners.html',
     'faq.html',
@@ -218,7 +219,8 @@ async function checkRegistration(page) {
   await page.fill('input[name="phone"]', '010-2222-3333');
   await page.check('input[name="privacy"]');
   await page.getByRole('button', { name: /신청 완료/ }).click();
-  const resultText = await page.locator('[data-register-result]').innerText();
+  await page.waitForURL(/register-complete/);
+  const resultText = await page.locator('[data-register-complete-result]').innerText();
   return {
     completed: resultText.includes('JGCF-ATTEND-'),
     typeVisible: resultText.includes('기업'),
