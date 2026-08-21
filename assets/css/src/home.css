@@ -179,6 +179,7 @@
 
 .home-events .home-section-title,
 .home-special .home-section-title,
+.home-speakers .home-section-title,
 .home-location .home-section-title,
 .home-faq .home-section-title,
 .home-partners .home-section-title {
@@ -214,6 +215,31 @@
   padding: var(--space-0) var(--space-0) var(--space-120);
 }
 
+.home-speakers {
+  padding: var(--space-0) var(--space-0) var(--space-120);
+}
+
+/* 연사 카드: 이벤트 카드 골격을 그대로 쓰고 트랙 배지만 사진 위에 얹는다 */
+.home-speaker-card .home-event-media {
+  position: relative;
+  background: var(--color-neutral-900);
+}
+
+.home-speaker-track {
+  position: absolute;
+  left: var(--space-16);
+  top: var(--space-16);
+  z-index: 1;
+  padding: var(--space-8) var(--space-16);
+  border-radius: var(--radius-pill);
+  background: var(--color-alpha-white-84);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-13);
+  font-weight: var(--font-weight-black);
+  line-height: var(--line-height-none);
+  letter-spacing: 0.02em;
+}
+
 .home-carousel {
   width: 100%;
   margin: var(--space-72) auto var(--space-0);
@@ -226,7 +252,8 @@
 }
 
 .home-events .swiper-slide,
-.home-special .swiper-slide {
+.home-special .swiper-slide,
+.home-speakers .swiper-slide {
   width: 408px;
   height: auto;
   padding-right: var(--space-32);

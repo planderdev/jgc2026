@@ -238,7 +238,7 @@
     padding-top: calc(var(--space-96) + var(--space-56));
   }
 
-  .about-studio-intro h2 {
+  .about-studio-intro h1 {
     font-size: var(--font-size-54);
   }
 
@@ -608,7 +608,7 @@
     font-size: var(--font-size-11);
   }
 
-  .about-studio-intro h2 {
+  .about-studio-intro h1 {
     margin-top: var(--space-24);
     font-size: var(--font-size-40);
   }
@@ -1030,6 +1030,7 @@
 @media (max-width: 1024px) {
   .home-events .home-section-title,
   .home-special .home-section-title,
+  .home-speakers .home-section-title,
   .home-location .home-section-title,
   .home-faq .home-section-title,
   .home-partners .home-section-title {
@@ -1049,7 +1050,8 @@
     padding: var(--space-64) var(--space-0) var(--space-80);
   }
 
-  .home-special {
+  .home-special,
+  .home-speakers {
     padding-bottom: var(--space-88);
   }
 

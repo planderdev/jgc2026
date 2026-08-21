@@ -102,6 +102,24 @@
     `;
   }
 
+  function renderHomeSpeakerCard(speaker) {
+    const detail = `${link('speakers.html')}#${encodeURIComponent(speaker.id)}`;
+    return `
+      <div class="swiper-slide">
+        <article class="home-event-card home-speaker-card">
+          <a href="${detail}" aria-label="${escapeHtml(speaker.name)} speaker detail">
+            <span class="home-event-media">
+              <img src="${asset(speaker.image)}" alt="" loading="lazy" decoding="async">
+              <span class="home-speaker-track">${escapeHtml(speaker.track)}</span>
+            </span>
+            <span class="home-event-title">${escapeHtml(speaker.name)}</span>
+            <span class="home-event-meta">${escapeHtml(speaker.role)}<br>${escapeHtml(speaker.org)}</span>
+          </a>
+        </article>
+      </div>
+    `;
+  }
+
   function renderHomeFaqItem(item, index) {
     return `
       <article class="faq-item ${index === 0 ? 'is-open' : ''}">
@@ -236,6 +254,36 @@
     });
   }
 
+  function initHomeSpeakers() {
+    const section = document.querySelector('.home-speakers');
+    const mount = section?.querySelector('[data-home-speakers]');
+    const items = data().speakers || [];
+    if (!section || !mount) return;
+    if (!items.length) {
+      // 연사 데이터가 비면 섹션 자체를 내린다. 빈 캐러셀을 남기지 않는다.
+      section.hidden = true;
+      return;
+    }
+
+    mount.innerHTML = items.map(renderHomeSpeakerCard).join('');
+    makeSwiper('.home-speakers-swiper', {
+      loop: false,
+      rewind: true,
+      slidesPerView: 'auto',
+      ...carouselEdgeOffsetOptions(),
+      speed: 620,
+      navigation: {
+        nextEl: '.home-speakers-next',
+        prevEl: '.home-speakers-prev'
+      },
+      autoplay: reduceMotion ? false : {
+        delay: 3000,
+        disableOnInteraction: false,
+        pauseOnMouseEnter: true
+      }
+    });
+  }
+
   function initHomeFaq() {
     const section = document.querySelector('.home-faq');
     const mount = section?.querySelector('[data-home-faq-list]');
@@ -258,6 +306,7 @@
   document.addEventListener('DOMContentLoaded', () => {
     initHomeEvents();
     initSpecialPrograms();
+    initHomeSpeakers();
     initHomeFaq();
     initPartnerSection();
     refreshAos();
