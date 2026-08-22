@@ -106,3 +106,23 @@ where reservation_no = 'JGCF-2026-XXXXXX';
 ## 마이그레이션
 
 `supabase/migrations/`의 SQL이 현재 스키마입니다. 순서대로 적용됩니다.
+
+## 도메인 전환 절차 (2026jejugcf.com)
+
+Vercel 프로젝트에 `2026jejugcf.com`과 `www.2026jejugcf.com`이 추가되어 있습니다.
+도메인을 등록한 뒤 DNS에 아래 레코드를 넣으면 연결됩니다.
+
+| 호스트 | 타입 | 값 |
+| --- | --- | --- |
+| `@` (2026jejugcf.com) | A | `76.76.21.21` |
+| `www` | CNAME | `cname.vercel-dns.com` |
+
+연결이 확인되면(브라우저에서 https://2026jejugcf.com 이 열리면) 공유 미리보기
+주소를 새 도메인으로 바꿉니다:
+
+```bash
+node scripts/set-share-urls.mjs https://2026jejugcf.com
+npm run build && git commit -am "chore: 공유 주소를 2026jejugcf.com 으로" && git push
+```
+
+`jgc2026.vercel.app` 주소는 그대로 남아 새 도메인으로 자동 리다이렉트됩니다.
