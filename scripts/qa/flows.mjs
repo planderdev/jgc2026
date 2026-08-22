@@ -43,7 +43,7 @@ export default () => runSuite('기능 플로우', async ({ browser, r }) => {
   await a.page.click('[data-step="4"] button[type=submit]');
   await a.page.waitForURL('**/meetup/complete**', { timeout: 25000 }).catch(() => {});
   await a.page.waitForTimeout(1000);
-  const resNo = (await a.page.locator('.reservation-number').textContent().catch(() => '') || '').trim();
+  const resNo = (await a.page.locator('[data-copy-source]').textContent().catch(() => '') || '').trim();
   r.check(/^JGCF-2026-[A-Z2-9]{6}$/.test(resNo), '예약 생성 + 서버 발급 난수 번호', resNo || a.page.url());
   await a.context.close();
 
@@ -106,7 +106,7 @@ export default () => runSuite('기능 플로우', async ({ browser, r }) => {
   await e.page.click('[data-event-register-form] button[type=submit]');
   await e.page.waitForURL('**/register-complete**', { timeout: 15000 }).catch(() => {});
   await e.page.waitForTimeout(900);
-  const regNo = (await e.page.locator('.reservation-number').textContent().catch(() => '') || '').trim();
+  const regNo = (await e.page.locator('[data-copy-source]').textContent().catch(() => '') || '').trim();
   r.check(/^JGCF-ATTEND-[A-Z2-9]{6}$/.test(regNo), '참가신청 서버 저장 + 완료 페이지', regNo || e.page.url());
   const body = await e.page.locator('[data-register-complete-result]').innerText().catch(() => '');
   r.check(!/홍길동/.test(body), '완료 페이지에 예시 데이터 없음');
