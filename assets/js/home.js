@@ -257,7 +257,8 @@
   function initHomeSpeakers() {
     const section = document.querySelector('.home-speakers');
     const mount = section?.querySelector('[data-home-speakers]');
-    const items = data().speakers || [];
+    // 홈에는 확정 연사만. 섭외 중 자리표시 카드는 연사 페이지에서만 보여준다.
+    const items = (data().speakers || []).filter((speaker) => !speaker.pending);
     if (!section || !mount) return;
     if (!items.length) {
       // 연사 데이터가 비면 섹션 자체를 내린다. 빈 캐러셀을 남기지 않는다.

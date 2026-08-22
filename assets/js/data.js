@@ -390,6 +390,7 @@
       },
       {
         id: 'global-speaker-pending',
+        pending: true,
         name: '해외 연사 섭외 중',
         role: 'Global Content Expert',
         org: '섭외 중',

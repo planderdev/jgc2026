@@ -32,9 +32,29 @@
     `).join('');
   }
 
+  function renderClosedNotice(form) {
+    const shell = form.closest('.reserve-shell') || form.parentElement;
+    form.hidden = true;
+    const notice = document.createElement('div');
+    notice.className = 'result-card';
+    notice.innerHTML = `
+      <span class="ui-badge">접수 마감</span>
+      <h2 class="section-title">비즈니스 밋업 예약 접수가 마감되었습니다</h2>
+      <p class="section-subtitle">예약 접수와 취소는 행사 전날(9월 15일) 자정까지 가능했습니다. 변경이 필요하면 운영사무국에 문의해 주세요.</p>
+      <div class="step-actions">
+        <a class="ui-button secondary" href="${common().link('meetup/confirm.html')}">예약 조회</a>
+        <a class="ui-button coral" href="${common().link('index.html')}">메인으로</a>
+      </div>
+    `;
+    shell.appendChild(notice);
+  }
+
   function initReserve() {
     const form = document.querySelector('[data-reserve-form]');
     if (!form) return;
+
+    // 마감 여부는 서버가 최종 판정한다. 여기서는 헛수고를 막기 위한 안내만 한다.
+    service().isOpen().then((open) => { if (!open) renderClosedNotice(form); });
 
     let step = 1;
     let busy = false;
@@ -301,7 +321,9 @@
 
     let current = null;
     let currentPhone = '';
+    let open = true;
     const submitButton = form.querySelector('button[type=submit]');
+    service().isOpen().then((value) => { open = value; });
 
     function openDialog() {
       dialog.showModal();
@@ -330,7 +352,11 @@
           <div class="confirm-row"><dt>담당자</dt><dd>${escapeHtml(reservation.manager_name)}</dd></div>
           <div class="confirm-row"><dt>연락처</dt><dd>${escapeHtml(reservation.phone)}</dd></div>
         </dl>
-        ${reservation.status === 'confirmed' ? '<button class="ui-button ghost" type="button" data-open-cancel>예약 취소</button>' : ''}
+        ${reservation.status === 'confirmed'
+          ? (open
+            ? '<button class="ui-button ghost" type="button" data-open-cancel>예약 취소</button>'
+            : '<p class="form-help">취소 접수는 행사 전날 자정에 마감되었습니다. 변경이 필요하면 운영사무국에 문의해 주세요.</p>')
+          : ''}
       `;
     }
 
