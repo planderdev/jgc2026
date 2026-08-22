@@ -1843,6 +1843,41 @@
   display: block;
 }
 
+/* 단계 머리: 배지 → 제목 → 설명이 각각 떨어져 읽히게 */
+.step-panel > .ui-badge {
+  margin-bottom: var(--space-16);
+}
+
+.step-panel > .side-title {
+  font-size: var(--font-size-28);
+}
+
+.step-panel > .section-subtitle {
+  margin-top: var(--space-8);
+  font-size: var(--font-size-16);
+}
+
+.step-panel .choice-grid,
+.step-panel .time-grid,
+.step-panel .form-grid,
+.step-panel .confirm-box {
+  margin-top: var(--space-32);
+}
+
+/* 입력 칸 사이 세로 간격을 가로보다 넓게. 라벨이 윗칸이 아니라 자기 칸에 붙어 보이게. */
+.form-grid {
+  row-gap: var(--space-24);
+}
+
+.form-grid .ui-checkbox {
+  margin-top: var(--space-8);
+}
+
+.step-actions {
+  padding-top: var(--space-24);
+  border-top: 1px solid var(--color-border-muted);
+}
+
 .choice-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
