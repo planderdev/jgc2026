@@ -1202,11 +1202,19 @@
     overflow: hidden;
     text-overflow: ellipsis;
     font-size: var(--font-size-0);
+    line-height: 0;
     gap: var(--space-0);
+    justify-content: center;
   }
 
+  /* 글자(font-size 0)만 남은 텍스트 노드가 자리를 차지하지 않도록 아이콘이 원 전체를 덮는다. */
   .header-cta i {
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
     font-size: var(--font-size-18);
+    line-height: 1;
   }
 
   .menu-toggle {
