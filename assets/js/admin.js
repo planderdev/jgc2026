@@ -278,7 +278,7 @@
     return digits ? `<a href="tel:${digits}">${esc(phone)}</a>` : esc(phone);
   }
 
-  function renderCards(rows) {
+  let renderCards = function (rows) {
     if (mode === 'partner') {
       return `<div class="admin-cards">${rows.map((r) => `<article class="admin-card">
         <header><strong>${esc(r.time_slot)}</strong>${attendBadge(r.attended_at)}</header>
@@ -312,7 +312,7 @@
       </article>`).join('')}</div>`;
     }
     return null;
-  }
+  };
 
   function render() {
     const rows = currentRows();
@@ -498,6 +498,17 @@
     $('[data-refresh]').addEventListener('click', loadData);
     narrow.addEventListener('change', () => { if (session) render(); });
     $('[data-csv]').addEventListener('click', downloadCsv);
+    $('[data-print]').addEventListener('click', () => {
+      // 인쇄 머리글: 무엇을, 언제, 몇 건. 좁은 화면에서는 카드 대신 표를 찍도록 한 번 다시 그린다.
+      const titles = { overview: '현황', reservations: '비즈니스 밋업 예약 명단', registrations: '행사 참가신청 명단', summary: '상담기관별 현황' };
+      const title = mode === 'partner' ? `${partnerName} 상담 일정` : titles[tab];
+      const rows = currentRows();
+      $('[data-print-head]').innerHTML = `<h2>JGCF 2026 · ${esc(title)}</h2><span>${rows.length}건 · 2026. 9. 16. (수) · 출력 ${kst(new Date().toISOString())}</span>`;
+      const wasNarrow = narrow.matches;
+      if (wasNarrow) { const m = $('[data-table-mount]'); m.innerHTML = ''; const keep = renderCards; renderCards = () => null; render(); renderCards = keep; }
+      window.print();
+      if (wasNarrow) render();
+    });
 
     $('[data-table-mount]').addEventListener('click', (e) => {
       const dl = e.target.closest('[data-download]');

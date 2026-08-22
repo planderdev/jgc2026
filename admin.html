@@ -54,6 +54,35 @@
     .admin-card footer { display: flex; gap: 8px; margin-top: 10px; }
     .admin-card footer:empty { display: none; }
     @media (max-width: 900px) { .admin-table-wrap { border: 0; background: transparent; } }
+    .print-head { display: none; }
+    /* 인쇄: 표만. 기관 부스용 일정표·사무국 출석 명단·기관별 현황 격자 모두 같은 규칙. */
+    @media print {
+      @page { size: A4 landscape; margin: 12mm; }
+      body { background: #fff; }
+      #site-header, #site-footer, .admin-head, .admin-tabs, .admin-bar, [data-logout], .admin-login, .toast, dialog { display: none !important; }
+      .admin-page, .main-inner, .admin-main { padding: 0 !important; margin: 0 !important; max-width: none !important; }
+      .admin-main > div { margin-top: 0 !important; }
+      .print-head { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; margin: 0 0 8mm; padding-bottom: 3mm; border-bottom: 2px solid #111; }
+      .print-head h2 { margin: 0; font-size: 16pt; }
+      .print-head span { font-size: 9pt; color: #555; }
+      .admin-table-wrap { overflow: visible !important; border: 0 !important; box-shadow: none !important; background: transparent !important; }
+      .admin-table { min-width: 0 !important; width: 100% !important; font-size: 9pt !important; }
+      .admin-table th, .admin-table td { padding: 4px 6px !important; white-space: normal !important; border-bottom: 1px solid #bbb !important; }
+      .admin-table thead th { position: static !important; background: #eee !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .admin-table tr { break-inside: avoid; }
+      .admin-table .admin-mini, .admin-table [data-download], .admin-table [data-cancel] { display: none !important; }
+      .admin-table .admin-mini.attend { display: inline-block !important; border: 1px solid #111 !important; background: #fff !important; color: #111 !important; }
+      .admin-table .admin-mini.attend.on { background: #111 !important; color: #fff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .admin-badge { border: 1px solid #999 !important; background: #fff !important; color: #111 !important; }
+      .admin-cards { display: none !important; }
+      .sum-rate .bar { border: 1px solid #999; }
+      .sum-rate .bar i { background: #111 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .slot-wrap { break-before: page; }
+      .slot-grid { overflow: visible !important; grid-template-columns: 140px repeat(var(--slots), 14px) !important; }
+      .slot-grid .c { border: 1px solid #bbb; }
+      .slot-grid .c.on { background: #111 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .ov-tiles, .ov-grid { break-inside: avoid; }
+    }
     .admin-error { color: #b32a27; font-size: var(--font-size-14); min-height: 20px; }
     .admin-empty { padding: 48px; text-align: center; color: var(--color-neutral-500); }
 
@@ -151,8 +180,10 @@
           </select>
           <button class="ui-button secondary" type="button" data-refresh><i class="ri-arrow-right-line" aria-hidden="true"></i>새로고침</button>
           <button class="ui-button secondary" type="button" data-csv>CSV 내려받기</button>
+          <button class="ui-button secondary" type="button" data-print>인쇄</button>
           <span class="admin-count" data-count></span>
         </div>
+        <div class="print-head" data-print-head aria-hidden="true"></div>
         <div class="admin-table-wrap"><div data-table-mount></div></div>
       </div>
     </section>
