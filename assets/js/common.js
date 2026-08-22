@@ -22,10 +22,11 @@
 
   // 실제 계정이 열리면 URL을 채우세요. 비어 있으면 아이콘을 렌더링하지 않습니다.
   // 링크가 '#'으로 남아 클릭해도 아무 일이 없는 상태를 만들지 않기 위한 장치입니다.
+  // 제주콘텐츠진흥원 공식 채널(ofjeju.kr 기준). 행사 전용 계정이 생기면 바꾸세요.
   const socialLinks = [
-    { label: 'JGCF YouTube', icon: 'ri-youtube-fill', href: '' },
-    { label: 'JGCF Instagram', icon: 'ri-instagram-line', href: '' },
-    { label: 'JGCF Blog', icon: 'ri-blogger-line', href: '' }
+    { label: '제주콘텐츠진흥원 YouTube', icon: 'ri-youtube-fill', href: 'https://www.youtube.com/@제주콘텐츠진흥원' },
+    { label: '제주콘텐츠진흥원 Instagram', icon: 'ri-instagram-line', href: 'https://www.instagram.com/ofjeju.kr/' },
+    { label: '제주콘텐츠진흥원 Facebook', icon: 'ri-facebook-fill', href: 'https://www.facebook.com/JejuContentsAgency/' }
   ];
 
   // 영문 사이트가 준비되면 href를 채우고 enabled를 true로 바꾸세요.
