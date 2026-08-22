@@ -129,7 +129,10 @@
       }
       return reservations
         .filter((r) => (!company || r.company_name === company))
-        .filter((r) => (!status || r.status === status))
+        .filter((r) => !status
+          || (status === 'attended' ? !!r.attended_at
+            : status === 'absent' ? (r.status === 'confirmed' && !r.attended_at)
+            : r.status === status))
         .filter((r) => match(r, ['reservation_no', 'applicant_company', 'manager_name', 'phone', 'email', 'company_name']));
     }
     if (tab === 'registrations') {
@@ -185,13 +188,27 @@
     const slotLoad = slots.map((t) => ({ t, n: confirmed.filter((r) => r.time_slot === t).length }));
     const msLeft = MEETUP_CUTOFF - Date.now();
 
+    const attendedMeetup = confirmed.filter((r) => r.attended_at).length;
+    const attendedEvent = registrations.filter((r) => r.attended_at).length;
+
     return { capacity, confirmed: confirmed.length, cancelled, rate: capacity ? confirmed.length / capacity : 0,
+      attendedMeetup, attendedEvent,
       registrations: registrations.length, byType, newToday, days, slotLoad, companies: companies.length,
       dday: Math.ceil(msLeft / 86400000), closed: msLeft <= 0,
       emptyCompanies: companies.filter((c) => !confirmed.some((r) => r.company_id === c.id)).length };
   }
 
   const TYPE_LABEL = { company: '기업', general: '일반', student: '학생' };
+
+  /** 출석 토글 버튼. 눌린 상태는 초록, 시각은 툴팁으로. */
+  function attendButton(kind, no, attendedAt) {
+    const on = !!attendedAt;
+    return `<button class="admin-mini attend ${on ? 'on' : ''}" data-attend="${esc(no)}" data-kind="${kind}" data-on="${on ? 1 : 0}"
+      title="${on ? '출석 ' + kst(attendedAt) + ' · 누르면 해제' : '누르면 출석 처리'}">${on ? '출석 ✓' : '출석'}</button>`;
+  }
+  function attendBadge(attendedAt) {
+    return attendedAt ? `<span class="admin-badge ok" title="${kst(attendedAt)}">출석</span>` : '<span class="admin-badge off" style="background:var(--color-bg-muted);color:var(--color-text-muted)">미도착</span>';
+  }
 
   function renderOverview(o) {
     const pct = (n) => `${Math.round(n * 100)}%`;
@@ -203,6 +220,7 @@
         <div class="ov-tile"><small>행사 참가신청</small><strong>${o.registrations}<em>명</em></strong><p>기업 ${o.byType.company} · 일반 ${o.byType.general} · 학생 ${o.byType.student}</p></div>
         <div class="ov-tile"><small>오늘 신규</small><strong>${o.newToday}<em>건</em></strong><p>예약 + 참가신청 (KST 기준)</p></div>
         <div class="ov-tile ${o.closed ? '' : 'warn'}"><small>밋업 예약 마감</small><strong>${o.closed ? '마감' : `D-${o.dday}`}</strong><p>9/15(화) 자정 · ${o.closed ? '접수 종료됨' : '이후엔 사무국 대신 취소만'}</p></div>
+        <div class="ov-tile"><small>행사 당일 출석</small><strong>${o.attendedMeetup + o.attendedEvent}<em>명</em></strong><p>밋업 ${o.attendedMeetup}/${o.confirmed} · 참가 ${o.attendedEvent}/${o.registrations}</p></div>
         <div class="ov-tile"><small>예약 없는 기관</small><strong>${o.emptyCompanies}<em>/ ${o.companies}</em></strong><p>확정 예약이 0건인 상담기관</p></div>
       </div>
       <div class="ov-grid">
@@ -267,9 +285,10 @@
       // 취소·상태 열이 없다. 파트너에게 오는 것은 전부 확정 건이고,
       // 취소 권한은 사무국과 신청자에게만 있다.
       mount.innerHTML = `<table class="admin-table"><thead><tr>
-        <th>시간</th><th>신청기업</th><th>담당자</th><th>연락처</th><th>메일</th><th>상담내용</th><th>소개서</th><th>신청일시</th>
+        <th>시간</th><th>출석</th><th>신청기업</th><th>담당자</th><th>연락처</th><th>메일</th><th>상담내용</th><th>소개서</th><th>신청일시</th>
       </tr></thead><tbody>${rows.map((r) => `<tr>
         <td><strong>${esc(r.time_slot)}</strong></td>
+        <td>${attendBadge(r.attended_at)}</td>
         <td>${esc(r.applicant_company)}</td><td>${esc(r.manager_name)}</td>
         <td>${esc(r.phone)}</td><td>${esc(r.email)}</td>
         <td class="wrap">${esc(r.inquiry)}</td>
@@ -282,7 +301,7 @@
     if (tab === 'reservations') {
       mount.innerHTML = `<table class="admin-table"><thead><tr>
         <th>예약번호</th><th>상태</th><th>상담기관</th><th>시간</th><th>신청기업</th><th>담당자</th>
-        <th>연락처</th><th>메일</th><th>상담내용</th><th>첨부</th><th>신청일시</th><th></th>
+        <th>연락처</th><th>메일</th><th>상담내용</th><th>첨부</th><th>신청일시</th><th>출석</th><th></th>
       </tr></thead><tbody>${rows.map((r) => `<tr>
         <td>${esc(r.reservation_no)}</td>
         <td><span class="admin-badge ${r.status === 'confirmed' ? 'ok' : 'off'}">${r.status === 'confirmed' ? '확정' : '취소'}</span></td>
@@ -292,6 +311,7 @@
         <td class="wrap">${esc(r.inquiry)}</td>
         <td>${r.attachment_path ? `<button class="admin-mini" data-download="${esc(r.attachment_path)}" data-filename="${esc(r.attachment_name || 'file.pdf')}">PDF</button>` : '-'}</td>
         <td>${kst(r.created_at)}</td>
+        <td>${r.status === 'confirmed' ? attendButton('reservation', r.reservation_no, r.attended_at) : ''}</td>
         <td>${r.status === 'confirmed' ? `<button class="admin-mini" data-cancel="${esc(r.reservation_no)}">취소</button>` : ''}</td>
       </tr>`).join('')}</tbody></table>`;
       return;
@@ -299,11 +319,12 @@
 
     if (tab === 'registrations') {
       mount.innerHTML = `<table class="admin-table"><thead><tr>
-        <th>신청번호</th><th>구분</th><th>이름</th><th>소속</th><th>연락처</th><th>신청일시</th>
+        <th>신청번호</th><th>구분</th><th>이름</th><th>소속</th><th>연락처</th><th>신청일시</th><th>출석</th>
       </tr></thead><tbody>${rows.map((r) => `<tr>
         <td>${esc(r.registration_no)}</td><td>${esc(TYPE_LABEL[r.participant_type] || r.participant_type)}</td>
         <td>${esc(r.name)}</td><td>${esc(r.organization || '-')}</td>
         <td>${esc(r.phone)}</td><td>${kst(r.created_at)}</td>
+        <td>${attendButton('registration', r.registration_no, r.attended_at)}</td>
       </tr>`).join('')}</tbody></table>`;
       return;
     }
@@ -316,15 +337,17 @@
     const rows = currentRows();
     let header, line;
     if (mode === 'partner') {
-      header = ['시간','신청기업','담당자','연락처','메일','상담내용','소개서','신청일시'];
-      line = (r) => [r.time_slot, r.applicant_company, r.manager_name, r.phone, r.email, r.inquiry, r.attachment_name || '', kst(r.created_at)];
+      header = ['시간','출석','신청기업','담당자','연락처','메일','상담내용','소개서','신청일시'];
+      line = (r) => [r.time_slot, r.attended_at ? '출석' : '', r.applicant_company, r.manager_name, r.phone, r.email, r.inquiry, r.attachment_name || '', kst(r.created_at)];
     } else if (tab === 'reservations') {
-      header = ['예약번호','상태','상담기관','시간','신청기업','담당자','연락처','메일','상담내용','첨부파일','신청일시','취소일시'];
+      header = ['예약번호','상태','상담기관','시간','신청기업','담당자','연락처','메일','상담내용','첨부파일','신청일시','취소일시','출석','출석시각'];
       line = (r) => [r.reservation_no, r.status === 'confirmed' ? '확정' : '취소', r.company_name, r.time_slot,
-        r.applicant_company, r.manager_name, r.phone, r.email, r.inquiry, r.attachment_name || '', kst(r.created_at), kst(r.cancelled_at)];
+        r.applicant_company, r.manager_name, r.phone, r.email, r.inquiry, r.attachment_name || '', kst(r.created_at), kst(r.cancelled_at),
+        r.attended_at ? '출석' : '', kst(r.attended_at)];
     } else if (tab === 'registrations') {
-      header = ['신청번호','구분','이름','소속','연락처','신청일시'];
-      line = (r) => [r.registration_no, TYPE_LABEL[r.participant_type] || r.participant_type, r.name, r.organization || '', r.phone, kst(r.created_at)];
+      header = ['신청번호','구분','이름','소속','연락처','신청일시','출석','출석시각'];
+      line = (r) => [r.registration_no, TYPE_LABEL[r.participant_type] || r.participant_type, r.name, r.organization || '', r.phone, kst(r.created_at),
+        r.attended_at ? '출석' : '', kst(r.attended_at)];
     } else {
       header = ['상담기관','예약률','확정','취소','확정 시간대'];
       line = (s) => [s.company_name, `${Math.round((s.confirmed / Math.max(1, BOOKABLE().length)) * 100)}%`, s.confirmed, s.cancelled, [...s.slots].sort().join(' ')];
@@ -409,6 +432,22 @@
     $('[data-table-mount]').addEventListener('click', (e) => {
       const dl = e.target.closest('[data-download]');
       if (dl) { downloadAttachment(dl.dataset.download, dl.dataset.filename); return; }
+      const attend = e.target.closest('[data-attend]');
+      if (attend) {
+        const next = attend.dataset.on !== '1';
+        attend.disabled = true;
+        rpc('jgcf_admin_set_attendance', { p_kind: attend.dataset.kind, p_no: attend.dataset.attend, p_attended: next })
+          .then((r) => {
+            if (!r.ok) { alert('출석 처리하지 못했습니다: ' + (r.reason || '')); return; }
+            const list = attend.dataset.kind === 'reservation' ? reservations : registrations;
+            const key = attend.dataset.kind === 'reservation' ? 'reservation_no' : 'registration_no';
+            const row = list.find((x) => x[key] === attend.dataset.attend);
+            if (row) row.attended_at = r.attended_at;
+            render();
+          })
+          .finally(() => { attend.disabled = false; });
+        return;
+      }
       const cancel = e.target.closest('[data-cancel]');
       if (cancel) {
         cancelTarget = cancel.dataset.cancel;

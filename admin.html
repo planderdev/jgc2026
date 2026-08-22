@@ -34,6 +34,10 @@
     .admin-badge.off { background: #faebea; color: #b32a27; }
     .admin-mini { padding: 4px 12px; font-size: 12px; border-radius: var(--radius-full); border: 1px solid var(--color-border-muted); background: var(--color-white); }
     .admin-mini:hover { border-color: var(--color-action-secondary); color: var(--color-action-secondary); }
+    .admin-mini.attend { white-space: nowrap; }
+    .admin-mini.attend.on { background: #1c6549; border-color: #1c6549; color: #fff; }
+    .admin-mini.attend.on:hover { background: #b32a27; border-color: #b32a27; }
+    .admin-mini[disabled] { opacity: .5; }
     .admin-error { color: #b32a27; font-size: var(--font-size-14); min-height: 20px; }
     .admin-empty { padding: 48px; text-align: center; color: var(--color-neutral-500); }
 
@@ -126,6 +130,8 @@
             <option value="">전체 상태</option>
             <option value="confirmed">예약 확정</option>
             <option value="cancelled">예약 취소</option>
+            <option value="attended">출석 완료</option>
+            <option value="absent">미도착 (확정인데 출석 전)</option>
           </select>
           <button class="ui-button secondary" type="button" data-refresh><i class="ri-arrow-right-line" aria-hidden="true"></i>새로고침</button>
           <button class="ui-button secondary" type="button" data-csv>CSV 내려받기</button>
