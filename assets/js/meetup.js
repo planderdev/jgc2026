@@ -165,6 +165,12 @@
             : `입력하지 않은 항목이 ${missing.length}개 있습니다. 빨간 표시를 확인해 주세요.`);
           return false;
         }
+        if (!common().isValidPhone(state.phone)) {
+          common().markInvalid(form, 'phone', common().PHONE_HINT);
+          common().focusField(form, 'phone');
+          common().toast('연락처를 정확하게 입력해 주세요.');
+          return false;
+        }
         if (!EMAIL_PATTERN.test(state.email)) {
           common().markInvalid(form, 'email', '메일 주소 형식이 올바르지 않습니다. 예: name@company.com');
           common().focusField(form, 'email');

@@ -330,6 +330,13 @@
     el.addEventListener('change', clear, { once: true });
   }
 
+  /** 서버(jgcf_create_reservation 등)와 같은 규칙: 숫자만 세어 9~11자리. */
+  const PHONE_HINT = '연락처는 숫자 9~11자리로 입력해 주세요. 예: 010-1234-5678';
+  function isValidPhone(value) {
+    const digits = String(value || '').replace(/\D/g, '');
+    return digits.length >= 9 && digits.length <= 11;
+  }
+
   function clearInvalid(form) {
     form.querySelectorAll('.is-invalid').forEach((el) => el.classList.remove('is-invalid'));
     form.querySelectorAll('.form-error').forEach((el) => el.remove());
@@ -379,6 +386,8 @@
     clearInvalid,
     focusField,
     reportMissing,
+    isValidPhone,
+    PHONE_HINT,
     initAccordions,
     setHeaderState
   };

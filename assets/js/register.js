@@ -98,6 +98,12 @@
         .filter((input) => !input.closest('[hidden]'))
         .map((input) => input.name);
       if (!common().reportMissing(form, [...requiredNames, 'privacy'])) return;
+      if (!common().isValidPhone(form.elements.phone.value)) {
+        common().markInvalid(form, 'phone', common().PHONE_HINT);
+        common().focusField(form, 'phone');
+        common().toast('연락처를 정확하게 입력해 주세요.');
+        return;
+      }
 
       const application = collectPayload(form);
 
