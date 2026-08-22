@@ -12,6 +12,7 @@
 
   const REASON_MESSAGES = {
     closed: '밋업 예약 접수가 마감되었습니다(행사 전날 자정까지). 변경·취소는 운영사무국에 문의해 주세요.',
+    registration_closed: '행사가 종료되어 참가신청 접수를 마감했습니다.',
     slot_taken: '방금 다른 참가자가 이 시간대를 예약했습니다. 다른 시간을 선택해 주세요.',
     already_reserved: '이미 예약이 있습니다. 한 담당자당 한 건만 신청할 수 있습니다. 예약 조회에서 기존 예약을 확인해 주세요.',
     already_registered: '이미 참가신청이 접수된 연락처입니다.',
@@ -59,6 +60,12 @@
   /** 접수 기간인지. 마감은 서버가 강제하고 이 값은 화면 안내용이다. */
   async function isOpen() {
     const result = await callFunction('jgcf_reservation_open', {});
+    return result === true;
+  }
+
+  /** 참가신청 접수 기간인지(행사 종료 시각까지). 화면 안내용이며 서버가 강제한다. */
+  async function isRegistrationOpen() {
+    const result = await callFunction('jgcf_registration_open', {});
     return result === true;
   }
 
@@ -146,6 +153,7 @@
 
   window.ReservationService = {
     isOpen,
+    isRegistrationOpen,
     takenSlots,
     uploadAttachment,
     create,

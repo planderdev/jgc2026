@@ -64,6 +64,23 @@
 
     setActiveType(form, form.elements.participantType.value);
 
+    // 행사 종료 후에는 접수하지 않는다. 최종 판정은 서버가 하고 여기서는 안내만 한다.
+    service().isRegistrationOpen().then((open) => {
+      if (open) return;
+      form.hidden = true;
+      const notice = document.createElement('div');
+      notice.className = 'result-card';
+      notice.innerHTML = `
+        <span class="ui-badge">접수 마감</span>
+        <h2 class="section-title">참가신청 접수가 마감되었습니다</h2>
+        <p class="section-subtitle">2026 제주글로벌콘텐츠포럼은 종료되었습니다. 참여해 주신 모든 분께 감사드립니다.</p>
+        <div class="step-actions">
+          <a class="ui-button coral" href="${common().link('index.html')}">메인으로</a>
+        </div>
+      `;
+      form.insertAdjacentElement('afterend', notice);
+    });
+
     form.querySelectorAll('[data-event-type-option]').forEach((option) => {
       option.addEventListener('change', () => setActiveType(form, option.value));
     });
