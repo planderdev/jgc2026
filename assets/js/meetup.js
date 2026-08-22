@@ -17,6 +17,9 @@
       .replace(/'/g, '&#039;');
   }
 
+  // 첨부 상한. 서버 버킷(file_size_limit)과 같은 값이어야 한다.
+  const ATTACHMENT_MAX_MB = 20;
+
   function companyById(id) {
     return data().companies.find((company) => company.id === id);
   }
@@ -183,6 +186,22 @@
           common().toast('회사 소개서 PDF를 첨부해 주세요.');
           return false;
         }
+        // 업로드를 시도하기 전에 형식·용량을 먼저 본다. 큰 파일을 다 올린 뒤 거부되면 시간만 버린다.
+        const file = state.attachmentFile;
+        const isPdf = /\.pdf$/i.test(file.name) || file.type === 'application/pdf';
+        if (!isPdf) {
+          common().markInvalid(form, 'attachment', 'PDF 파일만 첨부할 수 있습니다.');
+          common().focusField(form, 'attachment');
+          common().toast('회사 소개서는 PDF 형식만 첨부할 수 있습니다.');
+          return false;
+        }
+        if (file.size > ATTACHMENT_MAX_MB * 1024 * 1024) {
+          const mb = (file.size / 1024 / 1024).toFixed(1);
+          common().markInvalid(form, 'attachment', `파일이 ${mb}MB입니다. ${ATTACHMENT_MAX_MB}MB 이하로 줄여서 첨부해 주세요.`);
+          common().focusField(form, 'attachment');
+          common().toast(`첨부파일은 ${ATTACHMENT_MAX_MB}MB 이하여야 합니다.`);
+          return false;
+        }
         if (!state.privacy) {
           common().markInvalid(form, 'privacy', '');
           common().focusField(form, 'privacy');
@@ -248,7 +267,7 @@
         if (!upload.ok) {
           common().toast(upload.reason === 'network'
             ? service().messageFor('network')
-            : '첨부파일을 올리지 못했습니다. PDF 형식과 5MB 이하인지 확인해 주세요.');
+            : `첨부파일을 올리지 못했습니다. PDF 형식과 ${ATTACHMENT_MAX_MB}MB 이하인지 확인해 주세요.`);
           return;
         }
 

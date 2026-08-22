@@ -101,7 +101,7 @@
       if (!response.ok) {
         const detail = await response.text().catch(() => '');
         console.error('첨부파일 업로드 실패', response.status, detail);
-        // 5MB 초과나 PDF가 아닌 파일은 버킷 설정에서 거부된다.
+        // 20MB 초과나 PDF가 아닌 파일은 버킷 설정에서 거부된다(화면에서도 먼저 검사한다).
         return { ok: false, reason: 'upload_failed', status: response.status };
       }
     } catch (error) {
