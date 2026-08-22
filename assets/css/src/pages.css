@@ -1873,6 +1873,11 @@
   margin-top: var(--space-8);
 }
 
+/* 구분별 입력 그룹처럼 그리드 안에 그리드가 있으면 바깥 row-gap만 쓴다. */
+.form-grid .form-grid {
+  margin-top: var(--space-0);
+}
+
 .step-actions {
   padding-top: var(--space-24);
   border-top: 1px solid var(--color-border-muted);
