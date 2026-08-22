@@ -92,15 +92,12 @@
       event.preventDefault();
       if (busy) return;
 
-      if (!form.checkValidity()) {
-        form.reportValidity();
-        return;
-      }
-
-      if (!form.elements.privacy.checked) {
-        common().toast('개인정보 제공에 동의해 주세요.');
-        return;
-      }
+      // 보이는 필수 칸 + 동의 체크를 한 번에 검사해 문제 칸을 모두 표시한다.
+      common().clearInvalid(form);
+      const requiredNames = [...form.querySelectorAll('input[required]')]
+        .filter((input) => !input.closest('[hidden]'))
+        .map((input) => input.name);
+      if (!common().reportMissing(form, [...requiredNames, 'privacy'])) return;
 
       const application = collectPayload(form);
 

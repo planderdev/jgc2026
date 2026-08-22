@@ -293,11 +293,92 @@
     node._timer = window.setTimeout(() => node.classList.remove('is-open'), 2800);
   }
 
+  /* ── 폼 검증 표시 ──
+     알림은 화면 가운데 토스트로, 문제 칸은 빨간 테두리 + 아래 안내 문구로.
+     밋업 예약·참가신청이 같은 규칙을 쓴다. */
+
+  /** 받침 유무에 따라 '을/를'을 고른다. */
+  function withObjectParticle(word) {
+    const code = word.charCodeAt(word.length - 1);
+    const hasFinal = code >= 0xac00 && code <= 0xd7a3 && (code - 0xac00) % 28 !== 0;
+    return `${word}${hasFinal ? '을' : '를'}`;
+  }
+
+  /** 필드의 라벨 텍스트. 없으면 name을 그대로 쓴다. */
+  function fieldLabel(form, name) {
+    const el = form.elements[name];
+    const label = el?.closest('.form-field, .ui-checkbox')?.querySelector('.form-label');
+    return label ? label.textContent.trim() : name;
+  }
+
+  /** 검증에 걸린 필드를 표시하고 아래에 이유를 적는다. 입력이 바뀌면 풀린다. */
+  function markInvalid(form, name, message) {
+    const el = form.elements[name];
+    if (!el) return;
+    const field = el.closest('.form-field, .ui-checkbox');
+    if (!field) return;
+    field.classList.add('is-invalid');
+    let note = field.querySelector('.form-error');
+    if (message && !note) {
+      note = document.createElement('span');
+      note.className = 'form-error';
+      field.appendChild(note);
+    }
+    if (note) note.textContent = message;
+    const clear = () => { field.classList.remove('is-invalid'); note?.remove(); };
+    el.addEventListener('input', clear, { once: true });
+    el.addEventListener('change', clear, { once: true });
+  }
+
+  function clearInvalid(form) {
+    form.querySelectorAll('.is-invalid').forEach((el) => el.classList.remove('is-invalid'));
+    form.querySelectorAll('.form-error').forEach((el) => el.remove());
+  }
+
+  function focusField(form, name) {
+    const el = form.elements[name];
+    if (!el) return;
+    el.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    el.focus({ preventScroll: true });
+  }
+
+  /**
+   * 비어 있는 필수 필드를 전부 표시하고 첫 칸으로 이동한 뒤 토스트를 띄운다.
+   * @returns {boolean} 전부 채워져 있으면 true
+   */
+  function reportMissing(form, names) {
+    const missing = names.filter((name) => {
+      const el = form.elements[name];
+      if (!el) return false;
+      if (el.type === 'checkbox') return !el.checked;
+      if (el.type === 'file') return !el.files?.length;
+      return !el.value.trim();
+    });
+    missing.forEach((name) => {
+      const el = form.elements[name];
+      const label = fieldLabel(form, name);
+      markInvalid(form, name, el.type === 'checkbox' ? '' : `${withObjectParticle(label)} 입력해 주세요.`);
+    });
+    if (!missing.length) return true;
+    focusField(form, missing[0]);
+    toast(missing.length === 1
+      ? (form.elements[missing[0]].type === 'checkbox'
+        ? '개인정보 제공에 동의해야 신청할 수 있습니다.'
+        : `${withObjectParticle(fieldLabel(form, missing[0]))} 입력해 주세요.`)
+      : `입력하지 않은 항목이 ${missing.length}개 있습니다. 빨간 표시를 확인해 주세요.`);
+    return false;
+  }
+
   window.JGCFCommon = {
     base,
     link,
     asset,
     toast,
+    withObjectParticle,
+    markInvalid,
+    clearInvalid,
+    focusField,
+    reportMissing,
     initAccordions,
     setHeaderState
   };
