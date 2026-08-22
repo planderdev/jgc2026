@@ -38,6 +38,8 @@ export default async () => {
     // forbidden JSON은 로그인했지만 명단에 없는 계정에게 돌아가는 응답이다.
     const adminFn = await rpc('jgcf_admin_reservations');
     r.check(/permission denied/.test(adminFn.message || '') || adminFn.reason === 'forbidden', '익명의 관리자 함수 호출 거부', adminFn.message || adminFn.reason || '');
+    const badSlot = await rpc('jgcf_create_reservation', { p_company_id: 'kb-investment', p_company_name: 'x', p_company_field: 'x', p_time_slot: '10:15', p_applicant_company: '__QA__', p_manager_name: '__QA__', p_phone: '010-9999-9999', p_email: 'qa-slot@example.com', p_inquiry: '__QA__' });
+    r.check(badSlot.reason === 'invalid_slot', '목록 밖 시간(10:15) 예약 서버 거부', badSlot.reason || '');
     const attendFn = await rpc('jgcf_admin_set_attendance', { p_kind: 'reservation', p_no: 'JGCF-2026-XXXXXX', p_attended: true });
     r.check(/permission denied/.test(attendFn.message || '') || attendFn.reason === 'forbidden', '익명의 출석 처리 호출 거부', attendFn.message || attendFn.reason || '');
     const list = await fetch(`${url}/storage/v1/object/list/${bucket}`, { method: 'POST', headers: H(), body: '{"prefix":""}' }).then((x) => x.json());

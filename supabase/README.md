@@ -102,9 +102,10 @@ where reservation_no = 'JGCF-2026-XXXXXX';
   토글합니다(`jgcf_admin_set_attendance`, 관리자 전용, `attended_at`에 시각 기록).
   기관 화면에는 읽기 전용으로 보입니다. QR 스캔은 없고 이름·연락처 검색으로 찾습니다.
   마감 시각은 `jgcf_registration_cutoff()` 한 곳에서 바꿉니다.
-- **점심시간 제외** — 12:00~12:45는 `assets/js/data.js`의 `reservationBreaks`로
-  막혀 있습니다. 이건 화면 표시용이므로, 서버에서도 막으려면 함수에 조건을
-  추가해야 합니다.
+- **30분 단위, 점심 제외** — 10:00~17:30 30분 간격 16슬롯 중 12:00·12:30은
+  `assets/js/data.js`의 `reservationBreaks`로 화면에서 막고, 서버의
+  `jgcf_valid_slot()`이 같은 규칙(정규식)으로 목록 밖 시간을 거부합니다(`invalid_slot`).
+  단위를 바꾸려면 두 곳을 함께 바꿉니다. 기관 20곳 × 14슬롯 = 280석.
 
 ## 마이그레이션
 

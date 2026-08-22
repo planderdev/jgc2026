@@ -110,7 +110,7 @@ footer { margin-top: 64px; padding-top: 16px; border-top: 1px solid var(--line);
       <div>공개 사이트</div><div><a href="https://jgc2026.vercel.app">jgc2026.vercel.app</a> — 행사 안내, 참가신청, 밋업 예약·조회</div>
       <div>관리자 화면</div><div><a href="https://jgc2026.vercel.app/admin">jgc2026.vercel.app/admin</a> — 사무국과 상담기관이 같은 주소로 로그인하며 계정에 따라 화면이 달라집니다</div>
       <div>참가신청</div><div>/register — 기업·일반·학생 구분, 신청 즉시 접수, 신청번호 발급</div>
-      <div>밋업 예약</div><div>/meetup/reserve — 상담기관 20곳 중 선택, 15분 단위, 신청 즉시 확정</div>
+      <div>밋업 예약</div><div>/meetup/reserve — 상담기관 20곳 중 선택, 30분 단위, 신청 즉시 확정</div>
       <div>예약 조회·취소</div><div>/meetup/confirm — 예약번호 + 담당자 연락처로 본인 확인</div>
       <div>데이터 저장소</div><div>Supabase (서울 리전). 평소에는 들어갈 일이 없고, 아래 "문제 상황 대응"의 몇 가지 경우에만 씁니다</div>
     </div>
@@ -143,7 +143,7 @@ footer { margin-top: 64px; padding-top: 16px; border-top: 1px solid var(--line);
     <div class="tbl-scroll"><table>
       <thead><tr><th>탭</th><th>내용</th><th>할 수 있는 것</th></tr></thead>
       <tbody>
-        <tr><td><b>현황</b></td><td>모집 상황 요약</td><td>예약률(확정/560), 참가신청 구분별 수, 오늘 신규, 마감 D-day, <b>행사 당일 출석</b>, 예약 없는 기관 수, 시간대별 점유 막대, 최근 7일 추이</td></tr>
+        <tr><td><b>현황</b></td><td>모집 상황 요약</td><td>예약률(확정/280), 참가신청 구분별 수, 오늘 신규, 마감 D-day, <b>행사 당일 출석</b>, 예약 없는 기관 수, 시간대별 점유 막대, 최근 7일 추이</td></tr>
         <tr><td><b>밋업 예약</b></td><td>전체 예약 (확정·취소 포함)</td><td>상담기관·상태 필터(확정/취소/출석 완료/미도착), 검색(기업·담당자·연락처·번호), 소개서 PDF 열기, 건별 <b>취소</b>, 당일 <b>출석</b> 체크</td></tr>
         <tr><td><b>행사 참가신청</b></td><td>전체 참가신청</td><td>검색(이름·소속·연락처·번호), 당일 <b>출석</b> 체크</td></tr>
         <tr><td><b>기관별 현황</b></td><td>상담기관 20곳 전체의 예약률·확정·취소·확정 시간대와 <b>시간대 점유 격자</b>(기관 × 시간)</td><td>빈 기관·빈 시간대 파악, 격자 칸에 마우스를 올리면 신청 기업 표시, CSV</td></tr>
@@ -183,7 +183,7 @@ footer { margin-top: 64px; padding-top: 16px; border-top: 1px solid var(--line);
       <thead><tr><th>항목</th><th>규칙</th></tr></thead>
       <tbody>
         <tr><td>확정 방식</td><td>승인 절차 없이 <b>신청 즉시 자동 확정</b></td></tr>
-        <tr><td>밋업 시간</td><td>10:00~17:45, 15분 단위 32슬롯 중 <b>점심 12:00~12:45 제외 28슬롯</b> × 기관 20곳</td></tr>
+        <tr><td>밋업 시간</td><td>10:00~17:30, 30분 단위 16슬롯 중 <b>점심 12:00·12:30 제외 14슬롯</b> × 기관 20곳 = 280</td></tr>
         <tr><td>슬롯 중복</td><td>같은 기관·같은 시간은 <b>한 건만</b>. 두 사람이 동시에 눌러도 한 명만 성공하고 나머지는 "방금 마감" 안내를 받습니다</td></tr>
         <tr><td>중복 신청</td><td>같은 <b>메일 또는 연락처</b>로는 밋업 한 건만. 같은 회사의 <b>다른 담당자</b>는 각각 신청 가능</td></tr>
         <tr><td>밋업 마감</td><td><b>9월 15일(화) 자정</b>까지 예약·취소 가능. 이후엔 사무국 대신 취소만 가능</td></tr>
