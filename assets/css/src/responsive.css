@@ -1025,6 +1025,16 @@
     font-size: var(--font-size-22);
   }
 
+  .result-qr {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .result-qr-code {
+    width: 160px;
+    height: 160px;
+  }
+
   .lookup-result-actions,
   .result-more {
     flex-direction: column;

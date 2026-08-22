@@ -393,6 +393,13 @@
           <strong data-copy-source>${escapeHtml(reservation.reservation_no)}</strong>
           <button class="ui-button ghost" type="button" data-copy-number>복사</button>
         </div>
+        <div class="result-qr">
+          <div class="result-qr-code" data-checkin-qr></div>
+          <div class="result-qr-text">
+            <strong>행사 당일 체크인 QR</strong>
+            <p>접수 데스크에서 이 화면을 보여주세요. 캡처해 두셔도 됩니다. 직원이 카메라로 찍으면 바로 출석 처리됩니다.</p>
+          </div>
+        </div>
         <dl class="confirm-box">
           <div class="confirm-row"><dt>상담기관</dt><dd>${escapeHtml(reservation.company_name)}</dd></div>
           <div class="confirm-row"><dt>상담 시간</dt><dd>2026. 9. 16. (수) ${escapeHtml(reservation.time_slot)}</dd></div>
@@ -411,6 +418,7 @@
       </div>
     `;
     common().bindCopyNumber(mount);
+    common().renderCheckinQr(mount.querySelector('[data-checkin-qr]'), reservation.reservation_no);
     mount.querySelector('[data-reserve-more]')?.addEventListener('click', () => {
       if (reservation.prefill) sessionStorage.setItem(PREFILL_KEY, JSON.stringify(reservation.prefill));
       window.location.href = common().link('meetup/reserve.html');
@@ -472,8 +480,13 @@
                </div>`
             : '<div class="lookup-result-actions"><p class="form-help">취소 접수는 행사 전날 자정에 마감되었습니다. 변경이 필요하면 운영사무국(064-735-0677)에 문의해 주세요.</p></div>')
           : '<div class="lookup-result-actions"><p class="form-help">취소된 예약입니다. 다시 예약하려면 새 예약을 진행해 주세요.</p><a class="ui-button coral" href="reserve">새 예약</a></div>'}
+        ${confirmed ? `<div class="result-qr">
+          <div class="result-qr-code" data-checkin-qr></div>
+          <div class="result-qr-text"><strong>행사 당일 체크인 QR</strong><p>접수 데스크에서 이 화면을 보여주세요. 직원이 카메라로 찍으면 바로 출석 처리됩니다.</p></div>
+        </div>` : ''}
         ${othersHtml}
       `;
+      common().renderCheckinQr(result.querySelector('[data-checkin-qr]'), reservation.reservation_no);
       result.querySelectorAll('[data-lookup-other]').forEach((button) => {
         button.addEventListener('click', () => {
           form.elements.reservationNumber.value = button.dataset.lookupOther;

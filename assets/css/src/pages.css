@@ -2134,6 +2134,55 @@
   color: #1c6549;
 }
 
+/* 완료 화면: 체크인 QR */
+.result-qr {
+  display: flex;
+  align-items: center;
+  gap: var(--space-24);
+  margin-top: var(--space-16);
+  padding: var(--space-16) var(--space-24);
+  border: 1px solid var(--color-border-muted);
+  border-radius: var(--radius-md);
+  background: var(--color-white);
+}
+
+.result-qr-code {
+  flex: 0 0 auto;
+  width: 112px;
+  height: 112px;
+  padding: var(--space-8);
+  border-radius: var(--radius-sm);
+  background: var(--color-white);
+  box-shadow: 0 0 0 1px var(--color-border-muted);
+}
+
+.result-qr-code svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.result-qr-code:empty {
+  display: none;
+}
+
+.result-qr-code:empty + .result-qr-text p::after {
+  content: " (QR은 네트워크 연결 후 표시됩니다.)";
+}
+
+.result-qr-text strong {
+  display: block;
+  margin-bottom: var(--space-8);
+  font-size: var(--font-size-15);
+}
+
+.result-qr-text p {
+  margin: var(--space-0);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-14);
+  line-height: var(--line-height-section-copy);
+}
+
 /* 완료 화면: 추가 예약 유도 */
 .result-more {
   display: flex;

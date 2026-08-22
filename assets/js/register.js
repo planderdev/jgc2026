@@ -182,6 +182,13 @@
           <strong data-copy-source>${escapeHtml(registration.registration_no)}</strong>
           <button class="ui-button ghost" type="button" data-copy-number>복사</button>
         </div>
+        <div class="result-qr">
+          <div class="result-qr-code" data-checkin-qr></div>
+          <div class="result-qr-text">
+            <strong>행사 당일 체크인 QR</strong>
+            <p>접수 데스크에서 이 화면을 보여주세요. 캡처해 두셔도 됩니다. 직원이 카메라로 찍으면 바로 출석 처리됩니다.</p>
+          </div>
+        </div>
         <dl class="confirm-box">
           <div class="confirm-row"><dt>구분</dt><dd>${escapeHtml(registration.type_label)}</dd></div>
           ${registration.organization ? `<div class="confirm-row"><dt>소속</dt><dd>${escapeHtml(registration.organization)}</dd></div>` : ''}
@@ -197,6 +204,7 @@
       </div>
     `;
     common().bindCopyNumber(mount);
+    common().renderCheckinQr(mount.querySelector('[data-checkin-qr]'), registration.registration_no);
   }
 
   document.addEventListener('DOMContentLoaded', () => {

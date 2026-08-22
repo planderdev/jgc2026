@@ -396,8 +396,25 @@
     });
   }
 
+  /** 체크인 QR. 폰 카메라로 찍으면 관리자 화면이 그 번호로 열린다. 라이브러리가 없으면 조용히 건너뛴다. */
+  function renderCheckinQr(mount, number) {
+    if (!mount || !number || typeof window.qrcode !== 'function') return;
+    const url = `${window.location.origin}/admin?q=${encodeURIComponent(number)}`;
+    try {
+      const qr = window.qrcode(0, 'M');
+      qr.addData(url);
+      qr.make();
+      mount.innerHTML = qr.createSvgTag({ cellSize: 4, margin: 0, scalable: true });
+      const svg = mount.querySelector('svg');
+      if (svg) { svg.setAttribute('role', 'img'); svg.setAttribute('aria-label', `체크인 QR ${number}`); }
+    } catch (error) {
+      console.warn('QR을 만들지 못했습니다.', error);
+    }
+  }
+
   window.JGCFCommon = {
     bindCopyNumber,
+    renderCheckinQr,
     base,
     link,
     asset,

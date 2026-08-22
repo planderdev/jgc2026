@@ -452,6 +452,25 @@
         tab = 'reservations';
       }
       await loadData();
+      applyQrQuery();
+    }
+
+    // 완료 화면 QR을 폰 카메라로 찍으면 /admin?q=번호 로 들어온다.
+    // 로그인 뒤 그 번호로 검색해 해당 행만 보여준다. 파트너 계정은 자기 목록 안에서 검색.
+    function applyQrQuery() {
+      const q = new URLSearchParams(window.location.search).get('q');
+      if (!q) return;
+      const no = q.trim().toUpperCase();
+      if (mode !== 'partner') {
+        tab = /^JGCF-ATTEND-/.test(no) ? 'registrations' : 'reservations';
+        document.querySelectorAll('[data-tab]').forEach((b) => b.classList.toggle('is-active', b.dataset.tab === tab));
+      }
+      $('[data-search]').value = no;
+      render();
+      window.history.replaceState(null, '', window.location.pathname);
+      const hit = document.querySelector('[data-attend]');
+      if (hit) { hit.scrollIntoView({ block: 'center' }); hit.focus(); }
+      else common().toast(`${no} 에 해당하는 항목이 없습니다.`);
     }
 
     $('[data-login-form]').addEventListener('submit', async (e) => {
