@@ -423,6 +423,7 @@
       },
       {
         id: 'ai-film-awardee',
+        pending: true,
         name: 'AI 국제필름페스티벌 대상 수상자',
         role: 'AI Film Creator',
         org: '섭외 중',
