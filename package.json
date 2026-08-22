@@ -6,7 +6,9 @@
   "scripts": {
     "build:css": "node ./scripts/build-css.mjs",
     "watch:css": "node ./scripts/build-css.mjs --watch",
-    "build": "npm run build:css"
+    "build": "npm run build:css",
+    "qa": "node ./scripts/qa/run.mjs",
+    "qa:live": "node ./scripts/qa/run.mjs --base=https://jgc2026.vercel.app"
   },
   "devDependencies": {
     "playwright-core": "^1.62.1",
