@@ -347,8 +347,7 @@
     padding: var(--space-0) var(--space-16);
   }
 
-  .section-heading,
-  .step-actions {
+  .section-heading {
     align-items: flex-start;
     flex-direction: column;
   }
@@ -972,6 +971,106 @@
 
   .time-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* ── 예약·참가신청 플로우 (모바일) ──
+     좌측 세로 단계 목록은 폼을 화면 아래로 밀어내므로 한 줄 진행바로 바꾼다. */
+  .reserve-page {
+    padding-top: var(--space-80); /* 고정 헤더(54px) 아래로 */
+  }
+
+  .reserve-shell {
+    gap: var(--space-16);
+  }
+
+  .reserve-side .side-title {
+    font-size: var(--font-size-24);
+  }
+
+  .reserve-side .side-title br {
+    display: none;
+  }
+
+  .step-list {
+    margin-top: var(--space-16);
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    gap: var(--space-0);
+    counter-reset: none;
+  }
+
+  .step-list li {
+    position: relative;
+    flex-direction: column;
+    gap: var(--space-8);
+    font-size: 11px;
+    font-weight: var(--font-weight-extrabold);
+    text-align: center;
+    line-height: 1.2;
+  }
+
+  .step-list li::before {
+    content: "";
+    position: absolute;
+    top: 13px;
+    left: 50%;
+    width: 100%;
+    height: 2px;
+    background: var(--color-neutral-200);
+    z-index: 0;
+  }
+
+  .step-list li:last-child::before {
+    display: none;
+  }
+
+  .step-list li.is-done::before {
+    background: var(--color-action-secondary);
+  }
+
+  .step-list span {
+    position: relative;
+    z-index: 1;
+    width: 26px;
+    height: 26px;
+    font-size: 12px;
+  }
+
+  /* 단계 제목: 한 줄에 들어가게 */
+  .step-panel > .side-title {
+    font-size: var(--font-size-22);
+    line-height: 1.3;
+  }
+
+  .step-panel > .section-subtitle {
+    font-size: var(--font-size-15);
+  }
+
+  .step-panel .choice-grid,
+  .step-panel .time-grid,
+  .step-panel .form-grid,
+  .step-panel .confirm-box {
+    margin-top: var(--space-24);
+  }
+
+  /* 이전·다음: 양옆으로, 폭을 반씩 */
+  .step-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-8);
+  }
+
+  .step-actions > span:empty {
+    display: none;
+  }
+
+  .step-actions > span:empty + .ui-button {
+    grid-column: 1 / -1;
+  }
+
+  .step-actions .ui-button {
+    width: 100%;
+    min-height: 48px;
   }
 
   .confirm-row {
