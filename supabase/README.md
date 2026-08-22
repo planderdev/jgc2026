@@ -122,6 +122,7 @@ Vercel 프로젝트에 `2026jejugcf.com`과 `www.2026jejugcf.com`이 추가되�
 
 ```bash
 node scripts/set-share-urls.mjs https://2026jejugcf.com
+node scripts/build-sitemap.mjs https://2026jejugcf.com
 npm run build && git commit -am "chore: 공유 주소를 2026jejugcf.com 으로" && git push
 ```
 

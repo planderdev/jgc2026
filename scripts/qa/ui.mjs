@@ -53,6 +53,14 @@ export default () => runSuite('UI 회귀', async ({ browser, r }) => {
   await page.goto(`${base}/meetup`, { waitUntil: 'load' }); await page.waitForTimeout(700);
   const meetHrefs = await page.evaluate(() => [...document.querySelectorAll('.meetup-hero-actions a')].map((a) => a.href));
   r.check(meetHrefs.every((h) => /\/meetup\/(reserve|confirm)$/.test(h)), '/meetup 히어로 링크 절대 경로', meetHrefs.map((h) => new URL(h).pathname).join(', '));
+  // 404·robots·sitemap (로컬 서버는 404.html을 쓰지 않으므로 배포 대상에서만 의미가 있다)
+  const nf = await page.goto(`${base}/no-such-page-${Date.now()}`, { waitUntil: 'load' });
+  const nfTitle = await page.title();
+  r.check(nf.status() === 404 && (/찾을 수 없습니다/.test(nfTitle) || !/vercel\.app/.test(base)), '404 페이지 (한국어 커스텀)', `${nf.status()} · ${nfTitle.slice(0, 30)}`);
+  const robots = await page.goto(`${base}/robots.txt`);
+  r.check(robots.status() === 200 && /Sitemap:/.test(await robots.text()), 'robots.txt 존재 + Sitemap 지정');
+  const sm = await page.goto(`${base}/sitemap.xml`);
+  r.check(sm.status() === 200 && /<urlset/.test(await sm.text()), 'sitemap.xml 존재');
   await context.close();
 
   // 모바일: 닫힌 메뉴가 Tab에 노출되지 않음

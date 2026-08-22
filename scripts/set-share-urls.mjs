@@ -63,6 +63,16 @@ for (const file of files) {
   const cleanPath = rel === 'index.html' ? ''
     : rel.replace(/\/index\.html$/, '').replace(/\.html$/, '');
   const canonical = `${base}/${cleanPath}`;
+  // canonical도 같은 주소로. 검색엔진이 vercel.app과 커스텀 도메인을 같은 페이지로 본다.
+  if (/<link rel="canonical"/.test(source)) {
+    source = source.replace(/(<link rel="canonical" href=")[^"]*(")/, `$1${canonical}$2`);
+  } else {
+    source = source.replace(
+      /^([ \t]*)(<meta property="og:url" content="[^"]*">\n)/m,
+      `$1<link rel="canonical" href="${canonical}">\n$1$2`
+    );
+  }
+
   if (/<meta property="og:url"/.test(source)) {
     source = source.replace(/(<meta property="og:url" content=")[^"]*(")/, `$1${canonical}$2`);
   } else {
