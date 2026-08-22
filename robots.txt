@@ -4,5 +4,7 @@ Disallow: /admin
 Disallow: /design-system
 Disallow: /meetup/complete
 Disallow: /register-complete
+Disallow: /en/meetup/complete
+Disallow: /en/register-complete
 
 Sitemap: https://jgc2026.vercel.app/sitemap.xml

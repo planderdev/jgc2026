@@ -479,7 +479,7 @@
                  <button class="ui-button ghost" type="button" data-open-cancel>예약 취소</button>
                </div>`
             : '<div class="lookup-result-actions"><p class="form-help">취소 접수는 행사 전날 자정에 마감되었습니다. 변경이 필요하면 운영사무국(064-735-0677)에 문의해 주세요.</p></div>')
-          : '<div class="lookup-result-actions"><p class="form-help">취소된 예약입니다. 다시 예약하려면 새 예약을 진행해 주세요.</p><a class="ui-button coral" href="reserve">새 예약</a></div>'}
+          : `<div class="lookup-result-actions"><p class="form-help">취소된 예약입니다. 다시 예약하려면 새 예약을 진행해 주세요.</p><a class="ui-button coral" href="${common().link('meetup/reserve.html')}">새 예약</a></div>`}
         ${confirmed ? `<div class="result-qr">
           <div class="result-qr-code" data-checkin-qr></div>
           <div class="result-qr-text"><strong>행사 당일 체크인 QR</strong><p>접수 데스크에서 이 화면을 보여주세요. 직원이 카메라로 찍으면 바로 출석 처리됩니다.</p></div>

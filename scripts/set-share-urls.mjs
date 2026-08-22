@@ -11,6 +11,7 @@
  * 몇 번을 실행해도 결과는 같습니다.
  */
 import fs from 'node:fs/promises';
+import fsSync from 'node:fs';
 import path from 'node:path';
 
 const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
@@ -70,6 +71,27 @@ for (const file of files) {
     source = source.replace(
       /^([ \t]*)(<meta property="og:url" content="[^"]*">\n)/m,
       `$1<link rel="canonical" href="${canonical}">\n$1$2`
+    );
+  }
+
+  // hreflang: 한국어 페이지와 /en/ 페이지를 서로 연결한다. 짝이 없는 페이지(관리자 등)는 건너뛴다.
+  const isEn = rel.startsWith('en/');
+  const koRel = isEn ? rel.slice(3) : rel;
+  const enRel = `en/${koRel}`;
+  const hasPair = isEn ? true : fsSync.existsSync(path.join(root, enRel));
+  source = source.replace(/^[ \t]*<link rel="alternate" hreflang="[^"]*" href="[^"]*">\n/gm, '');
+  if (hasPair) {
+    const koClean = koRel === 'index.html' ? '' : koRel.replace(/\/index\.html$/, '').replace(/\.html$/, '');
+    const koUrl = `${base}/${koClean}`;
+    const enUrl = `${base}/en${koClean ? `/${koClean}` : ''}`;
+    const tags = [
+      `<link rel="alternate" hreflang="ko" href="${koUrl}">`,
+      `<link rel="alternate" hreflang="en" href="${enUrl}">`,
+      `<link rel="alternate" hreflang="x-default" href="${koUrl}">`
+    ];
+    source = source.replace(
+      /^([ \t]*)(<link rel="canonical" href="[^"]*">\n)/m,
+      (m, indent, line) => `${indent}${line}${tags.map((t) => `${indent}${t}\n`).join('')}`
     );
   }
 

@@ -29,26 +29,36 @@
     { label: '제주콘텐츠진흥원 Facebook', icon: 'ri-facebook-fill', href: 'https://www.facebook.com/JejuContentsAgency/' }
   ];
 
-  // 영문 사이트가 준비되면 href를 채우고 enabled를 true로 바꾸세요.
-  const englishSite = { enabled: false, href: '' };
-
-  const base = window.location.pathname.replace(/\\/g, '/').includes('/meetup/') ? '../' : '';
+  // 언어: <html lang="en"> 이면 영문판. 영문 페이지는 /en/ 아래에 있고 같은 JS를 쓴다.
+  const LANG = document.documentElement.lang === 'en' ? 'en' : 'ko';
+  const LANG_PREFIX = LANG === 'en' ? 'en/' : '';
   const page = document.body.dataset.page || '';
 
+  /**
+   * 내부 링크는 항상 사이트 루트 기준 절대 경로로 만든다.
+   * cleanUrls 환경에서 /meetup(디렉터리 index)과 /en/... 처럼 깊이가 다른 페이지가
+   * 섞여 있어 상대 경로는 깨지기 쉽다. 'index.html' -> '/', 'meetup/index.html' -> '/meetup'.
+   */
   function link(path) {
-    if (!path || path.startsWith('http') || path.startsWith('#')) return path;
-    // Vercel cleanUrls에 맞춰 확장자 없는 주소로 통일한다.
-    // 'index.html' -> './', 'meetup/index.html' -> 'meetup', 'about.html#x' -> 'about#x'
-    let clean = path
-      .replace(/(^|\/)index\.html(?=[#?]|$)/, (m, p1) => (p1 === '/' ? '' : './'))
-      .replace(/\.html(?=[#?]|$)/, '');
-    if (clean === './') return base || './';
-    return base + clean;
+    if (!path || path.startsWith('http') || path.startsWith('#') || path.startsWith('/')) return path;
+    const clean = path
+      .replace(/(^|\/)index\.html(?=[#?]|$)/, '$1')
+      .replace(/\.html(?=[#?]|$)/, '')
+      .replace(/\/$/, '');
+    const out = `/${LANG_PREFIX}${clean}`.replace(/\/+$/, '');
+    return out || '/';
   }
 
   function asset(path) {
-    if (!path || path.startsWith('http') || path.startsWith('/')) return path;
-    return base + path;
+    if (!path || path.startsWith('http') || path.startsWith('/') || path.startsWith('data:')) return path;
+    return `/${path}`;
+  }
+
+  /** 같은 페이지의 다른 언어 주소. /en/about <-> /about */
+  function altLangHref() {
+    const here = window.location.pathname.replace(/\/index\.html$/, '/').replace(/\.html$/, '');
+    if (LANG === 'en') return here.replace(/^\/en(?=\/|$)/, '') || '/';
+    return here === '/' ? '/en/' : `/en${here}`;
   }
 
   function isActive(item) {
@@ -113,13 +123,11 @@
             <div class="nav-menu">${desktopNav}</div>
           </nav>
           <div class="header-actions">
-            ${englishSite.enabled && englishSite.href ? `
             <div class="language-switch" aria-label="Language">
-              <span aria-current="true">KR</span>
-              <span>|</span>
-              <a href="${englishSite.href}">EN</a>
+              ${LANG === 'en'
+                ? `<a href="${altLangHref()}" hreflang="ko" lang="ko">KR</a><span>|</span><span aria-current="true">EN</span>`
+                : `<span aria-current="true">KR</span><span>|</span><a href="${altLangHref()}" hreflang="en" lang="en">EN</a>`}
             </div>
-            ` : ''}
             <a class="header-cta" href="${link('register.html')}">
               <i class="ri-edit-box-line" aria-hidden="true"></i>
               참가 신청
@@ -135,6 +143,11 @@
             <div class="mobile-menu-bottom">
               <p>JGCF 2026 참가 신청과 비즈니스 밋업 예약을 확인하세요.</p>
               <a class="ui-button" href="${link('register.html')}">Registration</a>
+              <div class="language-switch mobile-language-switch" aria-label="Language" data-no-i18n>
+                ${LANG === 'en'
+                  ? `<a href="${altLangHref()}" hreflang="ko" lang="ko">한국어</a><span>|</span><span aria-current="true">English</span>`
+                  : `<span aria-current="true">한국어</span><span>|</span><a href="${altLangHref()}" hreflang="en" lang="en">English</a>`}
+              </div>
             </div>
           </div>
         </div>
@@ -414,9 +427,11 @@
   }
 
   window.JGCFCommon = {
+    lang: LANG,
+    altLangHref,
     bindCopyNumber,
     renderCheckinQr,
-    base,
+    base: "/",
     link,
     asset,
     toast,

@@ -18,12 +18,20 @@ const PAGES = [
 ];
 const today = new Date().toISOString().slice(0, 10);
 const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${PAGES.map(([p, pr]) => `  <url><loc>${base}/${p}</loc><lastmod>${today}</lastmod><priority>${pr.toFixed(1)}</priority></url>`).join('\n')}
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+${PAGES.flatMap(([p, pr]) => {
+  const ko = `${base}/${p}`;
+  const en = `${base}/en${p ? `/${p}` : ''}`;
+  const alt = `<xhtml:link rel="alternate" hreflang="ko" href="${ko}"/><xhtml:link rel="alternate" hreflang="en" href="${en}"/>`;
+  return [
+    `  <url><loc>${ko}</loc><lastmod>${today}</lastmod><priority>${pr.toFixed(1)}</priority>${alt}</url>`,
+    `  <url><loc>${en}</loc><lastmod>${today}</lastmod><priority>${Math.max(0.1, pr - 0.1).toFixed(1)}</priority>${alt}</url>`
+  ];
+}).join('\n')}
 </urlset>
 `;
 await fs.writeFile(path.join(root, 'sitemap.xml'), xml);
 const robots = path.join(root, 'robots.txt');
 const r = await fs.readFile(robots, 'utf8');
 await fs.writeFile(robots, r.replace(/Sitemap: .*/, `Sitemap: ${base}/sitemap.xml`));
-console.log(`sitemap.xml ${PAGES.length}개 URL, robots.txt 갱신 (${base})`);
+console.log(`sitemap.xml ${PAGES.length * 2}개 URL(ko+en), robots.txt 갱신 (${base})`);

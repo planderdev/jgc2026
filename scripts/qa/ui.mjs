@@ -3,7 +3,7 @@
  * clean URL, 헤더 중앙정렬, GNB 활성 상태, About 드롭다운 클릭, 모바일 메뉴 접근성,
  * 홈 섹션 순서, 연사 카드 크기, 푸터 배치, /meetup 상대 링크.
  */
-import { baseUrl, newPage, runSuite } from './lib.mjs';
+import { baseUrl, newPage, runSuite, EN_ROUTES } from './lib.mjs';
 
 export default () => runSuite('UI 회귀', async ({ browser, r }) => {
   const base = baseUrl();
@@ -53,6 +53,40 @@ export default () => runSuite('UI 회귀', async ({ browser, r }) => {
   await page.goto(`${base}/meetup`, { waitUntil: 'load' }); await page.waitForTimeout(700);
   const meetHrefs = await page.evaluate(() => [...document.querySelectorAll('.meetup-hero-actions a')].map((a) => a.href));
   r.check(meetHrefs.every((h) => /\/meetup\/(reserve|confirm)$/.test(h)), '/meetup 히어로 링크 절대 경로', meetHrefs.map((h) => new URL(h).pathname).join(', '));
+  // 영문판: 남은 한국어가 없어야 하고, 언어 스위치가 서로를 가리켜야 한다
+  {
+    const leftovers = [];
+    for (const route of EN_ROUTES) {
+      await page.goto(`${base}/${route.replace(/\/index\.html$/, '').replace(/\.html$/, '')}`, { waitUntil: 'load' });
+      await page.waitForTimeout(500);
+      const found = await page.evaluate(() => {
+        const out = [];
+        const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+        let n;
+        while ((n = walker.nextNode())) {
+          if (n.parentElement.closest('script,style,[data-no-i18n]')) continue;
+          const t = n.nodeValue.replace(/\s+/g, ' ').trim();
+          if (/[가-힣]/.test(t)) out.push(t.slice(0, 40));
+        }
+        document.querySelectorAll('[placeholder],[title],[aria-label],[alt]').forEach((e) => {
+          if (e.closest('[data-no-i18n]')) return;
+          for (const a of ['placeholder', 'title', 'aria-label', 'alt']) { const v = e.getAttribute(a); if (v && /[가-힣]/.test(v)) out.push(`${a}=${v.slice(0, 40)}`); }
+        });
+        if (/[가-힣]/.test(document.title)) out.push(`TITLE=${document.title}`);
+        return out;
+      });
+      found.forEach((t) => leftovers.push(`${route}: ${t}`));
+    }
+    r.check(leftovers.length === 0, 'EN 페이지에 한글 없음', leftovers.length ? leftovers.slice(0, 3).join(' | ') : `${EN_ROUTES.length}페이지`);
+    await page.goto(`${base}/en/about`, { waitUntil: 'load' }); await page.waitForTimeout(300);
+    const toKo = await page.locator('.desktop-nav ~ .header-actions .language-switch a, .header-actions .language-switch a').first().getAttribute('href').catch(() => '');
+    await page.goto(`${base}/about`, { waitUntil: 'load' }); await page.waitForTimeout(300);
+    const toEn = await page.locator('.header-actions .language-switch a').first().getAttribute('href').catch(() => '');
+    r.check(toKo === '/about' && toEn === '/en/about', '언어 스위치가 같은 페이지를 가리킴', `${toKo} ↔ ${toEn}`);
+    const hl = await page.locator('link[rel="alternate"][hreflang="en"]').getAttribute('href').catch(() => '');
+    r.check(/\/en\/about$/.test(hl || ''), 'hreflang 교차 링크', hl || '');
+  }
+
   // 404·robots·sitemap (로컬 서버는 404.html을 쓰지 않으므로 배포 대상에서만 의미가 있다)
   const nf = await page.goto(`${base}/no-such-page-${Date.now()}`, { waitUntil: 'load' });
   const nfTitle = await page.title();

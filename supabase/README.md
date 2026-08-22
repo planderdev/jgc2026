@@ -132,3 +132,12 @@ npm run build && git commit -am "chore: 공유 주소를 2026jejugcf.com 으로"
 ```
 
 `jgc2026.vercel.app` 주소는 그대로 남아 새 도메인으로 자동 리다이렉트됩니다.
+
+## 영문판 (/en/)
+
+- `en/` 아래 페이지는 **생성물**입니다. 한국어 HTML을 고친 뒤 `node scripts/build-en.mjs`를
+  실행하고, 이어서 `node scripts/set-share-urls.mjs <base>`로 canonical·hreflang을 다시 맞춥니다.
+- 본문 번역은 `assets/js/i18n.en.js`의 사전(한국어 → 영어)이 런타임에 적용합니다. 새 문구를
+  넣었으면 사전에도 추가하세요. 빠진 문구는 `npm run qa`의 "EN 페이지에 한글 없음" 검사가 잡습니다.
+- DB에는 항상 한국어 기관명이 저장됩니다(화면 표시만 번역). 관리자·기관 화면은 한국어 그대로입니다.
+- 기관·기업 영문명은 공식 표기가 확인된 것 외에는 로마자 표기이므로, 기관 확인 후 사전에서 고치세요.

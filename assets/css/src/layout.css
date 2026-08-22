@@ -186,8 +186,17 @@
   font-weight: var(--font-weight-extrabold);
 }
 
-.language-switch span {
+.language-switch span,
+.language-switch a {
   opacity: 0.45;
+}
+
+.language-switch [aria-current] {
+  opacity: 1;
+}
+
+.language-switch a:hover {
+  opacity: 1;
 }
 
 .header-cta {

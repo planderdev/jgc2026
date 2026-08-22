@@ -15,6 +15,12 @@
     display: none;
   }
 
+  .mobile-language-switch {
+    display: inline-flex;
+    margin-top: var(--space-16);
+    font-size: var(--font-size-15);
+  }
+
 }
 
 @media (max-width: 1024px) {
