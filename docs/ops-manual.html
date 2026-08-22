@@ -1,0 +1,288 @@
+<title>JGCF 2026 사무국 운영 매뉴얼</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+
+<style>
+:root {
+  --ground: #F6F5F2;
+  --surface: #FFFFFF;
+  --surface-2: #FBFAF7;
+  --ink: #1B1A17;
+  --ink-2: #55524A;
+  --ink-3: #8A867C;
+  --line: #E4E1D9;
+  --line-2: #CFCBC0;
+  --accent: #5537D8;
+  --accent-bg: #EEEAFB;
+  --warn: #8F5400;
+  --warn-bg: #FBF1DF;
+  --good: #1C6549;
+  --good-bg: #E4F1EA;
+  --f-sans: "IBM Plex Sans KR", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ground: #141311; --surface: #1D1C19; --surface-2: #232220; --ink: #ECEAE4; --ink-2: #ADA99E;
+    --ink-3: #7E7A70; --line: #2F2E2A; --line-2: #403E38; --accent: #A38EFF; --accent-bg: #2A2540;
+    --warn: #EAB767; --warn-bg: #32281A; --good: #74D6A9; --good-bg: #163026;
+  }
+}
+:root[data-theme="dark"] {
+  --ground: #141311; --surface: #1D1C19; --surface-2: #232220; --ink: #ECEAE4; --ink-2: #ADA99E;
+  --ink-3: #7E7A70; --line: #2F2E2A; --line-2: #403E38; --accent: #A38EFF; --accent-bg: #2A2540;
+  --warn: #EAB767; --warn-bg: #32281A; --good: #74D6A9; --good-bg: #163026;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--ground); color: var(--ink); font-family: var(--f-sans); font-size: 15.5px; line-height: 1.7; word-break: keep-all; -webkit-font-smoothing: antialiased; }
+.wrap { max-width: 880px; margin: 0 auto; padding: 56px 24px 96px; }
+.eyebrow { font-family: var(--f-mono); font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--accent); }
+h1 { margin: 10px 0 12px; font-size: clamp(30px, 5vw, 42px); font-weight: 700; letter-spacing: -.02em; line-height: 1.15; text-wrap: balance; }
+.lede { margin: 0 0 36px; color: var(--ink-2); max-width: 62ch; font-size: 16.5px; }
+.toc { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); margin-bottom: 56px; }
+.toc a { display: block; padding: 12px 14px; background: var(--surface); color: var(--ink); text-decoration: none; font-weight: 500; font-size: 14px; }
+.toc a:hover { background: var(--surface-2); }
+.toc a small { display: block; color: var(--ink-3); font-family: var(--f-mono); font-size: 10px; letter-spacing: .1em; margin-bottom: 3px; }
+section { margin-bottom: 64px; }
+h2 { margin: 0 0 18px; font-size: 22px; font-weight: 700; letter-spacing: -.01em; padding-bottom: 10px; border-bottom: 2px solid var(--ink); }
+h2 small { font-family: var(--f-mono); font-size: 11px; color: var(--ink-3); letter-spacing: .1em; margin-right: 12px; font-weight: 500; }
+h3 { margin: 30px 0 10px; font-size: 16.5px; font-weight: 600; }
+p { margin: 0 0 14px; max-width: 68ch; }
+ul, ol { margin: 0 0 16px; padding-left: 22px; max-width: 68ch; }
+li { margin-bottom: 6px; }
+li::marker { color: var(--ink-3); }
+code { font-family: var(--f-mono); font-size: .88em; background: var(--surface-2); border: 1px solid var(--line); padding: 1px 5px; border-radius: 3px; }
+a { color: var(--accent); }
+.kv { display: grid; grid-template-columns: 150px 1fr; gap: 0; border: 1px solid var(--line); background: var(--surface); margin: 0 0 20px; }
+.kv > div { padding: 11px 14px; border-bottom: 1px solid var(--line); }
+.kv > div:nth-last-child(-n+2) { border-bottom: 0; }
+.kv > div:nth-child(odd) { color: var(--ink-3); font-family: var(--f-mono); font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase; background: var(--surface-2); }
+.tbl-scroll { overflow-x: auto; border: 1px solid var(--line); background: var(--surface); margin-bottom: 20px; }
+table { border-collapse: collapse; width: 100%; min-width: 520px; font-size: 14px; }
+th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-family: var(--f-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); font-weight: 500; background: var(--surface-2); white-space: nowrap; }
+tr:last-child td { border-bottom: 0; }
+.callout { border-left: 3px solid var(--accent); background: var(--accent-bg); padding: 12px 16px; margin: 16px 0 20px; max-width: 72ch; }
+.callout.warn { border-color: var(--warn); background: var(--warn-bg); }
+.callout.good { border-color: var(--good); background: var(--good-bg); }
+.callout p:last-child { margin-bottom: 0; }
+.callout b { font-weight: 600; }
+.steps { counter-reset: s; list-style: none; padding: 0; max-width: 72ch; }
+.steps li { counter-increment: s; position: relative; padding: 10px 0 10px 44px; border-bottom: 1px solid var(--line); }
+.steps li::before { content: counter(s); position: absolute; left: 0; top: 10px; width: 28px; height: 28px; border-radius: 50%; background: var(--ink); color: var(--ground); font-family: var(--f-mono); font-size: 12px; font-weight: 500; display: grid; place-items: center; }
+.steps li:last-child { border-bottom: 0; }
+.qa { border: 1px solid var(--line); background: var(--surface); margin-bottom: 12px; }
+.qa summary { cursor: pointer; padding: 12px 16px; font-weight: 600; list-style: none; }
+.qa summary::-webkit-details-marker { display: none; }
+.qa summary::before { content: "Q"; font-family: var(--f-mono); color: var(--accent); margin-right: 10px; font-size: 12px; }
+.qa div { padding: 0 16px 14px 42px; color: var(--ink-2); }
+.qa div p:last-child { margin-bottom: 0; }
+pre { background: var(--surface); border: 1px solid var(--line); padding: 16px 18px; overflow-x: auto; font-family: var(--f-sans); font-size: 14px; line-height: 1.75; white-space: pre-wrap; max-width: 72ch; margin: 0 0 16px; }
+.timeline { display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); margin-bottom: 20px; }
+.timeline > div { background: var(--surface); display: grid; grid-template-columns: 140px 1fr; }
+.timeline > div > :first-child { padding: 12px 14px; background: var(--surface-2); font-family: var(--f-mono); font-size: 12px; color: var(--ink-2); }
+.timeline > div > :last-child { padding: 12px 14px; }
+.timeline ul { margin: 0; padding-left: 18px; }
+footer { margin-top: 64px; padding-top: 16px; border-top: 1px solid var(--line); font-family: var(--f-mono); font-size: 11px; color: var(--ink-3); letter-spacing: .05em; }
+@media (max-width: 600px) { .kv { grid-template-columns: 1fr; } .kv > div:nth-child(odd) { border-bottom: 0; padding-bottom: 2px; } .timeline > div { grid-template-columns: 1fr; } }
+</style>
+
+<div class="wrap">
+  <div class="eyebrow">JGCF 2026 · 운영사무국</div>
+  <h1>JGCF 2026 사무국 운영 매뉴얼</h1>
+  <p class="lede">행사 사이트의 참가신청과 비즈니스 밋업 예약을 사무국이 직접 운영하기 위한 안내입니다. 개발 지식 없이 읽을 수 있게 썼습니다.</p>
+
+  <nav class="toc" aria-label="목차">
+    <a href="#s1"><small>01</small>사이트 구성과 주소</a>
+    <a href="#s2"><small>02</small>계정</a>
+    <a href="#s3"><small>03</small>관리자 화면 사용법</a>
+    <a href="#s4"><small>04</small>상담기관이 보는 화면</a>
+    <a href="#s5"><small>05</small>운영 규칙</a>
+    <a href="#s6"><small>06</small>운영 타임라인</a>
+    <a href="#s7"><small>07</small>문제 상황 대응</a>
+    <a href="#s8"><small>08</small>상담기관 안내 문구</a>
+  </nav>
+
+  <section id="s1">
+    <h2><small>01</small>사이트 구성과 주소</h2>
+    <div class="kv">
+      <div>공개 사이트</div><div><a href="https://jgc2026.vercel.app">jgc2026.vercel.app</a> — 행사 안내, 참가신청, 밋업 예약·조회</div>
+      <div>관리자 화면</div><div><a href="https://jgc2026.vercel.app/admin">jgc2026.vercel.app/admin</a> — 사무국과 상담기관이 같은 주소로 로그인하며 계정에 따라 화면이 달라집니다</div>
+      <div>참가신청</div><div>/register — 기업·일반·학생 구분, 신청 즉시 접수, 신청번호 발급</div>
+      <div>밋업 예약</div><div>/meetup/reserve — 상담기관 20곳 중 선택, 15분 단위, 신청 즉시 확정</div>
+      <div>예약 조회·취소</div><div>/meetup/confirm — 예약번호 + 담당자 연락처로 본인 확인</div>
+      <div>데이터 저장소</div><div>Supabase (서울 리전). 평소에는 들어갈 일이 없고, 아래 "문제 상황 대응"의 몇 가지 경우에만 씁니다</div>
+    </div>
+    <div class="callout">
+      <p><b>사이트 수정은 GitHub에 올리면 자동 배포됩니다.</b> 문구·이미지 변경은 개발 담당에게 요청하세요. 보통 수 분 안에 반영됩니다.</p>
+    </div>
+  </section>
+
+  <section id="s2">
+    <h2><small>02</small>계정</h2>
+    <h3>사무국 계정 (2개)</h3>
+    <p>전체 예약·참가신청을 보고, 검색·필터·엑셀 내려받기·대신 취소·첨부 소개서 열람이 가능합니다. 자격증명은 <b>운영계정 엑셀 파일</b>(JGCF2026-운영계정.xlsx)의 "사무국 계정" 시트에 있습니다.</p>
+    <h3>상담기관 계정 (20개)</h3>
+    <p>기관마다 하나씩, <code>기관아이디@2026jejugcf.com</code> 형식입니다. 자기 기관에 매칭된 <b>확정 예약만</b> 보이고 읽기 전용입니다. 같은 엑셀의 "상담기관 계정" 시트에 있습니다.</p>
+    <div class="callout warn">
+      <p><b>각 기관에는 그 기관의 행만 전달하세요.</b> 엑셀을 통째로 보내면 한 기관이 다른 19곳 계정으로 들어가 남의 신청 기업 연락처와 소개서를 볼 수 있습니다.</p>
+    </div>
+    <h3>비밀번호를 잊었을 때</h3>
+    <p>계정 도메인(2026jejugcf.com)이 아직 등록 전이라 <b>비밀번호 재설정 메일이 가지 않습니다.</b> 사무국이 직접 새 비밀번호를 지정해 전달합니다.</p>
+    <ol class="steps">
+      <li>Supabase 대시보드 → <b>Authentication → Users</b></li>
+      <li>해당 계정 검색 → 우측 메뉴 → <b>Reset password</b> → 새 비밀번호 입력</li>
+      <li>담당자에게 전달하고 운영계정 엑셀도 갱신</li>
+    </ol>
+  </section>
+
+  <section id="s3">
+    <h2><small>03</small>관리자 화면 사용법</h2>
+    <p><a href="https://jgc2026.vercel.app/admin">/admin</a>에서 사무국 계정으로 로그인하면 탭 3개가 보입니다.</p>
+    <div class="tbl-scroll"><table>
+      <thead><tr><th>탭</th><th>내용</th><th>할 수 있는 것</th></tr></thead>
+      <tbody>
+        <tr><td><b>밋업 예약</b></td><td>전체 예약 (확정·취소 포함)</td><td>상담기관·상태 필터, 검색(기업·담당자·연락처·번호), 소개서 PDF 열기, 건별 <b>취소</b></td></tr>
+        <tr><td><b>행사 참가신청</b></td><td>전체 참가신청</td><td>검색(이름·소속·연락처·번호)</td></tr>
+        <tr><td><b>기관별 현황</b></td><td>상담기관별 확정·취소 건수와 확정 시간대</td><td>빈 기관·몰린 기관 파악</td></tr>
+      </tbody>
+    </table></div>
+    <h3>엑셀로 내려받기</h3>
+    <p>각 탭 우측의 <b>CSV 내려받기</b>를 누르면 현재 보이는 목록(필터·검색 적용 상태)이 파일로 내려옵니다. 엑셀에서 바로 열리며 한글이 깨지지 않습니다.</p>
+    <h3>예약을 대신 취소하기</h3>
+    <p>신청자가 전화로 취소를 요청했거나 예약번호를 잃어버린 경우, 밋업 예약 탭에서 해당 행의 <b>취소</b>를 누르고 확인하면 됩니다. 취소 즉시 그 시간대가 다른 신청자에게 다시 열립니다. 취소 사유는 따로 기록되지 않으니 필요하면 별도 메모를 남기세요.</p>
+    <div class="callout">
+      <p>화면의 숫자는 <b>새로고침</b>을 눌러야 최신이 됩니다. 신청이 들어오는 중에 보고 있다면 한 번씩 눌러 주세요.</p>
+    </div>
+  </section>
+
+  <section id="s4">
+    <h2><small>04</small>상담기관이 보는 화면</h2>
+    <p>기관 계정으로 같은 주소에 로그인하면 탭·필터·취소 버튼 없이 <b>자기 기관의 확정 예약 목록</b>만 시간순으로 보입니다. 항목은 상담시간·신청 기업·담당자·연락처·메일·상담 내용·소개서 PDF이며, 이것은 개인정보처리방침에 명시한 제3자 제공 범위와 같습니다.</p>
+    <ul>
+      <li>취소된 예약은 기관 화면에서 <b>즉시 사라집니다</b> — 취소한 신청자의 정보는 더 이상 제공되지 않습니다</li>
+      <li>기관은 예약을 취소하거나 수정할 수 없습니다 — 변경은 신청자 본인(마감 전) 또는 사무국만</li>
+      <li>기관도 CSV 내려받기가 가능합니다 (자기 목록만)</li>
+    </ul>
+  </section>
+
+  <section id="s5">
+    <h2><small>05</small>운영 규칙</h2>
+    <p>아래 규칙은 전부 시스템이 자동으로 강제합니다. 사무국이 수동으로 지킬 필요는 없고, 문의가 왔을 때 설명할 수 있으면 됩니다.</p>
+    <div class="tbl-scroll"><table>
+      <thead><tr><th>항목</th><th>규칙</th></tr></thead>
+      <tbody>
+        <tr><td>확정 방식</td><td>승인 절차 없이 <b>신청 즉시 자동 확정</b></td></tr>
+        <tr><td>밋업 시간</td><td>10:00~17:45, 15분 단위 32슬롯 중 <b>점심 12:00~12:45 제외 28슬롯</b> × 기관 20곳</td></tr>
+        <tr><td>슬롯 중복</td><td>같은 기관·같은 시간은 <b>한 건만</b>. 두 사람이 동시에 눌러도 한 명만 성공하고 나머지는 "방금 마감" 안내를 받습니다</td></tr>
+        <tr><td>중복 신청</td><td>같은 <b>메일 또는 연락처</b>로는 밋업 한 건만. 같은 회사의 <b>다른 담당자</b>는 각각 신청 가능</td></tr>
+        <tr><td>밋업 마감</td><td><b>9월 15일(화) 자정</b>까지 예약·취소 가능. 이후엔 사무국 대신 취소만 가능</td></tr>
+        <tr><td>참가신청 마감</td><td><b>9월 16일(수) 18:00</b>(행사 종료)까지. 당일 현장 방문자도 모바일로 신청 가능. 정원 없음</td></tr>
+        <tr><td>예약번호</td><td><code>JGCF-2026-XXXXXX</code> 난수 6자리 (순번 아님). 조회·취소에는 번호 + 담당자 연락처가 모두 필요</td></tr>
+        <tr><td>소개서 첨부</td><td>PDF, 5MB 이하. 사무국과 해당 기관만 열람</td></tr>
+        <tr><td>개인정보 보유</td><td>행사 종료 후 1년(2027-09-16)까지. 상담기관 제공분은 행사 종료 즉시 파기</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section id="s6">
+    <h2><small>06</small>운영 타임라인</h2>
+    <div class="timeline">
+      <div><div>모집 오픈 전</div><div><ul>
+        <li>관리자 화면에 테스트 데이터가 남아 있지 않은지 확인 (밋업 예약·참가신청 탭이 비어 있어야 함)</li>
+        <li>사무국 계정 2개로 로그인되는지 확인</li>
+        <li>상담기관 20곳에 계정 개별 전달 (08 문구 참고)</li>
+      </ul></div></div>
+      <div><div>모집 기간</div><div><ul>
+        <li>기관별 현황 탭으로 빈 기관·몰린 기관 파악 → 필요하면 홍보 조정</li>
+        <li>문의 대응: 07 참고</li>
+      </ul></div></div>
+      <div><div>9/15 (화) 자정</div><div><ul>
+        <li>밋업 예약·취소 자동 마감. 이후 신청자는 사이트에서 "접수 마감" 안내를 봅니다</li>
+        <li>기관별 현황 CSV를 내려받아 <b>최종 명단을 상담기관에 일괄 안내</b> (기관은 자기 화면에서도 볼 수 있음)</li>
+      </ul></div></div>
+      <div><div>9/16 (수) 당일</div><div><ul>
+        <li>당일 취소·변경 요청은 사무국이 관리자 화면에서 대신 취소</li>
+        <li>참가신청은 18:00까지 계속 열려 있음 — 현장 방문자에게 QR로 /register 안내 가능</li>
+      </ul></div></div>
+      <div><div>행사 종료 후</div><div><ul>
+        <li>상담기관에 제공 자료 파기 요청 (방침에 "행사 종료 즉시 파기"로 명시됨)</li>
+        <li>2027-09-16 보유기간 만료 시 Supabase 프로젝트 삭제로 전체 파기</li>
+      </ul></div></div>
+    </div>
+  </section>
+
+  <section id="s7">
+    <h2><small>07</small>문제 상황 대응</h2>
+
+    <details class="qa" open><summary>신청자가 예약번호를 잃어버렸어요</summary><div>
+      <p>관리자 화면 밋업 예약 탭에서 <b>담당자 이름이나 연락처로 검색</b>해 예약번호를 알려주세요. 본인 확인은 신청 시 입력한 연락처로 합니다.</p>
+    </div></details>
+
+    <details class="qa"><summary>신청자가 전화로 취소해 달래요</summary><div>
+      <p>마감 전이면 본인이 /meetup/confirm에서 직접 취소할 수 있다고 안내하고, 어렵다고 하면 관리자 화면에서 <b>대신 취소</b>하세요. 마감 후에는 사무국만 취소할 수 있습니다.</p>
+    </div></details>
+
+    <details class="qa"><summary>"이미 예약이 있습니다"라고 떠서 못 한대요</summary><div>
+      <p>같은 메일 또는 연락처로 이미 확정 예약이 있는 경우입니다. 관리자 화면에서 그 연락처를 검색하면 기존 예약이 보입니다. 바꾸고 싶어 하면 기존 건을 취소한 뒤 다시 신청하도록 안내하세요. <b>한 담당자당 한 건</b>이 원칙입니다.</p>
+    </div></details>
+
+    <details class="qa"><summary>원하는 시간이 마감이래요 / 방금 마감됐다고 떠요</summary><div>
+      <p>그 기관·시간에 이미 확정 예약이 있는 겁니다. 시스템이 중복을 막은 것이니 정상입니다. 다른 시간이나 다른 기관을 안내하세요. 기관별 현황 탭에서 빈 시간대를 바로 확인할 수 있습니다.</p>
+    </div></details>
+
+    <details class="qa"><summary>마감 후에 예약을 바꿔 달래요</summary><div>
+      <p>마감(9/15 자정) 후 신청자는 사이트에서 취소할 수 없습니다. 사무국이 관리자 화면에서 대신 취소할 수 있으나, <b>새 예약은 마감 후 누구도 만들 수 없습니다.</b> 변경이 꼭 필요하면 해당 상담기관과 직접 조율해 주세요.</p>
+    </div></details>
+
+    <details class="qa"><summary>상담기관이 비밀번호를 잊었어요</summary><div>
+      <p>02의 "비밀번호를 잊었을 때" 절차대로 Supabase 대시보드에서 새 비밀번호를 지정해 전달하세요. 재설정 메일은 가지 않습니다.</p>
+    </div></details>
+
+    <details class="qa"><summary>상담기관이 "내 화면에 예약이 안 보여요"라고 해요</summary><div>
+      <p>기관 화면에는 <b>확정 상태의 예약만</b> 보입니다. 관리자 화면 밋업 예약 탭에서 그 기관으로 필터해 확정 건이 있는지 확인하세요. 신청자가 취소했으면 기관 화면에서 사라지는 게 맞습니다. 확정 건이 있는데도 안 보인다면 다른 기관 계정으로 로그인한 것일 수 있습니다 — 화면 상단의 기관명을 확인하세요.</p>
+    </div></details>
+
+    <details class="qa"><summary>사이트가 안 열려요</summary><div>
+      <p>먼저 다른 기기나 네트워크에서도 같은지 확인하세요. 사무국 쪽 네트워크 문제인 경우가 많습니다. 사이트 자체 장애면 개발 담당에게 연락하세요. 이미 들어온 예약·신청 데이터는 사이트와 별도 저장소에 있어 사이트 장애로 사라지지 않습니다.</p>
+    </div></details>
+
+    <details class="qa"><summary>신청 내역을 한꺼번에 지우고 싶어요 (테스트 데이터 등)</summary><div>
+      <p>관리자 화면에는 삭제 기능이 없습니다(실수 방지). Supabase 대시보드 → SQL Editor에서 개발 담당이 준 정리 SQL을 실행하세요. 실제 모집 데이터는 보유기간 전에 지우지 마세요.</p>
+    </div></details>
+  </section>
+
+  <section id="s8">
+    <h2><small>08</small>상담기관 안내 문구</h2>
+    <p>계정을 전달할 때 쓸 메일 본문입니다. 괄호 부분만 채우세요.</p>
+<pre>[JGCF 2026] 비즈니스 밋업 상담 일정 확인 계정 안내
+
+(기관명) 담당자님, 안녕하세요. 2026 제주글로벌콘텐츠포럼 운영사무국입니다.
+
+9월 16일(수) 비즈니스 밋업에서 귀 기관과 상담을 신청한 기업의 일정과 자료를
+아래 페이지에서 직접 확인하실 수 있습니다.
+
+  주소: https://jgc2026.vercel.app/admin
+  아이디: (기관아이디)@2026jejugcf.com
+  비밀번호: (비밀번호)
+
+로그인하시면 귀 기관에 배정된 확정 예약이 시간순으로 보이며, 신청 기업의
+회사 소개서(PDF)를 내려받아 상담을 준비하실 수 있습니다.
+
+· 예약 접수는 9월 15일(화) 자정에 마감됩니다. 그 전까지는 목록이 바뀔 수 있습니다.
+· 마감 후 최종 명단을 별도로 다시 안내드립니다.
+· 제공되는 기업 정보는 상담 목적으로만 사용하시고, 행사 종료 후 파기해 주시기 바랍니다.
+· 비밀번호를 잊으신 경우 사무국으로 연락 주시면 재발급해 드립니다.
+
+문의: 제주콘텐츠진흥원 064-735-0677
+
+감사합니다.
+2026 제주글로벌콘텐츠포럼 운영사무국</pre>
+    <div class="callout good">
+      <p>마감 후 최종 명단 안내 때는 기관별 현황 CSV에서 해당 기관 행만 추려 첨부하거나, "로그인하여 확인"으로 갈음할 수 있습니다.</p>
+    </div>
+  </section>
+
+  <footer>JGCF 2026 운영 매뉴얼 · 2026-08-23 · 사이트 jgc2026.vercel.app · 문의 064-735-0677</footer>
+</div>
