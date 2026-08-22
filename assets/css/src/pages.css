@@ -2113,6 +2113,123 @@
   font-weight: var(--font-weight-black);
 }
 
+/* 예약 조회·취소 */
+.lookup-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-24);
+  margin-bottom: var(--space-32);
+}
+
+.lookup-head .section-subtitle {
+  max-width: 56ch;
+  font-size: var(--font-size-16);
+}
+
+.lookup-card-title {
+  margin: var(--space-0) var(--space-0) var(--space-24);
+  font-size: var(--font-size-20);
+  font-weight: var(--font-weight-black);
+}
+
+.lookup-fields {
+  margin-top: var(--space-0);
+}
+
+.lookup-submit {
+  width: 100%;
+  min-height: 50px;
+  margin-top: var(--space-24);
+}
+
+.lookup-empty {
+  min-height: 240px;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: var(--space-16);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-15);
+  line-height: var(--line-height-section-copy);
+  text-align: center;
+}
+
+.lookup-empty i {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-pill);
+  background: var(--color-bg-muted);
+  color: var(--color-neutral-500);
+  font-size: var(--font-size-24);
+}
+
+.lookup-empty p {
+  margin: var(--space-0);
+}
+
+.lookup-empty.is-error {
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-extrabold);
+}
+
+.lookup-empty.is-error i {
+  background: var(--color-alpha-coral-13);
+  color: var(--color-action-coral);
+}
+
+.lookup-result-head {
+  display: grid;
+  gap: var(--space-8);
+  justify-items: start;
+}
+
+.lookup-result-title {
+  margin: var(--space-8) var(--space-0) var(--space-0);
+  font-size: var(--font-size-24);
+  font-weight: var(--font-weight-black);
+  line-height: var(--line-height-heading);
+}
+
+.lookup-result-when {
+  margin: var(--space-0);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-15);
+}
+
+.lookup-result .confirm-box {
+  margin-top: var(--space-24);
+}
+
+.lookup-result .confirm-row dd {
+  font-weight: var(--font-weight-extrabold);
+}
+
+.result-status.off {
+  background: #faebea;
+  color: #b32a27;
+}
+
+.lookup-result-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-16);
+  margin-top: var(--space-24);
+  padding-top: var(--space-24);
+  border-top: 1px solid var(--color-border-muted);
+}
+
+.lookup-result-actions .form-help {
+  max-width: 44ch;
+}
+
+.lookup-result-actions .ui-button {
+  flex: 0 0 auto;
+}
+
 .lookup-layout {
   display: grid;
   grid-template-columns: 420px minmax(0, 1fr);

@@ -397,36 +397,47 @@
 
     function drawReservation(reservation) {
       current = reservation;
+      const confirmed = reservation.status === 'confirmed';
       result.innerHTML = `
-        <span class="ui-badge">${reservation.status === 'confirmed' ? '예약 확정' : '예약 취소'}</span>
-        <h2 class="side-title">${escapeHtml(reservation.company_name)}</h2>
+        <div class="lookup-result-head">
+          <span class="ui-badge ${confirmed ? 'result-status' : 'result-status off'}">${confirmed ? '예약 확정' : '예약 취소됨'}</span>
+          <h2 class="lookup-result-title">${escapeHtml(reservation.company_name)}</h2>
+          <p class="lookup-result-when">2026. 9. 16. (수) ${escapeHtml(reservation.time_slot)} 상담</p>
+        </div>
         <dl class="confirm-box">
           <div class="confirm-row"><dt>예약번호</dt><dd>${escapeHtml(reservation.reservation_no)}</dd></div>
-          <div class="confirm-row"><dt>시간</dt><dd>${escapeHtml(reservation.time_slot)}</dd></div>
           <div class="confirm-row"><dt>신청 기업</dt><dd>${escapeHtml(reservation.applicant_company)}</dd></div>
           <div class="confirm-row"><dt>담당자</dt><dd>${escapeHtml(reservation.manager_name)}</dd></div>
           <div class="confirm-row"><dt>연락처</dt><dd>${escapeHtml(reservation.phone)}</dd></div>
         </dl>
-        ${reservation.status === 'confirmed'
+        ${confirmed
           ? (open
-            ? '<button class="ui-button ghost" type="button" data-open-cancel>예약 취소</button>'
-            : '<p class="form-help">취소 접수는 행사 전날 자정에 마감되었습니다. 변경이 필요하면 운영사무국에 문의해 주세요.</p>')
-          : ''}
+            ? `<div class="lookup-result-actions">
+                 <p class="form-help">취소하면 해당 시간대가 다른 신청자에게 열립니다. 취소 접수는 9월 15일 자정까지 가능합니다.</p>
+                 <button class="ui-button ghost" type="button" data-open-cancel>예약 취소</button>
+               </div>`
+            : '<div class="lookup-result-actions"><p class="form-help">취소 접수는 행사 전날 자정에 마감되었습니다. 변경이 필요하면 운영사무국(064-735-0677)에 문의해 주세요.</p></div>')
+          : '<div class="lookup-result-actions"><p class="form-help">취소된 예약입니다. 다시 예약하려면 새 예약을 진행해 주세요.</p><a class="ui-button coral" href="reserve">새 예약</a></div>'}
       `;
     }
 
-    function drawMessage(text) {
+    function drawMessage(text, tone = 'error') {
       current = null;
-      result.innerHTML = `<p class="prose-block">${escapeHtml(text)}</p>`;
+      result.innerHTML = `<div class="lookup-empty ${tone === 'error' ? 'is-error' : ''}">
+        <i class="${tone === 'error' ? 'ri-search-line' : 'ri-calendar-check-line'}" aria-hidden="true"></i>
+        <p>${escapeHtml(text)}</p>
+      </div>`;
     }
 
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
       const reservationNo = form.elements.reservationNumber.value;
       const phone = form.elements.phone.value;
+      common().clearInvalid(form);
+      if (!common().reportMissing(form, ['reservationNumber', 'phone'])) return;
 
       submitButton.disabled = true;
-      result.innerHTML = '<p class="prose-block">조회 중입니다…</p>';
+      result.innerHTML = '<div class="lookup-empty"><p>조회 중입니다…</p></div>';
       try {
         const response = await service().findForLookup(reservationNo, phone);
         if (response.ok) {
