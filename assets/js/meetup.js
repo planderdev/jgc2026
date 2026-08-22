@@ -17,6 +17,37 @@
       .replace(/'/g, '&#039;');
   }
 
+  /** 검증에 걸린 필드를 빨갛게 표시하고 아래에 이유를 적는다. 입력이 바뀌면 풀린다. */
+  function markInvalid(form, name, message) {
+    const el = form.elements[name];
+    if (!el) return;
+    const field = el.closest('.form-field, .ui-checkbox');
+    if (!field) return;
+    field.classList.add('is-invalid');
+    let note = field.querySelector('.form-error');
+    if (message && !note) {
+      note = document.createElement('span');
+      note.className = 'form-error';
+      field.appendChild(note);
+    }
+    if (note) note.textContent = message;
+    const clear = () => { field.classList.remove('is-invalid'); note?.remove(); };
+    el.addEventListener('input', clear, { once: true });
+    el.addEventListener('change', clear, { once: true });
+  }
+
+  function clearInvalid(form) {
+    form.querySelectorAll('.is-invalid').forEach((el) => el.classList.remove('is-invalid'));
+    form.querySelectorAll('.form-error').forEach((el) => el.remove());
+  }
+
+  function focusField(form, name) {
+    const el = form.elements[name];
+    if (!el) return;
+    el.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    el.focus({ preventScroll: true });
+  }
+
   function companyById(id) {
     return data().companies.find((company) => company.id === id);
   }
@@ -122,11 +153,27 @@
       state.privacy = form.elements.privacy.checked;
     }
 
+    /** 받침 유무에 따라 '을/를'을 고른다. */
+    const withObjectParticle = (word) => {
+      const code = word.charCodeAt(word.length - 1);
+      const hasFinal = code >= 0xac00 && code <= 0xd7a3 && (code - 0xac00) % 28 !== 0;
+      return `${word}${hasFinal ? '을' : '를'}`;
+    };
+
+    const FIELD_LABEL = {
+      applicantCompany: '신청 기업명', managerName: '담당자 이름', phone: '연락처',
+      email: '메일 주소', inquiry: '상담 신청 내용'
+    };
+
     async function validateCurrentStep() {
+      clearInvalid(form);
       if (step === 1) {
         const selected = form.elements.companyId.value;
         if (!selected) {
-          common().toast('상담을 희망하는 기관을 선택해 주세요.');
+          companyMount.classList.add('is-invalid');
+          companyMount.addEventListener('change', () => companyMount.classList.remove('is-invalid'), { once: true });
+          companyMount.scrollIntoView({ block: 'center', behavior: 'smooth' });
+          common().toast('상담을 희망하는 기관을 하나 선택해 주세요.');
           return false;
         }
         state.companyId = selected;
@@ -135,7 +182,10 @@
       if (step === 2) {
         const selected = form.elements.time.value;
         if (!selected) {
-          common().toast('희망 시간대를 선택해 주세요.');
+          timeMount.classList.add('is-invalid');
+          timeMount.addEventListener('change', () => timeMount.classList.remove('is-invalid'), { once: true });
+          timeMount.scrollIntoView({ block: 'center', behavior: 'smooth' });
+          common().toast('희망 시간대를 하나 선택해 주세요.');
           return false;
         }
         state.time = selected;
@@ -143,23 +193,32 @@
       if (step === 3) {
         collectApplicant();
         const required = ['applicantCompany', 'managerName', 'phone', 'email', 'inquiry'];
-        const missing = required.find((field) => !state[field]);
-        if (missing) {
-          common().toast('필수 신청 정보를 입력해 주세요.');
-          form.elements[missing]?.focus();
+        // 비어 있는 필드를 전부 표시하고, 첫 번째로 이동한다.
+        const missing = required.filter((field) => !state[field]);
+        missing.forEach((field) => markInvalid(form, field, `${withObjectParticle(FIELD_LABEL[field])} 입력해 주세요.`));
+        if (missing.length) {
+          focusField(form, missing[0]);
+          common().toast(missing.length === 1
+            ? `${withObjectParticle(FIELD_LABEL[missing[0]])} 입력해 주세요.`
+            : `입력하지 않은 항목이 ${missing.length}개 있습니다. 빨간 표시를 확인해 주세요.`);
           return false;
         }
         if (!EMAIL_PATTERN.test(state.email)) {
+          markInvalid(form, 'email', '메일 주소 형식이 올바르지 않습니다. 예: name@company.com');
+          focusField(form, 'email');
           common().toast('메일 주소를 정확하게 입력해 주세요.');
-          form.elements.email.focus();
           return false;
         }
         if (!state.attachmentName) {
+          markInvalid(form, 'attachment', '회사 소개서 PDF 파일을 첨부해 주세요.');
+          focusField(form, 'attachment');
           common().toast('회사 소개서 PDF를 첨부해 주세요.');
           return false;
         }
         if (!state.privacy) {
-          common().toast('개인정보 수집 및 이용에 동의해 주세요.');
+          markInvalid(form, 'privacy', '');
+          focusField(form, 'privacy');
+          common().toast('개인정보 제공에 동의해야 예약할 수 있습니다.');
           return false;
         }
         renderConfirm();

@@ -386,22 +386,64 @@
   margin-top: var(--space-24);
 }
 
+/* 알림은 화면 정중앙에 띄운다. 폼 아래쪽에서 작업하던 사용자가 화면 구석의
+   알림을 놓치는 일이 있었다. */
 .toast {
   position: fixed;
-  right: 20px;
-  bottom: 20px;
+  left: 50%;
+  top: 50%;
   z-index: var(--z-toast);
-  min-width: 260px;
-  max-width: 380px;
+  min-width: 280px;
+  max-width: min(440px, calc(100vw - 32px));
   display: none;
-  padding: var(--space-16) var(--space-16);
-  border-radius: var(--radius-sm);
+  padding: var(--space-16) var(--space-24);
+  border-radius: var(--radius-md);
   background: var(--color-action-primary);
   color: var(--color-white);
+  font-size: var(--font-size-16);
   font-weight: var(--font-weight-extrabold);
+  line-height: var(--line-height-base);
+  text-align: center;
   box-shadow: var(--shadow-lg);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
 }
 
 .toast.is-open {
   display: block;
+  animation: toast-in var(--duration-base) var(--ease-default);
+}
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translate(-50%, -50%) scale(0.96); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+/* 검증에 걸린 필드 */
+.form-field.is-invalid .ui-input,
+.form-field.is-invalid .ui-textarea,
+.form-field.is-invalid .ui-file-input,
+.ui-checkbox.is-invalid {
+  border-color: var(--color-action-coral);
+  box-shadow: 0 0 0 3px var(--color-alpha-coral-13);
+}
+
+.ui-checkbox.is-invalid {
+  padding: var(--space-8);
+  margin: calc(var(--space-8) * -1);
+  border: 1px solid var(--color-action-coral);
+  border-radius: var(--radius-sm);
+}
+
+.form-error {
+  color: var(--color-action-coral);
+  font-size: var(--font-size-13);
+  font-weight: var(--font-weight-extrabold);
+}
+
+.choice-grid.is-invalid,
+.time-grid.is-invalid {
+  outline: 2px solid var(--color-action-coral);
+  outline-offset: 8px;
+  border-radius: var(--radius-sm);
 }
