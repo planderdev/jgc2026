@@ -382,7 +382,8 @@
   display: flex;
   flex-direction: column;
   padding: var(--space-32) var(--space-24);
-  background: var(--program-tone);
+  /* 밝은 톤(핑크·노랑) 위 흰 글씨가 4.5:1을 못 넘어, 톤을 유지한 채 45% 어둡게 깐다. */
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.42), rgba(0, 0, 0, 0.5)), var(--program-tone);
   color: var(--color-white);
 }
 
@@ -400,7 +401,7 @@
   padding: var(--space-0) var(--space-16);
   border-radius: var(--radius-sm);
   background: var(--color-white);
-  color: var(--program-tone);
+  color: color-mix(in srgb, var(--program-tone) 55%, black);
   font-size: var(--font-size-16);
   font-weight: var(--font-weight-black);
   line-height: var(--line-height-none);
@@ -418,7 +419,7 @@
   display: -webkit-box;
   margin-top: var(--space-16);
   overflow: hidden;
-  color: var(--color-alpha-white-76);
+  color: var(--color-alpha-white-88, rgba(255, 255, 255, 0.88));
   font-size: var(--font-size-14);
   font-weight: var(--font-weight-semibold);
   line-height: var(--line-height-readable);

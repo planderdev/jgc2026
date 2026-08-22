@@ -107,7 +107,7 @@
     return `
       <div class="swiper-slide">
         <article class="home-event-card home-speaker-card">
-          <a href="${detail}" aria-label="${escapeHtml(speaker.name)} speaker detail">
+          <a href="${detail}" aria-label="${escapeHtml(speaker.name)} 연사 소개 보기">
             <span class="home-event-media">
               <img src="${asset(speaker.image)}" alt="" loading="lazy" decoding="async">
               <span class="home-speaker-track">${escapeHtml(speaker.track)}</span>
