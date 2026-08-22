@@ -326,9 +326,11 @@
     if (!reservation) {
       mount.innerHTML = `
         <div class="result-card">
-          <span class="ui-badge">예약 확인</span>
-          <h1 class="section-title">표시할 예약 정보가 없습니다</h1>
-          <p class="section-subtitle">예약 완료 직후에만 이 화면에서 확인할 수 있습니다. 예약번호와 담당자 연락처로 조회해 주세요.</p>
+          <div class="result-head">
+            <span class="ui-badge">예약 확인</span>
+            <h1 class="result-title">표시할 예약 정보가 없습니다</h1>
+            <p class="result-lead">예약 완료 직후에만 이 화면에서 확인할 수 있습니다. 예약번호와 담당자 연락처로 조회해 주세요.</p>
+          </div>
           <div class="step-actions">
             <a class="ui-button secondary" href="${common().link('meetup/confirm.html')}">예약 조회</a>
             <a class="ui-button coral" href="${common().link('meetup/reserve.html')}">다시 예약하기</a>
@@ -340,23 +342,30 @@
 
     mount.innerHTML = `
       <div class="result-card">
-        <span class="ui-badge">예약 완료</span>
-        <h1 class="section-title">비즈니스 밋업 예약이 완료되었습니다</h1>
-        <div class="reservation-number">${escapeHtml(reservation.reservation_no)}</div>
-        <p class="section-subtitle">예약번호는 조회와 취소에 필요합니다. 담당자 연락처와 함께 보관해 주세요.</p>
+        <div class="result-head">
+          <span class="result-icon" aria-hidden="true"><i class="ri-check-line"></i></span>
+          <h1 class="result-title">비즈니스 밋업 예약이 완료되었습니다</h1>
+          <p class="result-lead">예약번호는 조회와 취소에 필요합니다. 담당자 연락처와 함께 보관해 주세요.</p>
+        </div>
+        <div class="result-number">
+          <span class="result-number-label">예약번호</span>
+          <strong data-copy-source>${escapeHtml(reservation.reservation_no)}</strong>
+          <button class="ui-button ghost" type="button" data-copy-number>복사</button>
+        </div>
         <dl class="confirm-box">
           <div class="confirm-row"><dt>상담기관</dt><dd>${escapeHtml(reservation.company_name)}</dd></div>
-          <div class="confirm-row"><dt>시간</dt><dd>${escapeHtml(reservation.time_slot)}</dd></div>
+          <div class="confirm-row"><dt>상담 시간</dt><dd>2026. 9. 16. (수) ${escapeHtml(reservation.time_slot)}</dd></div>
           <div class="confirm-row"><dt>신청 기업</dt><dd>${escapeHtml(reservation.applicant_company)}</dd></div>
           <div class="confirm-row"><dt>담당자</dt><dd>${escapeHtml(reservation.manager_name)}</dd></div>
-          <div class="confirm-row"><dt>상태</dt><dd>예약 확정</dd></div>
+          <div class="confirm-row"><dt>상태</dt><dd><span class="ui-badge result-status">예약 확정</span></dd></div>
         </dl>
         <div class="step-actions">
-          <a class="ui-button secondary" href="${common().link('meetup/confirm.html')}">예약 조회</a>
+          <a class="ui-button secondary" href="${common().link('meetup/confirm.html')}">예약 조회·취소</a>
           <a class="ui-button coral" href="${common().link('index.html')}">메인으로</a>
         </div>
       </div>
     `;
+    common().bindCopyNumber(mount);
   }
 
   function initConfirm() {

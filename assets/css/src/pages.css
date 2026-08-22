@@ -2006,20 +2006,98 @@
   box-shadow: var(--shadow-md);
 }
 
-body[data-page="registration-complete"] .result-card .ui-badge {
-  margin-bottom: var(--space-16);
+/* 완료 화면: 머리(아이콘·제목·설명)는 가운데, 번호는 눈에 띄는 블록, 내역은 표 */
+.result-head {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-8);
+  text-align: center;
 }
 
-body[data-page="registration-complete"] .result-card .section-title {
-  font-size: var(--font-size-50);
+.result-icon {
+  width: 56px;
+  height: 56px;
+  display: grid;
+  place-items: center;
+  margin-bottom: var(--space-8);
+  border-radius: var(--radius-pill);
+  background: var(--color-action-primary);
+  color: var(--color-white);
+  font-size: var(--font-size-28);
 }
 
-body[data-page="registration-complete"] .reservation-number {
-  font-size: var(--font-size-18);
+.result-title {
+  margin: var(--space-0);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-28);
+  font-weight: var(--font-weight-black);
+  line-height: var(--line-height-heading);
+  text-wrap: balance;
 }
 
-body[data-page="registration-complete"] .confirm-row dd {
-  font-weight: var(--font-weight-regular);
+.result-lead {
+  margin: var(--space-0);
+  max-width: 48ch;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-15);
+  line-height: var(--line-height-section-copy);
+}
+
+.result-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-16);
+  margin-top: var(--space-32);
+  padding: var(--space-16) var(--space-24);
+  border-radius: var(--radius-md);
+  background: var(--color-brand-ink);
+  color: var(--color-white);
+}
+
+.result-number-label {
+  color: var(--color-alpha-white-68);
+  font-size: var(--font-size-13);
+  font-weight: var(--font-weight-extrabold);
+}
+
+.result-number strong {
+  font-size: var(--font-size-24);
+  font-weight: var(--font-weight-black);
+  letter-spacing: 0.02em;
+  user-select: all;
+}
+
+.result-number .ui-button {
+  min-height: 34px;
+  padding: var(--space-0) var(--space-16);
+  border-color: var(--color-alpha-white-18);
+  color: var(--color-white);
+  font-size: var(--font-size-13);
+}
+
+.result-number .ui-button:hover {
+  background: var(--color-white);
+  color: var(--color-brand-ink);
+}
+
+.result-card .confirm-box {
+  margin-top: var(--space-24);
+}
+
+.result-card .confirm-row dd {
+  font-weight: var(--font-weight-extrabold);
+}
+
+.result-status {
+  background: #e5f1eb;
+  color: #1c6549;
+}
+
+.result-card .step-actions {
+  margin-top: var(--space-32);
+  padding-top: var(--space-24);
+  border-top: 1px solid var(--color-border-muted);
 }
 
 .reservation-number {

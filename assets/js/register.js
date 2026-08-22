@@ -156,12 +156,14 @@
     if (!registration) {
       mount.innerHTML = `
         <div class="result-card">
-          <span class="ui-badge">참가신청 확인</span>
-          <h1 class="section-title">표시할 신청 정보가 없습니다</h1>
-          <p class="section-subtitle">신청 완료 직후에만 이 화면에서 확인할 수 있습니다. 참가신청을 진행해 주세요.</p>
+          <div class="result-head">
+            <span class="ui-badge">참가신청 확인</span>
+            <h1 class="result-title">표시할 신청 정보가 없습니다</h1>
+            <p class="result-lead">신청 완료 직후에만 이 화면에서 확인할 수 있습니다. 참가신청을 진행해 주세요.</p>
+          </div>
           <div class="step-actions">
-            <a class="ui-button coral" href="${common().link('register.html')}">참가신청 하기</a>
             <a class="ui-button secondary" href="${common().link('index.html')}">메인으로</a>
+            <a class="ui-button coral" href="${common().link('register.html')}">참가신청 하기</a>
           </div>
         </div>
       `;
@@ -170,16 +172,22 @@
 
     mount.innerHTML = `
       <div class="result-card">
-        <span class="ui-badge">참가신청 완료</span>
-        <h1 class="section-title">행사 참가신청이 완료되었습니다</h1>
-        <div class="reservation-number">${escapeHtml(registration.registration_no)}</div>
-        <p class="section-subtitle">신청번호는 현장 확인 시 필요할 수 있으니 보관해 주세요.</p>
+        <div class="result-head">
+          <span class="result-icon" aria-hidden="true"><i class="ri-check-line"></i></span>
+          <h1 class="result-title">행사 참가신청이 완료되었습니다</h1>
+          <p class="result-lead">신청번호는 현장 확인 시 필요할 수 있으니 보관해 주세요.</p>
+        </div>
+        <div class="result-number">
+          <span class="result-number-label">신청번호</span>
+          <strong data-copy-source>${escapeHtml(registration.registration_no)}</strong>
+          <button class="ui-button ghost" type="button" data-copy-number>복사</button>
+        </div>
         <dl class="confirm-box">
           <div class="confirm-row"><dt>구분</dt><dd>${escapeHtml(registration.type_label)}</dd></div>
           ${registration.organization ? `<div class="confirm-row"><dt>소속</dt><dd>${escapeHtml(registration.organization)}</dd></div>` : ''}
           <div class="confirm-row"><dt>이름</dt><dd>${escapeHtml(registration.name)}</dd></div>
           <div class="confirm-row"><dt>연락처</dt><dd>${escapeHtml(registration.phone)}</dd></div>
-          <div class="confirm-row"><dt>행사 일시</dt><dd>2026. 9. 16. Wed 10:00-18:00</dd></div>
+          <div class="confirm-row"><dt>행사 일시</dt><dd>2026. 9. 16. (수) 10:00–18:00</dd></div>
           <div class="confirm-row"><dt>행사 장소</dt><dd>제주특별자치도 제주시 신산로 82 제주콘텐츠진흥원 내 1층 Be IN; (비인)</dd></div>
         </dl>
         <div class="step-actions">
@@ -188,6 +196,7 @@
         </div>
       </div>
     `;
+    common().bindCopyNumber(mount);
   }
 
   document.addEventListener('DOMContentLoaded', () => {

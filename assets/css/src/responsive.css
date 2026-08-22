@@ -989,6 +989,25 @@
     grid-template-columns: 1fr;
   }
 
+  .result-title {
+    font-size: var(--font-size-22);
+  }
+
+  .result-number {
+    flex-wrap: wrap;
+    gap: var(--space-8) var(--space-16);
+    padding: var(--space-16);
+  }
+
+  .result-number-label {
+    width: 100%;
+    text-align: center;
+  }
+
+  .result-number strong {
+    font-size: var(--font-size-20);
+  }
+
   .event-register-result {
     grid-column: 1 / -1;
   }

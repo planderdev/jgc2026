@@ -376,7 +376,28 @@
     return false;
   }
 
+  /** 완료 화면의 번호 복사 버튼. 클립보드가 막힌 환경이면 번호를 선택 상태로 둔다. */
+  function bindCopyNumber(root) {
+    const button = root.querySelector('[data-copy-number]');
+    const source = root.querySelector('[data-copy-source]');
+    if (!button || !source) return;
+    button.addEventListener('click', async () => {
+      const text = source.textContent.trim();
+      try {
+        await navigator.clipboard.writeText(text);
+        toast(`${text} 를 복사했습니다.`);
+      } catch (error) {
+        const range = document.createRange();
+        range.selectNodeContents(source);
+        const sel = window.getSelection();
+        sel.removeAllRanges(); sel.addRange(range);
+        toast('번호를 길게 눌러 복사해 주세요.');
+      }
+    });
+  }
+
   window.JGCFCommon = {
+    bindCopyNumber,
     base,
     link,
     asset,
