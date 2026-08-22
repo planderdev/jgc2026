@@ -36,8 +36,24 @@
     .admin-mini:hover { border-color: var(--color-action-secondary); color: var(--color-action-secondary); }
     .admin-mini.attend { white-space: nowrap; }
     .admin-mini.attend.on { background: #1c6549; border-color: #1c6549; color: #fff; }
-    .admin-mini.attend.on:hover { background: #b32a27; border-color: #b32a27; }
+    @media (hover: hover) { .admin-mini.attend.on:hover { background: #b32a27; border-color: #b32a27; } }
     .admin-mini[disabled] { opacity: .5; }
+    /* 좁은 화면 카드 목록 */
+    .admin-cards { display: grid; gap: 10px; padding: 10px; }
+    .admin-card { padding: 14px 16px; border: 1px solid var(--color-border-muted); border-radius: var(--radius-md); background: var(--color-white); }
+    .admin-card.is-off { opacity: .6; }
+    .admin-card header { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+    .admin-card header strong { font-size: var(--font-size-18); }
+    .admin-card header .attend { margin-left: auto; padding: 8px 16px; font-size: var(--font-size-14); }
+    .admin-card h4 { margin: 0 0 4px; font-size: var(--font-size-16); }
+    .admin-card h4 small { font-weight: normal; color: var(--color-text-muted); font-size: var(--font-size-14); }
+    .admin-card p { margin: 0 0 2px; font-size: var(--font-size-15); }
+    .admin-card p a { color: var(--color-action-primary); text-decoration: underline; }
+    .admin-card .muted { color: var(--color-text-muted); font-size: var(--font-size-13); word-break: break-all; }
+    .admin-card .inquiry { margin-top: 6px; color: var(--color-text-soft); font-size: var(--font-size-14); white-space: pre-wrap; }
+    .admin-card footer { display: flex; gap: 8px; margin-top: 10px; }
+    .admin-card footer:empty { display: none; }
+    @media (max-width: 900px) { .admin-table-wrap { border: 0; background: transparent; } }
     .admin-error { color: #b32a27; font-size: var(--font-size-14); min-height: 20px; }
     .admin-empty { padding: 48px; text-align: center; color: var(--color-neutral-500); }
 

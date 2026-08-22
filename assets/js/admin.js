@@ -269,6 +269,51 @@
     return table + grid;
   }
 
+  // 좁은 화면(접수 데스크의 태블릿·폰)에서는 14열짜리 표 대신 카드로 보여준다.
+  // 출석 버튼과 연락처가 가로 스크롤 없이 바로 보이는 게 목적이다.
+  const narrow = window.matchMedia('(max-width: 900px)');
+
+  function telLink(phone) {
+    const digits = String(phone || '').replace(/\D/g, '');
+    return digits ? `<a href="tel:${digits}">${esc(phone)}</a>` : esc(phone);
+  }
+
+  function renderCards(rows) {
+    if (mode === 'partner') {
+      return `<div class="admin-cards">${rows.map((r) => `<article class="admin-card">
+        <header><strong>${esc(r.time_slot)}</strong>${attendBadge(r.attended_at)}</header>
+        <h4>${esc(r.applicant_company)}</h4>
+        <p>${esc(r.manager_name)} · ${telLink(r.phone)}</p>
+        <p class="muted">${esc(r.email)}</p>
+        <p class="inquiry">${esc(r.inquiry)}</p>
+        ${r.attachment_path ? `<footer><button class="admin-mini" data-download="${esc(r.attachment_path)}" data-filename="${esc(r.attachment_name || 'file.pdf')}">소개서 PDF</button></footer>` : ''}
+      </article>`).join('')}</div>`;
+    }
+    if (tab === 'reservations') {
+      return `<div class="admin-cards">${rows.map((r) => `<article class="admin-card ${r.status === 'confirmed' ? '' : 'is-off'}">
+        <header><strong>${esc(r.time_slot)}</strong><span class="admin-badge ${r.status === 'confirmed' ? 'ok' : 'off'}">${r.status === 'confirmed' ? '확정' : '취소'}</span>
+          ${r.status === 'confirmed' ? attendButton('reservation', r.reservation_no, r.attended_at) : ''}</header>
+        <h4>${esc(r.applicant_company)} <small>→ ${esc(r.company_name)}</small></h4>
+        <p>${esc(r.manager_name)} · ${telLink(r.phone)}</p>
+        <p class="muted">${esc(r.reservation_no)} · ${esc(r.email)}</p>
+        <p class="inquiry">${esc(r.inquiry)}</p>
+        <footer>
+          ${r.attachment_path ? `<button class="admin-mini" data-download="${esc(r.attachment_path)}" data-filename="${esc(r.attachment_name || 'file.pdf')}">소개서 PDF</button>` : ''}
+          ${r.status === 'confirmed' ? `<button class="admin-mini" data-cancel="${esc(r.reservation_no)}">취소</button>` : ''}
+        </footer>
+      </article>`).join('')}</div>`;
+    }
+    if (tab === 'registrations') {
+      return `<div class="admin-cards">${rows.map((r) => `<article class="admin-card">
+        <header><strong>${esc(TYPE_LABEL[r.participant_type] || r.participant_type)}</strong>${attendButton('registration', r.registration_no, r.attended_at)}</header>
+        <h4>${esc(r.name)}${r.organization ? ` <small>${esc(r.organization)}</small>` : ''}</h4>
+        <p>${telLink(r.phone)}</p>
+        <p class="muted">${esc(r.registration_no)} · ${kst(r.created_at)}</p>
+      </article>`).join('')}</div>`;
+    }
+    return null;
+  }
+
   function render() {
     const rows = currentRows();
     $('[data-count]').textContent = tab === 'overview' ? '' : `${rows.length}건`;
@@ -280,6 +325,11 @@
 
     if (tab === 'overview' && mode !== 'partner') { mount.innerHTML = renderOverview(rows[0]); return; }
     if (!rows.length) { mount.innerHTML = '<p class="admin-empty">표시할 항목이 없습니다.</p>'; return; }
+
+    if (narrow.matches) {
+      const cards = renderCards(rows);
+      if (cards) { mount.innerHTML = cards; return; }
+    }
 
     if (mode === 'partner') {
       // 취소·상태 열이 없다. 파트너에게 오는 것은 전부 확정 건이고,
@@ -427,6 +477,7 @@
     $('[data-filter-company]').addEventListener('change', render);
     $('[data-filter-status]').addEventListener('change', render);
     $('[data-refresh]').addEventListener('click', loadData);
+    narrow.addEventListener('change', () => { if (session) render(); });
     $('[data-csv]').addEventListener('click', downloadCsv);
 
     $('[data-table-mount]').addEventListener('click', (e) => {
