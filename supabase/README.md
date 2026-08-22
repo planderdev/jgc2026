@@ -98,6 +98,9 @@ where reservation_no = 'JGCF-2026-XXXXXX';
   `jgcf_reservation_cutoff()` 한 곳에서 바꿉니다.
 - **참가신청 마감** — 행사 종료 시각(2026-09-16 18:00 KST) 이후 접수를 닫습니다. 당일
   현장 방문자도 신청할 수 있도록 행사 중에는 열어 둡니다. 정원 제한은 없습니다.
+- **출석 체크** — 행사 당일 사무국이 admin 페이지에서 예약·참가신청별로 출석을
+  토글합니다(`jgcf_admin_set_attendance`, 관리자 전용, `attended_at`에 시각 기록).
+  기관 화면에는 읽기 전용으로 보입니다. QR 스캔은 없고 이름·연락처 검색으로 찾습니다.
   마감 시각은 `jgcf_registration_cutoff()` 한 곳에서 바꿉니다.
 - **점심시간 제외** — 12:00~12:45는 `assets/js/data.js`의 `reservationBreaks`로
   막혀 있습니다. 이건 화면 표시용이므로, 서버에서도 막으려면 함수에 조건을
