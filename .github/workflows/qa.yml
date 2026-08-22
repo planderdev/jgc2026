@@ -1,0 +1,50 @@
+# 푸시·PR마다 회귀 테스트를 돌린다.
+#
+# 돌리는 스위트: render(렌더링 스윕) · ui(UI 회귀) · security(보안 경계, 공개 키만)
+# 빼는 스위트: flows — 실제 DB에 예약·참가신청을 만든다. 참가신청은 사무국이
+#             cleanup.sql로 지워야 하므로 자동 실행하지 않는다. 배포 전 사람이
+#             `npm run qa` 로 돌린다.
+#
+# 실패하면 커밋에 ✗ 가 붙고, 저장소 Actions 탭에서 어느 검사가 왜 실패했는지 본다.
+# Vercel 배포는 이 결과와 무관하게 진행된다(차단하려면 Vercel의 "Ignored Build Step"
+# 또는 배포 보호 규칙으로 연결한다).
+name: QA
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: qa-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      # 커밋된 styles.css가 소스(assets/css/src)와 어긋나 있으면 잡는다.
+      - name: CSS 빌드 결과가 커밋과 일치하는지
+        run: |
+          npm run build
+          if ! git diff --quiet -- assets/css/styles.css; then
+            echo "::error::assets/css/styles.css 가 소스와 다릅니다. 'npm run build' 후 커밋하세요."
+            git --no-pager diff --stat -- assets/css/styles.css
+            exit 1
+          fi
+
+      - name: 회귀 테스트 (render · ui · security)
+        env:
+          CHROME_PATH: /usr/bin/google-chrome
+        run: npm run qa -- --only=render,ui,security
+
