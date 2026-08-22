@@ -36,6 +36,47 @@
     .admin-mini:hover { border-color: var(--color-action-secondary); color: var(--color-action-secondary); }
     .admin-error { color: #b32a27; font-size: var(--font-size-14); min-height: 20px; }
     .admin-empty { padding: 48px; text-align: center; color: var(--color-neutral-500); }
+
+    /* ── 현황 대시보드 ── */
+    .ov-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin-bottom: 24px; }
+    .ov-tile { padding: 18px 20px; border: 1px solid var(--color-border-muted); border-radius: var(--radius-md); background: var(--color-white); }
+    .ov-tile small { display: block; color: var(--color-neutral-500); font-size: 12px; font-weight: var(--font-weight-extrabold); letter-spacing: .04em; }
+    .ov-tile strong { display: block; margin-top: 6px; font-size: 30px; line-height: 1.1; font-weight: var(--font-weight-black); font-variant-numeric: tabular-nums; }
+    .ov-tile strong em { font-style: normal; font-size: 15px; color: var(--color-neutral-500); font-weight: var(--font-weight-bold); margin-left: 4px; }
+    .ov-tile p { margin: 8px 0 0; font-size: 13px; color: var(--color-neutral-600); }
+    .ov-tile.warn strong { color: var(--color-action-secondary); }
+    .ov-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-items: start; }
+    .ov-card { padding: 18px 20px; border: 1px solid var(--color-border-muted); border-radius: var(--radius-md); background: var(--color-white); }
+    .ov-card h3 { margin: 0 0 14px; font-size: 15px; font-weight: var(--font-weight-black); }
+    .ov-rows { display: grid; gap: 8px; }
+    .ov-row { display: grid; grid-template-columns: 96px 1fr 64px; gap: 10px; align-items: center; font-size: 13px; }
+    .ov-row .bar { height: 10px; border-radius: 5px; background: var(--color-bg-soft); overflow: hidden; }
+    .ov-row .bar i { display: block; height: 100%; background: var(--color-action-secondary); border-radius: 5px; }
+    .ov-row .num { text-align: right; font-variant-numeric: tabular-nums; color: var(--color-neutral-600); }
+    .ov-days { display: flex; align-items: flex-end; gap: 6px; height: 96px; padding-top: 6px; }
+    .ov-day { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 4px; font-size: 11px; color: var(--color-neutral-500); height: 100%; }
+    .ov-day i { display: block; width: 100%; max-width: 36px; background: var(--color-action-secondary); border-radius: 4px 4px 0 0; min-height: 2px; }
+    .ov-day b { font-variant-numeric: tabular-nums; color: var(--color-text-primary); }
+    .ov-note { margin: 14px 0 0; font-size: 12px; color: var(--color-neutral-500); }
+
+    /* ── 기관별 현황: 예약률 바 + 시간대 격자 ── */
+    .sum-rate { display: inline-grid; grid-template-columns: 84px auto; gap: 8px; align-items: center; }
+    .sum-rate .bar { height: 8px; border-radius: 4px; background: var(--color-bg-soft); overflow: hidden; }
+    .sum-rate .bar i { display: block; height: 100%; background: var(--color-action-secondary); }
+    .slot-wrap { margin-top: 20px; padding: 18px 20px; border: 1px solid var(--color-border-muted); border-radius: var(--radius-md); background: var(--color-white); overflow-x: auto; }
+    .slot-wrap h3 { margin: 0 0 4px; font-size: 15px; font-weight: var(--font-weight-black); }
+    .slot-wrap p { margin: 0 0 14px; font-size: 12px; color: var(--color-neutral-500); }
+    .slot-grid { display: grid; grid-template-columns: 168px repeat(var(--slots), 22px); gap: 3px; align-items: center; min-width: max-content; }
+    .slot-grid .lbl { font-size: 12px; font-weight: var(--font-weight-bold); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 8px; }
+    .slot-grid .hd { font-size: 9px; color: var(--color-neutral-500); text-align: center; writing-mode: vertical-rl; transform: rotate(180deg); height: 38px; font-variant-numeric: tabular-nums; }
+    .slot-grid .c { width: 22px; height: 22px; border-radius: 4px; background: var(--color-bg-soft); }
+    .slot-grid .c.on { background: var(--color-action-secondary); }
+    .slot-grid .c.brk { background: repeating-linear-gradient(45deg, var(--color-bg-soft), var(--color-bg-soft) 3px, var(--color-border-muted) 3px, var(--color-border-muted) 5px); }
+    .slot-legend { display: flex; gap: 16px; margin-top: 12px; font-size: 12px; color: var(--color-neutral-600); }
+    .slot-legend span::before { content: ""; display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -2px; background: var(--color-bg-soft); }
+    .slot-legend span.on::before { background: var(--color-action-secondary); }
+    .slot-legend span.brk::before { background: repeating-linear-gradient(45deg, var(--color-bg-soft), var(--color-bg-soft) 3px, var(--color-border-muted) 3px, var(--color-border-muted) 5px); }
+    @media (max-width: 768px) { .ov-grid { grid-template-columns: 1fr; } .ov-row { grid-template-columns: 80px 1fr 56px; } }
     body.jgcf-admin { background: var(--color-bg-soft); }
   </style>
 </head>
@@ -71,7 +112,8 @@
       </div>
 
       <div class="admin-tabs" role="tablist">
-        <button type="button" class="is-active" data-tab="reservations">밋업 예약</button>
+        <button type="button" class="is-active" data-tab="overview">현황</button>
+        <button type="button" data-tab="reservations">밋업 예약</button>
         <button type="button" data-tab="registrations">행사 참가신청</button>
         <button type="button" data-tab="summary">기관별 현황</button>
       </div>
@@ -105,6 +147,7 @@
     </div>
   </dialog>
 
+  <script src="assets/js/data.js" defer></script>
   <script src="assets/js/supabaseConfig.js" defer></script>
   <script src="assets/js/admin.js" defer></script>
 </body>

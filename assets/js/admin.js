@@ -16,7 +16,7 @@
   let session = null;   // { access_token, email }
   let mode = 'admin';   // 'admin' | 'partner' — jgcf_whoami 결과로 정해진다
   let partnerName = '';
-  let tab = 'reservations';
+  let tab = 'overview';
   let reservations = [];
   let registrations = [];
 
@@ -135,25 +135,132 @@
     if (tab === 'registrations') {
       return registrations.filter((r) => match(r, ['registration_no', 'name', 'organization', 'phone']));
     }
-    // summary
+    if (tab === 'overview') return [overview()];
+    // summary — data.js의 상담기관 전체를 기준으로 예약이 없는 기관도 0건으로 보여준다
     const map = new Map();
+    for (const c of (window.JGCF?.companies || [])) {
+      map.set(c.name, { company_id: c.id, company_name: c.name, confirmed: 0, cancelled: 0, slots: [], by: {} });
+    }
     for (const r of reservations) {
-      const s = map.get(r.company_name) || { company_name: r.company_name, confirmed: 0, cancelled: 0, slots: [] };
-      if (r.status === 'confirmed') { s.confirmed += 1; s.slots.push(r.time_slot); } else s.cancelled += 1;
+      const s = map.get(r.company_name) || { company_id: r.company_id, company_name: r.company_name, confirmed: 0, cancelled: 0, slots: [], by: {} };
+      if (r.status === 'confirmed') { s.confirmed += 1; s.slots.push(r.time_slot); s.by[r.time_slot] = r.applicant_company; } else s.cancelled += 1;
       map.set(r.company_name, s);
     }
-    return [...map.values()].sort((a, b) => b.confirmed - a.confirmed);
+    return [...map.values()].sort((a, b) => b.confirmed - a.confirmed || a.company_name.localeCompare(b.company_name, 'ko'));
+  }
+
+  // ── 현황 집계 ─────────────────────────────────────────
+  const BOOKABLE = () => {
+    const times = window.JGCF?.reservationTimes || [];
+    const breaks = window.JGCF?.reservationBreaks || {};
+    return times.filter((t) => !breaks[t]);
+  };
+  // 마감 시각. 서버의 jgcf_reservation_cutoff()와 같은 값이며 화면 D-day 표시용이다.
+  const MEETUP_CUTOFF = new Date('2026-09-16T00:00:00+09:00');
+
+  function kstDay(input) {
+    return new Date(input).toLocaleDateString('sv-SE', { timeZone: 'Asia/Seoul' }); // YYYY-MM-DD
+  }
+
+  function overview() {
+    const companies = window.JGCF?.companies || [];
+    const slots = BOOKABLE();
+    const capacity = companies.length * slots.length;
+    const confirmed = reservations.filter((r) => r.status === 'confirmed');
+    const cancelled = reservations.length - confirmed.length;
+    const byType = { company: 0, general: 0, student: 0 };
+    registrations.forEach((r) => { byType[r.participant_type] = (byType[r.participant_type] || 0) + 1; });
+
+    const today = kstDay(Date.now());
+    const newToday = reservations.filter((r) => kstDay(r.created_at) === today).length
+      + registrations.filter((r) => kstDay(r.created_at) === today).length;
+
+    const days = [];
+    for (let i = 6; i >= 0; i--) {
+      const key = kstDay(Date.now() - i * 86400000);
+      days.push({ key, label: key.slice(5).replace('-', '/'),
+        n: reservations.filter((r) => kstDay(r.created_at) === key).length + registrations.filter((r) => kstDay(r.created_at) === key).length });
+    }
+
+    const slotLoad = slots.map((t) => ({ t, n: confirmed.filter((r) => r.time_slot === t).length }));
+    const msLeft = MEETUP_CUTOFF - Date.now();
+
+    return { capacity, confirmed: confirmed.length, cancelled, rate: capacity ? confirmed.length / capacity : 0,
+      registrations: registrations.length, byType, newToday, days, slotLoad, companies: companies.length,
+      dday: Math.ceil(msLeft / 86400000), closed: msLeft <= 0,
+      emptyCompanies: companies.filter((c) => !confirmed.some((r) => r.company_id === c.id)).length };
   }
 
   const TYPE_LABEL = { company: '기업', general: '일반', student: '학생' };
 
+  function renderOverview(o) {
+    const pct = (n) => `${Math.round(n * 100)}%`;
+    const maxDay = Math.max(1, ...o.days.map((d) => d.n));
+    const maxSlot = Math.max(1, o.companies);
+    return `
+      <div class="ov-tiles">
+        <div class="ov-tile"><small>밋업 예약률</small><strong>${pct(o.rate)}<em>${o.confirmed} / ${o.capacity}</em></strong><p>확정 ${o.confirmed}건 · 취소 ${o.cancelled}건</p></div>
+        <div class="ov-tile"><small>행사 참가신청</small><strong>${o.registrations}<em>명</em></strong><p>기업 ${o.byType.company} · 일반 ${o.byType.general} · 학생 ${o.byType.student}</p></div>
+        <div class="ov-tile"><small>오늘 신규</small><strong>${o.newToday}<em>건</em></strong><p>예약 + 참가신청 (KST 기준)</p></div>
+        <div class="ov-tile ${o.closed ? '' : 'warn'}"><small>밋업 예약 마감</small><strong>${o.closed ? '마감' : `D-${o.dday}`}</strong><p>9/15(화) 자정 · ${o.closed ? '접수 종료됨' : '이후엔 사무국 대신 취소만'}</p></div>
+        <div class="ov-tile"><small>예약 없는 기관</small><strong>${o.emptyCompanies}<em>/ ${o.companies}</em></strong><p>확정 예약이 0건인 상담기관</p></div>
+      </div>
+      <div class="ov-grid">
+        <div class="ov-card">
+          <h3>시간대별 점유 (확정 기관 수)</h3>
+          <div class="ov-rows">${o.slotLoad.map((s) => `
+            <div class="ov-row"><span>${esc(s.t)}</span><span class="bar"><i style="width:${(s.n / maxSlot) * 100}%"></i></span><span class="num">${s.n} / ${o.companies}</span></div>`).join('')}
+          </div>
+          <p class="ov-note">붐비는 시간대는 막대가 길게, 비어 있는 시간대는 짧게 보입니다.</p>
+        </div>
+        <div class="ov-card">
+          <h3>최근 7일 신규 접수</h3>
+          <div class="ov-days">${o.days.map((d) => `
+            <div class="ov-day"><b>${d.n}</b><i style="height:${Math.max(2, (d.n / maxDay) * 64)}px"></i><span>${esc(d.label)}</span></div>`).join('')}
+          </div>
+          <p class="ov-note">예약과 참가신청을 합한 일별 건수입니다. 숫자는 새로고침으로 갱신됩니다.</p>
+        </div>
+      </div>`;
+  }
+
+  function renderSummary(rows) {
+    const slots = BOOKABLE();
+    const allTimes = window.JGCF?.reservationTimes || slots;
+    const breaks = window.JGCF?.reservationBreaks || {};
+    const rate = (n) => (slots.length ? Math.round((n / slots.length) * 100) : 0);
+    const table = `<table class="admin-table"><thead><tr>
+      <th>상담기관</th><th>예약률</th><th>확정</th><th>취소</th><th>확정 시간대</th>
+    </tr></thead><tbody>${rows.map((s) => `<tr>
+      <td><strong>${esc(s.company_name)}</strong></td>
+      <td><span class="sum-rate"><span class="bar"><i style="width:${rate(s.confirmed)}%"></i></span><span>${rate(s.confirmed)}%</span></span></td>
+      <td>${s.confirmed}</td><td>${s.cancelled}</td>
+      <td class="wrap">${s.slots.length ? esc([...s.slots].sort().join(', ')) : '<span style="color:var(--color-neutral-400)">없음</span>'}</td>
+    </tr>`).join('')}</tbody></table>`;
+
+    const grid = `<div class="slot-wrap">
+      <h3>시간대 점유 격자</h3>
+      <p>가로는 시간, 세로는 상담기관입니다. 칸에 마우스를 올리면 신청 기업이 보입니다.</p>
+      <div class="slot-grid" style="--slots:${allTimes.length}">
+        <div></div>${allTimes.map((t) => `<div class="hd">${esc(t)}</div>`).join('')}
+        ${rows.map((s) => `<div class="lbl" title="${esc(s.company_name)}">${esc(s.company_name)}</div>${allTimes.map((t) =>
+          breaks[t] ? `<div class="c brk" title="${esc(t)} ${esc(breaks[t])}"></div>`
+          : `<div class="c ${s.by[t] ? 'on' : ''}" title="${esc(t)}${s.by[t] ? ' · ' + esc(s.by[t]) : ' · 비어 있음'}"></div>`).join('')}`).join('')}
+      </div>
+      <div class="slot-legend"><span class="on">확정</span><span>비어 있음</span><span class="brk">점심시간</span></div>
+    </div>`;
+    return table + grid;
+  }
+
   function render() {
     const rows = currentRows();
-    $('[data-count]').textContent = `${rows.length}건`;
+    $('[data-count]').textContent = tab === 'overview' ? '' : `${rows.length}건`;
+    $('[data-search]').hidden = mode !== 'partner' && tab === 'overview';
+    $('[data-csv]').hidden = mode !== 'partner' && tab === 'overview';
     $('[data-filter-company]').hidden = mode === 'partner' || tab !== 'reservations';
     $('[data-filter-status]').hidden = mode === 'partner' || tab !== 'reservations';
     const mount = $('[data-table-mount]');
 
+    if (tab === 'overview' && mode !== 'partner') { mount.innerHTML = renderOverview(rows[0]); return; }
     if (!rows.length) { mount.innerHTML = '<p class="admin-empty">표시할 항목이 없습니다.</p>'; return; }
 
     if (mode === 'partner') {
@@ -201,12 +308,7 @@
       return;
     }
 
-    mount.innerHTML = `<table class="admin-table"><thead><tr>
-      <th>상담기관</th><th>확정</th><th>취소</th><th>확정 시간대</th>
-    </tr></thead><tbody>${rows.map((s) => `<tr>
-      <td>${esc(s.company_name)}</td><td>${s.confirmed}</td><td>${s.cancelled}</td>
-      <td class="wrap">${esc(s.slots.sort().join(', '))}</td>
-    </tr>`).join('')}</tbody></table>`;
+    mount.innerHTML = renderSummary(rows);
   }
 
   // ── CSV ─────────────────────────────────────────────────
@@ -224,8 +326,8 @@
       header = ['신청번호','구분','이름','소속','연락처','신청일시'];
       line = (r) => [r.registration_no, TYPE_LABEL[r.participant_type] || r.participant_type, r.name, r.organization || '', r.phone, kst(r.created_at)];
     } else {
-      header = ['상담기관','확정','취소','확정 시간대'];
-      line = (s) => [s.company_name, s.confirmed, s.cancelled, s.slots.sort().join(' ')];
+      header = ['상담기관','예약률','확정','취소','확정 시간대'];
+      line = (s) => [s.company_name, `${Math.round((s.confirmed / Math.max(1, BOOKABLE().length)) * 100)}%`, s.confirmed, s.cancelled, [...s.slots].sort().join(' ')];
     }
     const cell = (v) => `"${String(v ?? '').replace(/"/g, '""')}"`;
     // BOM을 붙여야 엑셀이 한글을 제대로 연다.
