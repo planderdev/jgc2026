@@ -2094,6 +2094,80 @@
   color: #1c6549;
 }
 
+/* 완료 화면: 추가 예약 유도 */
+.result-more {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-16);
+  margin-top: var(--space-24);
+  padding: var(--space-16) var(--space-24);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-muted);
+}
+
+.result-more p {
+  margin: var(--space-0);
+  max-width: 44ch;
+  color: var(--color-text-soft);
+  font-size: var(--font-size-14);
+  line-height: var(--line-height-section-copy);
+}
+
+.result-more .ui-button {
+  flex: 0 0 auto;
+}
+
+/* 조회: 같은 연락처의 다른 예약 */
+.lookup-others {
+  margin-top: var(--space-24);
+  padding-top: var(--space-24);
+  border-top: 1px solid var(--color-border-muted);
+}
+
+.lookup-others h3 {
+  margin: var(--space-0) var(--space-0) var(--space-8);
+  font-size: var(--font-size-15);
+  font-weight: var(--font-weight-extrabold);
+}
+
+.lookup-others h3 span {
+  color: var(--color-action-primary);
+}
+
+.lookup-others ul {
+  margin: var(--space-0);
+  padding: var(--space-0);
+  list-style: none;
+  display: grid;
+  gap: var(--space-8);
+}
+
+.lookup-others button {
+  width: 100%;
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-8);
+  padding: var(--space-8) var(--space-16);
+  border: 1px solid var(--color-border-muted);
+  border-radius: var(--radius-sm);
+  background: var(--color-white);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-15);
+  text-align: left;
+  cursor: pointer;
+}
+
+.lookup-others button:hover {
+  border-color: var(--color-action-primary);
+}
+
+.lookup-others button small {
+  margin-left: auto;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-13);
+}
+
 .result-card .step-actions {
   margin-top: var(--space-32);
   padding-top: var(--space-24);

@@ -7,6 +7,8 @@
   // 예약 완료 화면에 보여줄 내용을 넘기는 통로.
   // 조회 함수는 담당자 연락처를 요구하므로 완료 페이지에서 다시 조회할 수 없다.
   const COMPLETE_KEY = 'jgcf2026.lastReservation';
+  // "다른 기관도 예약하기"로 넘어올 때 3단계 정보를 넘기는 키. 한 번 쓰고 지운다.
+  const PREFILL_KEY = 'jgcf2026.reservationPrefill';
 
   function escapeHtml(value) {
     return String(value ?? '')
@@ -69,6 +71,31 @@
     const confirmMount = form.querySelector('[data-confirm-box]');
     const submitButton = form.querySelector('[data-step="4"] button[type=submit]');
 
+    // 직전 예약 정보로 3단계를 채운다. 소개서는 파일 입력에 넣을 수 없으므로
+    // 서버에 이미 올라간 경로를 재사용하고, 새 파일을 고르면 그걸 우선한다.
+    let reuseAttachment = null;
+    try {
+      const prefill = JSON.parse(sessionStorage.getItem(PREFILL_KEY) || 'null');
+      sessionStorage.removeItem(PREFILL_KEY);
+      if (prefill) {
+        ['applicantCompany', 'managerName', 'phone', 'email', 'inquiry'].forEach((name) => {
+          if (form.elements[name] && prefill[name]) form.elements[name].value = prefill[name];
+        });
+        if (prefill.attachmentPath && prefill.attachmentName) {
+          reuseAttachment = { path: prefill.attachmentPath, name: prefill.attachmentName };
+          const field = form.elements.attachment?.closest('.form-field');
+          const help = field?.querySelector('.form-help');
+          if (help) {
+            help.innerHTML = `이전 예약의 <strong>${escapeHtml(prefill.attachmentName)}</strong>을 그대로 씁니다. 바꾸려면 새 파일을 선택하세요.`;
+          }
+          form.elements.attachment.required = false;
+        }
+        common().toast('이전 예약 정보를 불러왔습니다. 상담기관과 시간을 선택해 주세요.');
+      }
+    } catch (error) {
+      console.warn('프리필 정보를 읽지 못했습니다.', error);
+    }
+
     companyMount.innerHTML = data().companies.map((company) => `
       <label class="choice-card">
         <input type="radio" name="companyId" value="${escapeHtml(company.id)}">
@@ -121,7 +148,7 @@
         state[field] = form.elements[field] ? form.elements[field].value.trim() : '';
       });
       state.attachmentFile = form.elements.attachment?.files?.[0] || null;
-      state.attachmentName = state.attachmentFile?.name || '';
+      state.attachmentName = state.attachmentFile?.name || (reuseAttachment ? reuseAttachment.name : '');
       state.privacy = form.elements.privacy.checked;
     }
 
@@ -188,14 +215,14 @@
         }
         // 업로드를 시도하기 전에 형식·용량을 먼저 본다. 큰 파일을 다 올린 뒤 거부되면 시간만 버린다.
         const file = state.attachmentFile;
-        const isPdf = /\.pdf$/i.test(file.name) || file.type === 'application/pdf';
+        const isPdf = !file || /\.pdf$/i.test(file.name) || file.type === 'application/pdf';
         if (!isPdf) {
           common().markInvalid(form, 'attachment', 'PDF 파일만 첨부할 수 있습니다.');
           common().focusField(form, 'attachment');
           common().toast('회사 소개서는 PDF 형식만 첨부할 수 있습니다.');
           return false;
         }
-        if (file.size > ATTACHMENT_MAX_MB * 1024 * 1024) {
+        if (file && file.size > ATTACHMENT_MAX_MB * 1024 * 1024) {
           const mb = (file.size / 1024 / 1024).toFixed(1);
           common().markInvalid(form, 'attachment', `파일이 ${mb}MB입니다. ${ATTACHMENT_MAX_MB}MB 이하로 줄여서 첨부해 주세요.`);
           common().focusField(form, 'attachment');
@@ -263,7 +290,9 @@
       submitButton.textContent = '예약 처리 중…';
 
       try {
-        const upload = await service().uploadAttachment(state.attachmentFile);
+        const upload = state.attachmentFile
+          ? await service().uploadAttachment(state.attachmentFile)
+          : { ok: true, path: reuseAttachment.path, name: reuseAttachment.name };
         if (!upload.ok) {
           common().toast(upload.reason === 'network'
             ? service().messageFor('network')
@@ -283,10 +312,13 @@
         if (!result.ok) {
           common().toast(service().messageFor(result.reason));
           // 시간대를 뺏겼다면 2단계로 돌려보내 다시 고르게 한다.
-          if (result.reason === 'slot_taken') {
+          if (result.reason === 'slot_taken' || result.reason === 'time_conflict') {
             step = 2;
             updateSteps();
             await refreshTimes();
+          } else if (result.reason === 'company_duplicate') {
+            step = 1;
+            updateSteps();
           }
           return;
         }
@@ -297,7 +329,16 @@
           time_slot: state.time,
           applicant_company: state.applicantCompany,
           manager_name: state.managerName,
-          status: 'confirmed'
+          status: 'confirmed',
+          prefill: {
+            applicantCompany: state.applicantCompany,
+            managerName: state.managerName,
+            phone: state.phone,
+            email: state.email,
+            inquiry: state.inquiry,
+            attachmentPath: upload.path,
+            attachmentName: upload.name
+          }
         }));
 
         window.location.href = common().link('meetup/complete.html');
@@ -359,13 +400,21 @@
           <div class="confirm-row"><dt>담당자</dt><dd>${escapeHtml(reservation.manager_name)}</dd></div>
           <div class="confirm-row"><dt>상태</dt><dd><span class="ui-badge result-status">예약 확정</span></dd></div>
         </dl>
+        <div class="result-more">
+          <p>다른 상담기관과도 만나고 싶다면 같은 정보로 바로 이어서 예약할 수 있습니다. 같은 시간대와 같은 기관은 중복 예약되지 않습니다.</p>
+          <button class="ui-button coral" type="button" data-reserve-more>다른 기관도 예약하기 <i class="ri-arrow-right-line" aria-hidden="true"></i></button>
+        </div>
         <div class="step-actions">
           <a class="ui-button secondary" href="${common().link('meetup/confirm.html')}">예약 조회·취소</a>
-          <a class="ui-button coral" href="${common().link('index.html')}">메인으로</a>
+          <a class="ui-button secondary" href="${common().link('index.html')}">메인으로</a>
         </div>
       </div>
     `;
     common().bindCopyNumber(mount);
+    mount.querySelector('[data-reserve-more]')?.addEventListener('click', () => {
+      if (reservation.prefill) sessionStorage.setItem(PREFILL_KEY, JSON.stringify(reservation.prefill));
+      window.location.href = common().link('meetup/reserve.html');
+    });
   }
 
   function initConfirm() {
@@ -395,9 +444,14 @@
       document.body.classList.remove('no-scroll');
     });
 
-    function drawReservation(reservation) {
+    function drawReservation(reservation, others = []) {
       current = reservation;
       const confirmed = reservation.status === 'confirmed';
+      const othersHtml = others.length ? `
+        <div class="lookup-others">
+          <h3>같은 연락처의 다른 예약 <span>${others.length}건</span></h3>
+          <ul>${others.map((o) => `<li><button type="button" data-lookup-other="${escapeHtml(o.reservation_no)}"><strong>${escapeHtml(o.time_slot)}</strong> ${escapeHtml(o.company_name)} <small>${escapeHtml(o.reservation_no)}</small></button></li>`).join('')}</ul>
+        </div>` : '';
       result.innerHTML = `
         <div class="lookup-result-head">
           <span class="ui-badge ${confirmed ? 'result-status' : 'result-status off'}">${confirmed ? '예약 확정' : '예약 취소됨'}</span>
@@ -418,7 +472,14 @@
                </div>`
             : '<div class="lookup-result-actions"><p class="form-help">취소 접수는 행사 전날 자정에 마감되었습니다. 변경이 필요하면 운영사무국(064-735-0677)에 문의해 주세요.</p></div>')
           : '<div class="lookup-result-actions"><p class="form-help">취소된 예약입니다. 다시 예약하려면 새 예약을 진행해 주세요.</p><a class="ui-button coral" href="reserve">새 예약</a></div>'}
+        ${othersHtml}
       `;
+      result.querySelectorAll('[data-lookup-other]').forEach((button) => {
+        button.addEventListener('click', () => {
+          form.elements.reservationNumber.value = button.dataset.lookupOther;
+          form.requestSubmit();
+        });
+      });
     }
 
     function drawMessage(text, tone = 'error') {
@@ -442,7 +503,7 @@
         const response = await service().findForLookup(reservationNo, phone);
         if (response.ok) {
           currentPhone = phone;
-          drawReservation(response.reservation);
+          drawReservation(response.reservation, response.others || []);
         } else {
           drawMessage(service().messageFor(response.reason));
         }

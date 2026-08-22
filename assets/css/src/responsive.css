@@ -1025,9 +1025,19 @@
     font-size: var(--font-size-22);
   }
 
-  .lookup-result-actions {
+  .lookup-result-actions,
+  .result-more {
     flex-direction: column;
     align-items: stretch;
+  }
+
+  .result-more .ui-button {
+    width: 100%;
+    min-height: 48px;
+  }
+
+  .lookup-others button {
+    flex-wrap: wrap;
   }
 
   .lookup-result-actions .ui-button {

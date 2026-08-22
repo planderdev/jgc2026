@@ -1,6 +1,6 @@
 /**
  * 기능 플로우 — 실제 Supabase를 호출한다.
- * 밋업 예약(생성→타 브라우저 마감 반영→중복 차단→조회→취소→재개방),
+ * 밋업 예약(생성→타 브라우저 마감 반영→같은 기관/같은 시간 중복 차단→조회→취소→재개방),
  * 참가신청(서버 번호 발급→완료 페이지→중복 차단), 마감 상태 UI(응답 가로채기).
  *
  * 테스트 데이터는 신청기업·이름에 __QA__ 표시를 남긴다. 예약은 끝에 취소하고,
@@ -54,10 +54,7 @@ export default () => runSuite('기능 플로우', async ({ browser, r }) => {
   await b.page.click('[data-step="1"] [data-step-action="next"]');
   await b.page.waitForSelector('[data-time-choices] input', { timeout: 15000 }); await b.page.waitForTimeout(400);
   r.check(await b.page.locator(`[data-time-choices] input[value="${slot}"]`).isDisabled(), '다른 브라우저에서도 슬롯 마감 반영', slot);
-  await b.page.click('[data-step="2"] [data-step-action="prev"]'); await b.page.waitForTimeout(300);
-  await b.page.locator('[data-company-choices] input').nth(1).check();
-  await b.page.click('[data-step="1"] [data-step-action="next"]');
-  await b.page.waitForSelector('[data-time-choices] input', { timeout: 15000 }); await b.page.waitForTimeout(400);
+  // 같은 담당자가 같은 기관을 다른 시간에 다시 → company_duplicate
   await b.page.locator('[data-time-choices] input:not([disabled])').nth(3).check();
   await b.page.click('[data-step="2"] [data-step-action="next"]'); await b.page.waitForTimeout(400);
   await b.page.fill('[name=applicantCompany]', `${QA_TAG} 중복시도`);
@@ -70,7 +67,7 @@ export default () => runSuite('기능 플로우', async ({ browser, r }) => {
   await b.page.click('[data-step="3"] [data-step-action="next"]'); await b.page.waitForTimeout(400);
   await b.page.click('[data-step="4"] button[type=submit]'); await b.page.waitForTimeout(3000);
   const t = await b.page.locator('.toast').textContent().catch(() => '');
-  r.check(/이미 예약/.test(t || '') && !b.page.url().includes('complete'), '같은 담당자 중복 신청 차단', (t || '').trim().slice(0, 40));
+  r.check(/이미 예약하셨습니다/.test(t || '') && !b.page.url().includes('complete'), '같은 담당자·같은 기관 중복 차단', (t || '').trim().slice(0, 40));
   await b.context.close();
 
   // 조회·취소 (또 다른 브라우저)
