@@ -1053,8 +1053,12 @@
     font-size: var(--font-size-16);
   }
 
+  .home-hero + .home-section {
+    padding-top: var(--space-64);
+  }
+
   .home-events {
-    padding: var(--space-64) var(--space-0) var(--space-80);
+    padding: var(--space-0) var(--space-0) var(--space-80);
   }
 
   .home-special,
@@ -1202,8 +1206,12 @@
     font-size: var(--font-size-13);
   }
 
+  .home-hero + .home-section {
+    padding-top: var(--space-56);
+  }
+
   .home-events {
-    padding: var(--space-56) var(--space-0) var(--space-56);
+    padding: var(--space-0) var(--space-0) var(--space-56);
   }
 
   .home-special {

@@ -207,8 +207,13 @@
   font-size: var(--font-size-17);
 }
 
+/* 히어로 바로 다음에 오는 섹션은 순서와 무관하게 상단 여백을 갖는다 */
+.home-hero + .home-section {
+  padding-top: var(--space-80);
+}
+
 .home-events {
-  padding: var(--space-80) var(--space-0) var(--space-104);
+  padding: var(--space-0) var(--space-0) var(--space-104);
 }
 
 .home-special {
