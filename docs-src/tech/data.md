@@ -18,7 +18,12 @@ select (select count(*) from public.reservations) r, (select count(*) from publi
 
 ## Storage 정리
 
-Storage 버킷은 보호 트리거 때문에 SQL로 지울 수 없습니다. 대시보드 → Storage → `meetup-attachments` → 파일 선택 → Delete. 예약이 취소·삭제돼도 파일은 자동 삭제되지 않으므로 행사 후 일괄 정리합니다.
+Storage 버킷은 SQL로 지울 수 없습니다. 두 가지 방법이 있습니다.
+
+- **대시보드**: Storage → `meetup-attachments` → 파일 선택 → Delete
+- **Storage API**: 사무국 계정 토큰으로 `DELETE /storage/v1/object/meetup-attachments` (정책 "admin attachment delete"). 예약 테이블이 참조 중인 `attachment_path`는 제외하고 지웁니다
+
+예약이 취소·삭제돼도 파일은 자동 삭제되지 않으므로 행사 후 일괄 정리합니다. 익명·기관 계정은 삭제할 수 없습니다.
 
 ## 계정 생성
 

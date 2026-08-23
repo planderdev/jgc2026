@@ -48,6 +48,9 @@ export default async () => {
     r.check(pub.status >= 400, '첨부 버킷 공개 URL 접근 거부', String(pub.status));
     const evil = await fetch(`${url}/storage/v1/object/${bucket}/qa/x.html`, { method: 'POST', headers: H(key, { 'Content-Type': 'text/html' }), body: '<script>1</script>' }).then((x) => x.json());
     r.check(/mime/i.test(evil.error || evil.message || ''), 'PDF 아닌 파일 업로드 거부');
+    const delRes = await fetch(`${url}/storage/v1/object/meetup-attachments`, { method: 'DELETE', headers: { apikey: key, Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ prefixes: ['nonexistent/x.pdf'] }) });
+    const delBody = await delRes.json().catch(() => []);
+    r.check(delRes.status >= 400 || (Array.isArray(delBody) && delBody.length === 0), '익명 첨부 삭제 거부', String(delRes.status));
 
     // 권한 경계 (자격증명이 있을 때만)
     const login = async (email, password) => {
