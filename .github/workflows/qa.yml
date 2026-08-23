@@ -43,6 +43,17 @@ jobs:
             exit 1
           fi
 
+      # 한국어 페이지만 고치고 영문판 생성을 빼먹으면 잡는다.
+      - name: 영문판(en/)이 한국어 원본과 일치하는지
+        run: |
+          node scripts/build-en.mjs
+          node scripts/set-share-urls.mjs https://jgc2026.vercel.app
+          if ! git diff --quiet -- en/ '*.html'; then
+            echo "::error::en/ 또는 canonical/hreflang이 원본과 다릅니다. 'node scripts/build-en.mjs && node scripts/set-share-urls.mjs https://jgc2026.vercel.app' 후 커밋하세요."
+            git --no-pager diff --stat -- en/ '*.html'
+            exit 1
+          fi
+
       - name: 회귀 테스트 (render · ui · security)
         env:
           CHROME_PATH: /usr/bin/google-chrome
