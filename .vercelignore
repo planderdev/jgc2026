@@ -1,4 +1,7 @@
 node_modules
 tmp
 tools
-docs
+docs/qa
+docs/design-references
+docs/research
+docs-src
