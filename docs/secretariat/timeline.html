@@ -1,0 +1,85 @@
+<!doctype html>
+<!-- 자동 생성: node scripts/build-docs.mjs — 원고는 docs-src/secretariat/timeline.md -->
+<html lang="ko" data-theme="">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>운영 타임라인 · JGCF 2026 가이드</title>
+  <meta name="description" content="모집 오픈 전부터 행사 종료 후까지 사무국이 할 일입니다.">
+  <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg">
+  <link rel="stylesheet" href="/docs/assets/docs.css">
+  <script>try{const t=localStorage.getItem('jgcf-docs-theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
+</head>
+<body>
+<a class="skip" href="#content">본문으로</a>
+<div class="layout">
+  <aside class="side" id="side">
+    <div class="side-head">
+      <a class="brand" href="/docs"><span class="mark">JG</span><span><strong>JGCF 2026</strong><small>OPERATIONS GUIDE</small></span></a>
+      <button class="side-toggle" type="button" aria-label="메뉴 닫기" data-side-close>×</button>
+    </div>
+    <button class="search-btn" type="button" data-search-open><span>검색</span><kbd>⌘K</kbd></button>
+    <a class="side-link" href="/" target="_blank" rel="noopener">↗ 사이트 열기</a>
+    <a class="side-link" href="/admin" target="_blank" rel="noopener">↗ 관리자 화면 열기</a>
+    <nav class="side-nav" aria-label="문서"><ul class="nav-flat"><li><a href="/docs">가이드 홈</a></li></ul><details class="nav-group" open><summary>사무국 가이드<i></i></summary><ul><li><a href="/docs/secretariat/getting-started">시작하기</a></li><li><a href="/docs/secretariat/dashboard">관리자 화면</a></li><li><a href="/docs/secretariat/event-day">행사 당일</a></li><li><a href="/docs/secretariat/rules">운영 규칙</a></li><li><a href="/docs/secretariat/timeline" aria-current="page">운영 타임라인</a></li><li><a href="/docs/secretariat/troubleshooting">문제 상황 대응</a></li></ul></details><details class="nav-group"><summary>상담기관 가이드<i></i></summary><ul><li><a href="/docs/partner/overview">상담기관 화면</a></li><li><a href="/docs/partner/notice-template">계정 안내 문구</a></li></ul></details><details class="nav-group"><summary>참가자 안내<i></i></summary><ul><li><a href="/docs/participant/register">행사 참가신청</a></li><li><a href="/docs/participant/meetup">밋업 예약·조회·취소</a></li></ul></details><details class="nav-group"><summary>기술 가이드<i></i></summary><ul><li><a href="/docs/tech/architecture">구조</a></li><li><a href="/docs/tech/deploy">배포·도메인</a></li><li><a href="/docs/tech/i18n">영문판</a></li><li><a href="/docs/tech/qa">회귀 테스트·자동 점검</a></li><li><a href="/docs/tech/data">데이터 운영</a></li></ul></details><ul class="nav-flat"><li><a href="/docs/glossary">용어집</a></li><li><a href="/docs/faq">자주 묻는 질문</a></li></ul></nav>
+    <div class="side-foot">
+      <button type="button" class="theme" data-theme-toggle aria-label="테마 전환"><span class="sun">☀</span><span class="moon">☾</span></button>
+      <small></small>
+    </div>
+  </aside>
+  <div class="main">
+    <header class="topbar">
+      <button type="button" class="menu-btn" data-side-open aria-label="메뉴 열기">☰</button>
+      <span>운영 타임라인</span>
+      <button type="button" class="search-btn small" data-search-open aria-label="검색">⌕</button>
+    </header>
+    <div class="content-wrap">
+      <main id="content" class="content">
+        <p class="crumb">사무국 가이드</p>
+        <h1>운영 타임라인</h1>
+        <p class="lede">모집 오픈 전부터 행사 종료 후까지 사무국이 할 일입니다.</p>
+        <h2 id="모집-오픈-전"><a class="anchor" href="#모집-오픈-전" aria-hidden="true">#</a>모집 오픈 전</h2>
+<ul><li><p>관리자 화면에 테스트 데이터가 남아 있지 않은지 확인 (밋업 예약·참가신청 탭이 비어 있어야 함)</p>
+</li><li><p>사무국 계정 2개로 로그인되는지 확인</p>
+</li><li><p>상담기관 20곳에 계정 개별 전달 (<a href="/docs/partner/notice-template">계정 안내 문구</a>)</p>
+</li><li><p>Supabase Storage의 테스트 PDF 삭제 (<a href="/docs/tech/data#storage-%EC%A0%95%EB%A6%AC">데이터 운영</a>)</p>
+</li></ul>
+<h2 id="모집-기간"><a class="anchor" href="#모집-기간" aria-hidden="true">#</a>모집 기간</h2>
+<ul><li><p>현황 탭으로 예약률·추이를, 기관별 현황의 점유 격자로 빈 기관·빈 시간대를 파악 → 필요하면 홍보 조정</p>
+</li><li><p>문의 대응: <a href="/docs/secretariat/troubleshooting">문제 상황 대응</a></p>
+</li></ul>
+<h2 id="9-15-화-자정"><a class="anchor" href="#9-15-화-자정" aria-hidden="true">#</a>9/15 (화) 자정</h2>
+<ul><li><p>밋업 예약·취소 자동 마감. 이후 신청자는 사이트에서 &quot;접수 마감&quot; 안내를 봅니다</p>
+</li><li><p>기관별 현황 CSV를 내려받아 <strong>최종 명단을 상담기관에 일괄 안내</strong> (기관은 자기 화면에서 보거나 인쇄해 부스에 둘 수 있음)</p>
+</li></ul>
+<h2 id="9-16-수-당일"><a class="anchor" href="#9-16-수-당일" aria-hidden="true">#</a>9/16 (수) 당일</h2>
+<ul><li><p>접수 데스크에서 QR로 출석 체크 (<a href="/docs/secretariat/event-day">행사 당일</a>)</p>
+</li><li><p>당일 취소·변경 요청은 사무국이 관리자 화면에서 대신 취소</p>
+</li><li><p>참가신청은 18:00까지 열려 있음 — 현장 방문자에게 /register QR 안내</p>
+</li></ul>
+<h2 id="행사-종료-후"><a class="anchor" href="#행사-종료-후" aria-hidden="true">#</a>행사 종료 후</h2>
+<ul><li><p>상담기관에 제공 자료 파기 요청 (방침에 &quot;행사 종료 즉시 파기&quot;로 명시됨)</p>
+</li><li><p>출석률 보고: 밋업·참가 CSV의 출석 열</p>
+</li><li><p>2027-09-16 보유기간 만료 시 Supabase 프로젝트 삭제로 전체 파기</p>
+</li></ul>
+
+        <nav class="pager">
+    <a class="prev" href="/docs/secretariat/rules"><small>이전</small><span>운영 규칙</span></a>
+    <a class="next" href="/docs/secretariat/troubleshooting"><small>다음</small><span>문제 상황 대응</span></a>
+  </nav>
+      </main>
+      <aside class="toc"><p>On this page</p><ul><li class="d2"><a href="#모집-오픈-전">모집 오픈 전</a></li><li class="d2"><a href="#모집-기간">모집 기간</a></li><li class="d2"><a href="#9-15-화-자정">9/15 (화) 자정</a></li><li class="d2"><a href="#9-16-수-당일">9/16 (수) 당일</a></li><li class="d2"><a href="#행사-종료-후">행사 종료 후</a></li></ul></aside>
+    </div>
+  </div>
+</div>
+<div class="search" data-search hidden>
+  <div class="search-box" role="dialog" aria-label="문서 검색">
+    <input type="search" placeholder="검색어를 입력하세요 (예: 출석, 비밀번호, 취소)" data-search-input autocomplete="off">
+    <ul data-search-results></ul>
+    <p class="search-hint">Esc 닫기 · ↑↓ 이동 · Enter 열기</p>
+  </div>
+</div>
+<script src="/docs/assets/docs.js" defer></script>
+</body>
+</html>

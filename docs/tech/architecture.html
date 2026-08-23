@@ -1,0 +1,75 @@
+<!doctype html>
+<!-- 자동 생성: node scripts/build-docs.mjs — 원고는 docs-src/tech/architecture.md -->
+<html lang="ko" data-theme="">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>구조 · JGCF 2026 가이드</title>
+  <meta name="description" content="정적 사이트 + Supabase로 이루어진 시스템의 구성과 보안 모델입니다.">
+  <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg">
+  <link rel="stylesheet" href="/docs/assets/docs.css">
+  <script>try{const t=localStorage.getItem('jgcf-docs-theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
+</head>
+<body>
+<a class="skip" href="#content">본문으로</a>
+<div class="layout">
+  <aside class="side" id="side">
+    <div class="side-head">
+      <a class="brand" href="/docs"><span class="mark">JG</span><span><strong>JGCF 2026</strong><small>OPERATIONS GUIDE</small></span></a>
+      <button class="side-toggle" type="button" aria-label="메뉴 닫기" data-side-close>×</button>
+    </div>
+    <button class="search-btn" type="button" data-search-open><span>검색</span><kbd>⌘K</kbd></button>
+    <a class="side-link" href="/" target="_blank" rel="noopener">↗ 사이트 열기</a>
+    <a class="side-link" href="/admin" target="_blank" rel="noopener">↗ 관리자 화면 열기</a>
+    <nav class="side-nav" aria-label="문서"><ul class="nav-flat"><li><a href="/docs">가이드 홈</a></li></ul><details class="nav-group"><summary>사무국 가이드<i></i></summary><ul><li><a href="/docs/secretariat/getting-started">시작하기</a></li><li><a href="/docs/secretariat/dashboard">관리자 화면</a></li><li><a href="/docs/secretariat/event-day">행사 당일</a></li><li><a href="/docs/secretariat/rules">운영 규칙</a></li><li><a href="/docs/secretariat/timeline">운영 타임라인</a></li><li><a href="/docs/secretariat/troubleshooting">문제 상황 대응</a></li></ul></details><details class="nav-group"><summary>상담기관 가이드<i></i></summary><ul><li><a href="/docs/partner/overview">상담기관 화면</a></li><li><a href="/docs/partner/notice-template">계정 안내 문구</a></li></ul></details><details class="nav-group"><summary>참가자 안내<i></i></summary><ul><li><a href="/docs/participant/register">행사 참가신청</a></li><li><a href="/docs/participant/meetup">밋업 예약·조회·취소</a></li></ul></details><details class="nav-group" open><summary>기술 가이드<i></i></summary><ul><li><a href="/docs/tech/architecture" aria-current="page">구조</a></li><li><a href="/docs/tech/deploy">배포·도메인</a></li><li><a href="/docs/tech/i18n">영문판</a></li><li><a href="/docs/tech/qa">회귀 테스트·자동 점검</a></li><li><a href="/docs/tech/data">데이터 운영</a></li></ul></details><ul class="nav-flat"><li><a href="/docs/glossary">용어집</a></li><li><a href="/docs/faq">자주 묻는 질문</a></li></ul></nav>
+    <div class="side-foot">
+      <button type="button" class="theme" data-theme-toggle aria-label="테마 전환"><span class="sun">☀</span><span class="moon">☾</span></button>
+      <small></small>
+    </div>
+  </aside>
+  <div class="main">
+    <header class="topbar">
+      <button type="button" class="menu-btn" data-side-open aria-label="메뉴 열기">☰</button>
+      <span>구조</span>
+      <button type="button" class="search-btn small" data-search-open aria-label="검색">⌕</button>
+    </header>
+    <div class="content-wrap">
+      <main id="content" class="content">
+        <p class="crumb">기술 가이드</p>
+        <h1>구조</h1>
+        <p class="lede">정적 사이트 + Supabase로 이루어진 시스템의 구성과 보안 모델입니다.</p>
+        <h2 id="한-장-요약"><a class="anchor" href="#한-장-요약" aria-hidden="true">#</a>한 장 요약</h2>
+<div class="table-wrap"><table><thead><tr><th>층</th><th>무엇</th><th>비고</th></tr></thead><tbody><tr><td>사이트</td><td>정적 HTML + Tailwind CLI 빌드 CSS + 바닐라 JS</td><td>헤더·푸터는 <code>assets/js/common.js</code>가 주입, 콘텐츠는 <code>assets/js/data.js</code></td></tr><tr><td>호스팅</td><td>Vercel (Pro), GitHub <code>main</code> 푸시 → 자동 배포</td><td>cleanUrls (확장자 없는 주소)</td></tr><tr><td>데이터</td><td>Supabase <code>jgcf2026</code> (서울, <code>ahabmxxenajosbdkzull</code>)</td><td>테이블 4개 + Storage 버킷 1개</td></tr><tr><td>인증</td><td>Supabase Auth (이메일·비밀번호)</td><td>사무국 2 · 상담기관 20 계정</td></tr><tr><td>저장소</td><td>GitHub <code>planderdev/jgc2026</code></td><td><code>tmp/</code>는 gitignore(자격증명 파일 위치)</td></tr></tbody></table></div>
+<h2 id="보안-모델"><a class="anchor" href="#보안-모델" aria-hidden="true">#</a>보안 모델</h2>
+<ul><li><p>모든 테이블은 <strong>RLS 활성, 정책 0개</strong> — 공개 키로는 어떤 행도 읽거나 쓸 수 없습니다.</p>
+</li><li><p>브라우저는 <code>jgcf_*</code> <strong>SECURITY DEFINER 함수</strong>만 호출합니다. 각 함수는 필요한 데이터만 돌려주고 입력을 서버에서 다시 검증합니다.</p>
+</li><li><p>관리자·기관 함수는 로그인 토큰으로 호출하며, <code>admin_users</code> / <code>partner_users</code> 테이블에 있는 계정만 내용을 받습니다.</p>
+</li><li><p>첨부 버킷 <code>meetup-attachments</code>는 비공개. 익명은 올리기만(PDF·20MB), 사무국과 해당 기관만 내려받기.</p>
+</li><li><p>공개 키(<code>sb_publishable_…</code>)는 사이트 코드에 있어도 됩니다. <strong>service_role 키는 절대 사이트 코드에 넣지 않습니다.</strong></p>
+</li></ul>
+<h2 id="서버-함수"><a class="anchor" href="#서버-함수" aria-hidden="true">#</a>서버 함수</h2>
+<div class="table-wrap"><table><thead><tr><th>함수</th><th>누가</th><th>하는 일</th></tr></thead><tbody><tr><td><code>jgcf_create_reservation</code></td><td>익명</td><td>예약 생성. 마감·시간 형식·연락처·중복(같은 시간/같은 기관/기관-시간 선점) 검사</td></tr><tr><td><code>jgcf_lookup_reservation</code></td><td>익명</td><td>예약번호+연락처로 조회, 같은 연락처의 다른 예약 포함</td></tr><tr><td><code>jgcf_cancel_reservation</code></td><td>익명</td><td>마감 전 취소</td></tr><tr><td><code>jgcf_taken_slots</code></td><td>익명</td><td>기관별 마감 시간 목록(개인정보 없음)</td></tr><tr><td><code>jgcf_create_registration</code></td><td>익명</td><td>참가신청(연락처 중복 차단, 18:00 마감)</td></tr><tr><td><code>jgcf_reservation_open</code> · <code>jgcf_registration_open</code></td><td>익명</td><td>마감 여부</td></tr><tr><td><code>jgcf_whoami</code></td><td>로그인</td><td>사무국/기관 역할 판별</td></tr><tr><td><code>jgcf_admin_reservations</code> · <code>jgcf_admin_registrations</code></td><td>사무국</td><td>전체 목록</td></tr><tr><td><code>jgcf_admin_cancel</code></td><td>사무국</td><td>대신 취소(마감 무관)</td></tr><tr><td><code>jgcf_admin_set_attendance</code></td><td>사무국</td><td>출석 토글</td></tr><tr><td><code>jgcf_partner_reservations</code></td><td>기관</td><td>자기 확정 예약</td></tr></tbody></table></div>
+<p>마이그레이션 파일은 <code>supabase/migrations/</code>에 순서대로 있고, 정책 설명은 <code>supabase/README.md</code>에 있습니다.</p>
+<h2 id="핵심-상수-바꿀-때-같이-바꿀-곳"><a class="anchor" href="#핵심-상수-바꿀-때-같이-바꿀-곳" aria-hidden="true">#</a>핵심 상수 (바꿀 때 같이 바꿀 곳)</h2>
+<div class="table-wrap"><table><thead><tr><th>값</th><th>서버</th><th>화면</th></tr></thead><tbody><tr><td>밋업 마감 9/16 00:00 KST</td><td><code>jgcf_reservation_cutoff()</code></td><td><code>assets/js/admin.js</code> MEETUP_CUTOFF (D-day 표시)</td></tr><tr><td>참가신청 마감 9/16 18:00</td><td><code>jgcf_registration_cutoff()</code></td><td>—</td></tr><tr><td>시간 슬롯 30분·점심</td><td><code>jgcf_valid_slot()</code> 정규식</td><td><code>assets/js/data.js</code> reservationTimes/Breaks</td></tr><tr><td>첨부 20MB</td><td>버킷 <code>file_size_limit</code></td><td><code>assets/js/meetup.js</code> ATTACHMENT_MAX_MB</td></tr><tr><td>연락처 9~11자리</td><td>함수 내 검사</td><td><code>assets/js/common.js</code> isValidPhone</td></tr></tbody></table></div>
+
+        <nav class="pager">
+    <a class="prev" href="/docs/participant/meetup"><small>이전</small><span>밋업 예약·조회·취소</span></a>
+    <a class="next" href="/docs/tech/deploy"><small>다음</small><span>배포·도메인</span></a>
+  </nav>
+      </main>
+      <aside class="toc"><p>On this page</p><ul><li class="d2"><a href="#한-장-요약">한 장 요약</a></li><li class="d2"><a href="#보안-모델">보안 모델</a></li><li class="d2"><a href="#서버-함수">서버 함수</a></li><li class="d2"><a href="#핵심-상수-바꿀-때-같이-바꿀-곳">핵심 상수 (바꿀 때 같이 바꿀 곳)</a></li></ul></aside>
+    </div>
+  </div>
+</div>
+<div class="search" data-search hidden>
+  <div class="search-box" role="dialog" aria-label="문서 검색">
+    <input type="search" placeholder="검색어를 입력하세요 (예: 출석, 비밀번호, 취소)" data-search-input autocomplete="off">
+    <ul data-search-results></ul>
+    <p class="search-hint">Esc 닫기 · ↑↓ 이동 · Enter 열기</p>
+  </div>
+</div>
+<script src="/docs/assets/docs.js" defer></script>
+</body>
+</html>

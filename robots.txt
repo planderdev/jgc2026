@@ -1,6 +1,7 @@
 User-agent: *
 Allow: /
 Disallow: /admin
+Disallow: /docs
 Disallow: /design-system
 Disallow: /meetup/complete
 Disallow: /register-complete

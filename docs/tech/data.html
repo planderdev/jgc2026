@@ -1,0 +1,78 @@
+<!doctype html>
+<!-- 자동 생성: node scripts/build-docs.mjs — 원고는 docs-src/tech/data.md -->
+<html lang="ko" data-theme="">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>데이터 운영 · JGCF 2026 가이드</title>
+  <meta name="description" content="테스트 데이터 정리, Storage 정리, 계정 생성, 백업 등 Supabase 쪽 운영 작업입니다.">
+  <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg">
+  <link rel="stylesheet" href="/docs/assets/docs.css">
+  <script>try{const t=localStorage.getItem('jgcf-docs-theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
+</head>
+<body>
+<a class="skip" href="#content">본문으로</a>
+<div class="layout">
+  <aside class="side" id="side">
+    <div class="side-head">
+      <a class="brand" href="/docs"><span class="mark">JG</span><span><strong>JGCF 2026</strong><small>OPERATIONS GUIDE</small></span></a>
+      <button class="side-toggle" type="button" aria-label="메뉴 닫기" data-side-close>×</button>
+    </div>
+    <button class="search-btn" type="button" data-search-open><span>검색</span><kbd>⌘K</kbd></button>
+    <a class="side-link" href="/" target="_blank" rel="noopener">↗ 사이트 열기</a>
+    <a class="side-link" href="/admin" target="_blank" rel="noopener">↗ 관리자 화면 열기</a>
+    <nav class="side-nav" aria-label="문서"><ul class="nav-flat"><li><a href="/docs">가이드 홈</a></li></ul><details class="nav-group"><summary>사무국 가이드<i></i></summary><ul><li><a href="/docs/secretariat/getting-started">시작하기</a></li><li><a href="/docs/secretariat/dashboard">관리자 화면</a></li><li><a href="/docs/secretariat/event-day">행사 당일</a></li><li><a href="/docs/secretariat/rules">운영 규칙</a></li><li><a href="/docs/secretariat/timeline">운영 타임라인</a></li><li><a href="/docs/secretariat/troubleshooting">문제 상황 대응</a></li></ul></details><details class="nav-group"><summary>상담기관 가이드<i></i></summary><ul><li><a href="/docs/partner/overview">상담기관 화면</a></li><li><a href="/docs/partner/notice-template">계정 안내 문구</a></li></ul></details><details class="nav-group"><summary>참가자 안내<i></i></summary><ul><li><a href="/docs/participant/register">행사 참가신청</a></li><li><a href="/docs/participant/meetup">밋업 예약·조회·취소</a></li></ul></details><details class="nav-group" open><summary>기술 가이드<i></i></summary><ul><li><a href="/docs/tech/architecture">구조</a></li><li><a href="/docs/tech/deploy">배포·도메인</a></li><li><a href="/docs/tech/i18n">영문판</a></li><li><a href="/docs/tech/qa">회귀 테스트·자동 점검</a></li><li><a href="/docs/tech/data" aria-current="page">데이터 운영</a></li></ul></details><ul class="nav-flat"><li><a href="/docs/glossary">용어집</a></li><li><a href="/docs/faq">자주 묻는 질문</a></li></ul></nav>
+    <div class="side-foot">
+      <button type="button" class="theme" data-theme-toggle aria-label="테마 전환"><span class="sun">☀</span><span class="moon">☾</span></button>
+      <small></small>
+    </div>
+  </aside>
+  <div class="main">
+    <header class="topbar">
+      <button type="button" class="menu-btn" data-side-open aria-label="메뉴 열기">☰</button>
+      <span>데이터 운영</span>
+      <button type="button" class="search-btn small" data-search-open aria-label="검색">⌕</button>
+    </header>
+    <div class="content-wrap">
+      <main id="content" class="content">
+        <p class="crumb">기술 가이드</p>
+        <h1>데이터 운영</h1>
+        <p class="lede">테스트 데이터 정리, Storage 정리, 계정 생성, 백업 등 Supabase 쪽 운영 작업입니다.</p>
+        <h2 id="테스트-데이터-정리"><a class="anchor" href="#테스트-데이터-정리" aria-hidden="true">#</a>테스트 데이터 정리</h2>
+<p>관리자 화면에는 삭제 기능이 없습니다. Supabase 대시보드 → SQL Editor에서:</p>
+<pre><code class="language-sql">delete from public.event_registrations where name like &#39;%__QA__%&#39;;
+delete from public.reservations where applicant_company like &#39;%__QA__%&#39; or manager_name like &#39;%__QA__%&#39;;
+select (select count(*) from public.reservations) r, (select count(*) from public.event_registrations) e;
+</code></pre>
+<p><code>__QA__</code> 표시가 없는 행(실제 테스트 예약 등)은 명시적으로 번호를 지정해 지웁니다. <strong>실제 모집 데이터는 보유기간 전에 지우지 마세요.</strong></p>
+<h2 id="storage-정리"><a class="anchor" href="#storage-정리" aria-hidden="true">#</a>Storage 정리</h2>
+<p>Storage 버킷은 보호 트리거 때문에 SQL로 지울 수 없습니다. 대시보드 → Storage → <code>meetup-attachments</code> → 파일 선택 → Delete. 예약이 취소·삭제돼도 파일은 자동 삭제되지 않으므로 행사 후 일괄 정리합니다.</p>
+<h2 id="계정-생성"><a class="anchor" href="#계정-생성" aria-hidden="true">#</a>계정 생성</h2>
+<p>계정 도메인 <code>2026jejugcf.com</code>이 미등록이라 일반 가입(확인 메일)은 쓸 수 없어 <code>auth.users</code>에 직접 넣었습니다. 새 계정이 필요하면 개발 담당이 같은 방식으로 만들고 <code>admin_users</code> 또는 <code>partner_users</code>에 연결합니다. 비밀번호는 bcrypt 해시로만 저장되며, 평문은 운영계정 엑셀에만 기록합니다.</p>
+<h2 id="백업"><a class="anchor" href="#백업" aria-hidden="true">#</a>백업</h2>
+<div class="callout warn"><p class="callout-title">자동 백업 없음</p><p>Supabase 무료 플랜에는 자동 백업이 없습니다. 모집 기간 중에는 주기적으로(예: 매일 저녁) 관리자 화면에서 <strong>밋업 예약·참가신청 CSV를 내려받아</strong> 보관하세요. 실수로 지운 데이터는 복구할 수 없습니다.</p>
+</div>
+
+<h2 id="개인정보-보유기간"><a class="anchor" href="#개인정보-보유기간" aria-hidden="true">#</a>개인정보 보유기간</h2>
+<p>행사 종료 후 1년(2027-09-16)까지 보유 후 파기. 프로젝트 삭제로 전체 파기할 수 있습니다. 상담기관 제공분은 행사 종료 즉시 파기를 요청합니다.</p>
+
+        <nav class="pager">
+    <a class="prev" href="/docs/tech/qa"><small>이전</small><span>회귀 테스트·자동 점검</span></a>
+    <a class="next" href="/docs/glossary"><small>다음</small><span>용어집</span></a>
+  </nav>
+      </main>
+      <aside class="toc"><p>On this page</p><ul><li class="d2"><a href="#테스트-데이터-정리">테스트 데이터 정리</a></li><li class="d2"><a href="#storage-정리">Storage 정리</a></li><li class="d2"><a href="#계정-생성">계정 생성</a></li><li class="d2"><a href="#백업">백업</a></li><li class="d2"><a href="#개인정보-보유기간">개인정보 보유기간</a></li></ul></aside>
+    </div>
+  </div>
+</div>
+<div class="search" data-search hidden>
+  <div class="search-box" role="dialog" aria-label="문서 검색">
+    <input type="search" placeholder="검색어를 입력하세요 (예: 출석, 비밀번호, 취소)" data-search-input autocomplete="off">
+    <ul data-search-results></ul>
+    <p class="search-hint">Esc 닫기 · ↑↓ 이동 · Enter 열기</p>
+  </div>
+</div>
+<script src="/docs/assets/docs.js" defer></script>
+</body>
+</html>

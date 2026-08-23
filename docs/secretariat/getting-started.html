@@ -1,0 +1,82 @@
+<!doctype html>
+<!-- 자동 생성: node scripts/build-docs.mjs — 원고는 docs-src/secretariat/getting-started.md -->
+<html lang="ko" data-theme="">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>시작하기 · JGCF 2026 가이드</title>
+  <meta name="description" content="사무국 계정으로 로그인하고, 상담기관 계정을 전달하고, 비밀번호를 잃었을 때 복구하는 방법입니다.">
+  <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg">
+  <link rel="stylesheet" href="/docs/assets/docs.css">
+  <script>try{const t=localStorage.getItem('jgcf-docs-theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
+</head>
+<body>
+<a class="skip" href="#content">본문으로</a>
+<div class="layout">
+  <aside class="side" id="side">
+    <div class="side-head">
+      <a class="brand" href="/docs"><span class="mark">JG</span><span><strong>JGCF 2026</strong><small>OPERATIONS GUIDE</small></span></a>
+      <button class="side-toggle" type="button" aria-label="메뉴 닫기" data-side-close>×</button>
+    </div>
+    <button class="search-btn" type="button" data-search-open><span>검색</span><kbd>⌘K</kbd></button>
+    <a class="side-link" href="/" target="_blank" rel="noopener">↗ 사이트 열기</a>
+    <a class="side-link" href="/admin" target="_blank" rel="noopener">↗ 관리자 화면 열기</a>
+    <nav class="side-nav" aria-label="문서"><ul class="nav-flat"><li><a href="/docs">가이드 홈</a></li></ul><details class="nav-group" open><summary>사무국 가이드<i></i></summary><ul><li><a href="/docs/secretariat/getting-started" aria-current="page">시작하기</a></li><li><a href="/docs/secretariat/dashboard">관리자 화면</a></li><li><a href="/docs/secretariat/event-day">행사 당일</a></li><li><a href="/docs/secretariat/rules">운영 규칙</a></li><li><a href="/docs/secretariat/timeline">운영 타임라인</a></li><li><a href="/docs/secretariat/troubleshooting">문제 상황 대응</a></li></ul></details><details class="nav-group"><summary>상담기관 가이드<i></i></summary><ul><li><a href="/docs/partner/overview">상담기관 화면</a></li><li><a href="/docs/partner/notice-template">계정 안내 문구</a></li></ul></details><details class="nav-group"><summary>참가자 안내<i></i></summary><ul><li><a href="/docs/participant/register">행사 참가신청</a></li><li><a href="/docs/participant/meetup">밋업 예약·조회·취소</a></li></ul></details><details class="nav-group"><summary>기술 가이드<i></i></summary><ul><li><a href="/docs/tech/architecture">구조</a></li><li><a href="/docs/tech/deploy">배포·도메인</a></li><li><a href="/docs/tech/i18n">영문판</a></li><li><a href="/docs/tech/qa">회귀 테스트·자동 점검</a></li><li><a href="/docs/tech/data">데이터 운영</a></li></ul></details><ul class="nav-flat"><li><a href="/docs/glossary">용어집</a></li><li><a href="/docs/faq">자주 묻는 질문</a></li></ul></nav>
+    <div class="side-foot">
+      <button type="button" class="theme" data-theme-toggle aria-label="테마 전환"><span class="sun">☀</span><span class="moon">☾</span></button>
+      <small></small>
+    </div>
+  </aside>
+  <div class="main">
+    <header class="topbar">
+      <button type="button" class="menu-btn" data-side-open aria-label="메뉴 열기">☰</button>
+      <span>시작하기</span>
+      <button type="button" class="search-btn small" data-search-open aria-label="검색">⌕</button>
+    </header>
+    <div class="content-wrap">
+      <main id="content" class="content">
+        <p class="crumb">사무국 가이드</p>
+        <h1>시작하기</h1>
+        <p class="lede">사무국 계정으로 로그인하고, 상담기관 계정을 전달하고, 비밀번호를 잃었을 때 복구하는 방법입니다.</p>
+        <h2 id="계정-종류"><a class="anchor" href="#계정-종류" aria-hidden="true">#</a>계정 종류</h2>
+<div class="table-wrap"><table><thead><tr><th>계정</th><th>개수</th><th>볼 수 있는 것</th><th>할 수 있는 것</th></tr></thead><tbody><tr><td><strong>사무국</strong></td><td>2</td><td>전체 예약·참가신청</td><td>검색·필터, CSV·인쇄, 대신 취소, 출석 체크, 소개서 열람</td></tr><tr><td><strong>상담기관</strong></td><td>20</td><td>자기 기관의 확정 예약만</td><td>읽기, CSV·인쇄, 소개서 열람</td></tr></tbody></table></div>
+<p>두 계정 모두 같은 주소 <strong>/admin</strong> 으로 로그인하고, 계정에 따라 화면이 달라집니다. 상담기관 계정은 <code>기관아이디@2026jejugcf.com</code> 형식입니다.</p>
+<div class="callout warn"><p class="callout-title">자격증명의 위치</p><p>비밀번호는 <strong>운영계정 엑셀(JGCF2026-운영계정.xlsx)</strong> 에만 있습니다. 시스템 어디에서도 평문을 다시 볼 수 없습니다(해시로만 저장). 파일을 안전한 곳에 보관하세요.</p>
+</div>
+
+<h2 id="처음-로그인"><a class="anchor" href="#처음-로그인" aria-hidden="true">#</a>처음 로그인</h2>
+<ol class="steps"><li><p><strong>주소 열기</strong><a href="https://jgc2026.vercel.app/admin">https://jgc2026.vercel.app/admin</a></p>
+</li><li><p><strong>엑셀의 값 입력</strong>&quot;사무국 계정&quot; 시트의 이메일과 비밀번호. 난수라 한 글자만 달라도 실패하므로 셀 값을 그대로 복사하세요.</p>
+</li><li><p><strong>현황 탭 확인</strong>로그인되면 현황 탭이 먼저 열립니다. 모집 전에는 예약 0 · 참가신청 0이어야 정상입니다.</p>
+</li></ol>
+<h2 id="상담기관에-계정-전달"><a class="anchor" href="#상담기관에-계정-전달" aria-hidden="true">#</a>상담기관에 계정 전달</h2>
+<p>각 기관에는 <strong>그 기관의 행만</strong> 보냅니다. 엑셀을 통째로 보내면 한 기관이 다른 19곳 계정으로 들어가 남의 신청 기업 연락처와 소개서를 볼 수 있습니다. 메일 본문은 <a href="/docs/partner/notice-template">계정 안내 문구</a>를 쓰세요.</p>
+<h2 id="비밀번호를-잊었을-때"><a class="anchor" href="#비밀번호를-잊었을-때" aria-hidden="true">#</a>비밀번호를 잊었을 때</h2>
+<p>계정 도메인(2026jejugcf.com)이 아직 등록 전이라 <strong>재설정 메일이 가지 않습니다.</strong> 사무국이 직접 새 비밀번호를 지정해 전달합니다.</p>
+<ol class="steps"><li><p><strong>Supabase 대시보드</strong>Authentication → Users (<a href="https://supabase.com/dashboard/project/ahabmxxenajosbdkzull/auth/users">바로가기</a>)</p>
+</li><li><p><strong>계정 검색 → Reset password</strong>새 비밀번호 입력 후 저장</p>
+</li><li><p><strong>전달·기록</strong>담당자에게 전달하고 운영계정 엑셀도 갱신</p>
+</li></ol>
+<div class="callout info"><p class="callout-title">왜 비밀번호를 볼 수 없나요</p><p>Supabase를 포함한 모든 제대로 된 인증 시스템은 비밀번호를 복구 불가능한 해시로만 저장합니다. 할 수 있는 것은 &quot;새 값으로 교체&quot;뿐입니다.</p>
+</div>
+
+        <nav class="pager">
+    <a class="prev" href="/docs"><small>이전</small><span>가이드 홈</span></a>
+    <a class="next" href="/docs/secretariat/dashboard"><small>다음</small><span>관리자 화면</span></a>
+  </nav>
+      </main>
+      <aside class="toc"><p>On this page</p><ul><li class="d2"><a href="#계정-종류">계정 종류</a></li><li class="d2"><a href="#처음-로그인">처음 로그인</a></li><li class="d2"><a href="#상담기관에-계정-전달">상담기관에 계정 전달</a></li><li class="d2"><a href="#비밀번호를-잊었을-때">비밀번호를 잊었을 때</a></li></ul></aside>
+    </div>
+  </div>
+</div>
+<div class="search" data-search hidden>
+  <div class="search-box" role="dialog" aria-label="문서 검색">
+    <input type="search" placeholder="검색어를 입력하세요 (예: 출석, 비밀번호, 취소)" data-search-input autocomplete="off">
+    <ul data-search-results></ul>
+    <p class="search-hint">Esc 닫기 · ↑↓ 이동 · Enter 열기</p>
+  </div>
+</div>
+<script src="/docs/assets/docs.js" defer></script>
+</body>
+</html>

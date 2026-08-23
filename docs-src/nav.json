@@ -1,0 +1,30 @@
+[
+  { "label": "", "items": [ { "path": "index", "title": "가이드 홈" } ] },
+  { "label": "사무국 가이드", "items": [
+    { "path": "secretariat/getting-started", "title": "시작하기" },
+    { "path": "secretariat/dashboard", "title": "관리자 화면" },
+    { "path": "secretariat/event-day", "title": "행사 당일" },
+    { "path": "secretariat/rules", "title": "운영 규칙" },
+    { "path": "secretariat/timeline", "title": "운영 타임라인" },
+    { "path": "secretariat/troubleshooting", "title": "문제 상황 대응" }
+  ] },
+  { "label": "상담기관 가이드", "items": [
+    { "path": "partner/overview", "title": "상담기관 화면" },
+    { "path": "partner/notice-template", "title": "계정 안내 문구" }
+  ] },
+  { "label": "참가자 안내", "items": [
+    { "path": "participant/register", "title": "행사 참가신청" },
+    { "path": "participant/meetup", "title": "밋업 예약·조회·취소" }
+  ] },
+  { "label": "기술 가이드", "items": [
+    { "path": "tech/architecture", "title": "구조" },
+    { "path": "tech/deploy", "title": "배포·도메인" },
+    { "path": "tech/i18n", "title": "영문판" },
+    { "path": "tech/qa", "title": "회귀 테스트·자동 점검" },
+    { "path": "tech/data", "title": "데이터 운영" }
+  ] },
+  { "label": "", "items": [
+    { "path": "glossary", "title": "용어집" },
+    { "path": "faq", "title": "자주 묻는 질문" }
+  ] }
+]
