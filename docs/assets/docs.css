@@ -12,13 +12,7 @@ html[data-theme="dark"] {
   --line: #26262e; --line-2: #34343f; --accent: #a68cff; --accent-soft: #2a2345; --warn: #eab767; --warn-bg: #2e2516;
   --good: #74d6a9; --good-bg: #15302a; --info: #8fb0ff; --info-bg: #1a2236; --code-bg: #1b1b22;
 }
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]):not([data-theme="dark"]) {
-    --bg: #0f0f12; --bg-2: #16161b; --bg-3: #1e1e25; --ink: #ebebf0; --ink-2: #b4b4c0; --ink-3: #7c7c8a;
-    --line: #26262e; --line-2: #34343f; --accent: #a68cff; --accent-soft: #2a2345; --warn: #eab767; --warn-bg: #2e2516;
-    --good: #74d6a9; --good-bg: #15302a; --info: #8fb0ff; --info-bg: #1a2236; --code-bg: #1b1b22;
-  }
-}
+/* 기본은 라이트. 다크는 토글로만(시스템 설정을 따르지 않는다). */
 @font-face { font-family: "SUIT Variable"; src: url("/assets/fonts/suit/SUIT-site.woff2") format("woff2"); font-weight: 100 900; font-display: swap; unicode-range: U+0000-00FF, U+AC00-D7A3, U+3131-318E, U+2000-206F, U+3000-303F, U+FF00-FFEF; }
 @font-face { font-family: "SUIT Variable"; src: url("/assets/fonts/suit/SUIT-rest.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
 

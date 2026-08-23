@@ -109,7 +109,7 @@ function shell({ page, idx, meta, html, headings }) {
   const crumb = page.group.label ? `<p class="crumb">${esc(page.group.label)}</p>` : '';
   return `<!doctype html>
 <!-- 자동 생성: node scripts/build-docs.mjs — 원고는 docs-src/${page.path}.md -->
-<html lang="ko" data-theme="">
+<html lang="ko" data-theme="light">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">

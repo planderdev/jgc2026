@@ -6,7 +6,7 @@
   // 테마
   $('[data-theme-toggle]')?.addEventListener('click', () => {
     const root = document.documentElement;
-    const dark = root.dataset.theme === 'dark' || (!root.dataset.theme && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    const dark = root.dataset.theme === 'dark';
     root.dataset.theme = dark ? 'light' : 'dark';
     try { localStorage.setItem('jgcf-docs-theme', root.dataset.theme); } catch (e) { /* ignore */ }
   });
