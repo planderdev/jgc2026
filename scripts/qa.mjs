@@ -200,6 +200,7 @@ async function checkProgramContent(page) {
   await page.waitForTimeout(500);
   return await page.evaluate(() => ({
     scheduleTabs: document.querySelectorAll('[data-schedule-tabs] a').length,
+    institutionOrgs: document.querySelectorAll('[data-institution-orgs] .company-pill').length,
     mainIrCompanies: document.querySelectorAll('[data-main-ir-companies] .program-company-card').length,
     risingIrCompanies: document.querySelectorAll('[data-rising-ir-companies] .program-company-card').length,
     exhibitionCompanies: document.querySelectorAll('[data-exhibition-companies] .program-company-card').length
@@ -209,6 +210,7 @@ async function checkProgramContent(page) {
 async function checkRegistration(page) {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto(pageUrl('register.html'), { waitUntil: 'networkidle' });
+  const phone = `010-2222-${String(Date.now()).slice(-4)}`;
   await page.evaluate(() => {
     localStorage.removeItem('jgcf2026.eventApplications');
     localStorage.removeItem('jgcf2026.eventApplicationSequence');
@@ -216,7 +218,7 @@ async function checkRegistration(page) {
   await page.reload({ waitUntil: 'networkidle' });
   await page.fill('input[name="companyName"]', 'QA 콘텐츠');
   await page.fill('input[name="companyManagerName"]', '참가 신청자');
-  await page.fill('input[name="phone"]', '010-2222-3333');
+  await page.fill('input[name="phone"]', phone);
   await page.check('input[name="privacy"]');
   await page.getByRole('button', { name: /신청 완료/ }).click();
   await page.waitForURL(/register-complete/);
@@ -231,6 +233,9 @@ async function checkRegistration(page) {
 async function checkReservation(page) {
   await page.setViewportSize({ width: 1440, height: 900 });
   const fixturePdf = path.join(qaDir, 'qa-company-profile.pdf');
+  const stamp = Date.now();
+  const phone = `010-1111-${String(stamp).slice(-4)}`;
+  const email = `qa-${stamp}@example.com`;
   await fs.writeFile(fixturePdf, '%PDF-1.4\n% QA fixture\n');
   await page.goto(pageUrl('meetup/reserve.html'), { waitUntil: 'networkidle' });
   await page.evaluate(() => {
@@ -238,25 +243,25 @@ async function checkReservation(page) {
     localStorage.removeItem('jgcf2026.reservationSequence');
   });
   await page.reload({ waitUntil: 'networkidle' });
-  await page.locator('input[name="companyId"]').first().check();
+  await page.locator('input[name="companyId"]').last().check();
   await page.getByRole('button', { name: /다음/ }).click();
-  await page.locator('input[name="time"]').first().check();
+  await page.locator('input[name="time"]:not([disabled])').first().check();
   await page.getByRole('button', { name: /다음/ }).click();
   await page.fill('input[name="applicantCompany"]', 'QA Studio');
   await page.fill('input[name="managerName"]', '테스트 신청자');
-  await page.fill('input[name="phone"]', '010-1111-2222');
-  await page.fill('input[name="email"]', 'qa@example.com');
+  await page.fill('input[name="phone"]', phone);
+  await page.fill('input[name="email"]', email);
   await page.setInputFiles('input[name="attachment"]', fixturePdf);
   await page.fill('textarea[name="inquiry"]', '원고 기준 비즈밋업 예약 플로우 확인');
   await page.check('input[name="privacy"]');
   await page.getByRole('button', { name: /다음/ }).click();
   await page.getByRole('button', { name: /예약 완료/ }).click();
-  await page.waitForURL(/complete\.html/);
+  await page.waitForURL(/\/meetup\/complete(?:\.html)?$/);
   const reservationNumber = await page.locator('.reservation-number').innerText();
 
   await page.goto(pageUrl('meetup/confirm.html'), { waitUntil: 'networkidle' });
   await page.fill('input[name="reservationNumber"]', reservationNumber);
-  await page.fill('input[name="phone"]', '010-1111-2222');
+  await page.fill('input[name="phone"]', phone);
   await page.getByRole('button', { name: /조회하기/ }).click();
   await page.getByRole('button', { name: /예약 취소/ }).click();
   await page.getByRole('button', { name: /취소 확정/ }).click();
@@ -315,7 +320,7 @@ async function main() {
     report.homeRebuild.heroTitle.replace(/\s/g, '') === 'CONNECTJEJU,CREATEGLOBAL' ? null : 'Hero title changed',
     report.homeRebuild.eventSlides >= 8 ? null : 'Event slides not rendered',
     report.homeRebuild.specialSlides >= 8 && report.homeRebuild.specialTitles.includes('해녀의 부엌') && report.homeRebuild.specialNotes >= 8 ? null : 'IR companies not rendered in special carousel',
-    report.homeRebuild.homeLocationTitle === 'Venue 행사 장소 및 교통 안내' && report.homeRebuild.homeLocationImage?.includes('venue-bein-stage.png') && report.homeRebuild.homeLocationMap?.includes('google.com/maps/embed') && report.homeRebuild.homeLocationButton?.includes('구글맵') && report.homeRebuild.homeLocationAddress?.includes('제주시 신산로 82') ? null : 'Home location section failed',
+    report.homeRebuild.homeLocationTitle === 'Venue 행사 장소 및 교통 안내' && /venue-bein-stage\.(?:jpg|png)$/.test(report.homeRebuild.homeLocationImage || '') && report.homeRebuild.homeLocationMap?.includes('google.com/maps/embed') && report.homeRebuild.homeLocationButton?.includes('구글맵') && report.homeRebuild.homeLocationAddress?.includes('제주시 신산로 82') ? null : 'Home location section failed',
     report.homeRebuild.partnerTitle === 'Partner & Sponsor' ? null : 'Partner title changed',
     report.homeRebuild.partnerGroups === 2 && report.homeRebuild.partnerGroupTitles.includes('Host/Organizer') && report.homeRebuild.partnerGroupTitles.includes('PARTNERS') && report.homeRebuild.partnerSubtitles.includes('주최/주관') && report.homeRebuild.partnerSubtitles.includes('협력기관') ? null : 'Partner grouped structure failed',
     report.homeRebuild.partners >= 9 ? null : 'Partner logos not rendered',
@@ -324,7 +329,7 @@ async function main() {
     report.mobileMenu.open ? null : 'Mobile menu did not open',
     report.mobileMenu.expanded === 'true' ? null : 'Mobile menu aria-expanded failed',
     report.faq.openItems === 1 && report.faq.secondOpen ? null : 'FAQ accordion failed',
-    report.programContent.scheduleTabs >= 6 && report.programContent.mainIrCompanies >= 8 && report.programContent.risingIrCompanies >= 5 && report.programContent.exhibitionCompanies >= 27 ? null : 'Program manuscript content not rendered',
+    report.programContent.scheduleTabs >= 6 && report.programContent.institutionOrgs >= 24 && report.programContent.mainIrCompanies >= 8 && report.programContent.risingIrCompanies >= 5 && report.programContent.exhibitionCompanies >= 27 ? null : 'Program manuscript content not rendered',
     report.registration.completed && report.registration.typeVisible && report.registration.applicantVisible ? null : 'Event registration flow failed',
     ...report.routes.filter((item) => item.horizontalOverflow).map((item) => `Horizontal overflow on ${item.route} at ${item.viewport.width}`),
     ...report.routes.filter((item) => !item.header || !item.footer).map((item) => `Missing shell on ${item.route} at ${item.viewport.width}`),

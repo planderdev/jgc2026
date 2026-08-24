@@ -20,6 +20,7 @@
     already_registered: '이미 참가신청이 접수된 연락처입니다.',
     invalid_email: '메일 주소를 정확하게 입력해 주세요.',
     invalid_phone: '연락처를 정확하게 입력해 주세요.',
+    invalid_slot: '선택할 수 없는 시간대입니다. 다른 시간을 선택해 주세요.',
     missing_field: '필수 항목이 비어 있습니다.',
     too_long: '입력 내용이 너무 깁니다.',
     invalid_type: '참가 구분을 다시 선택해 주세요.',

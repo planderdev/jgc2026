@@ -22,6 +22,7 @@ The website uses bundled local assets except for the requested Google Maps ifram
 | `assets/images/speakers/speaker-06.jpg` | Speaker visual |
 | `assets/images/speakers/speaker-07.jpg` | Speaker visual |
 | `assets/images/speakers/speaker-08.jpg` | Speaker visual |
+| `assets/images/speakers/speaker-samuel-lorca.jpg` | Extracted from the 2026 JGCF homepage manuscript PDF provided by the organizer |
 | `assets/images/home/event-opening.jpg` | Home program visual |
 | `assets/images/home/event-conference.jpg` | Home conference visual |
 | `assets/images/home/event-creator.jpg` | Home creator visual |

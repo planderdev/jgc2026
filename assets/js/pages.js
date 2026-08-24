@@ -166,6 +166,17 @@
     const main = document.querySelector('[data-main-ir-companies]');
     const rising = document.querySelector('[data-rising-ir-companies]');
     const exhibition = document.querySelector('[data-exhibition-companies]');
+    const institutionOrgs = document.querySelector('[data-institution-orgs]');
+
+    if (institutionOrgs) {
+      institutionOrgs.innerHTML = (data().institutionOrgs || [])
+        .map((org) => `
+          <div class="company-pill">
+            <strong>${escapeHtml(org.name)}</strong>
+            <span>${escapeHtml(org.field)}</span>
+          </div>
+        `).join('');
+    }
 
     if (main) {
       main.innerHTML = (data().mainIrCompanies || [])

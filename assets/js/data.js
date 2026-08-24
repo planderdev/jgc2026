@@ -232,28 +232,34 @@
     { id: 'nitem', name: '니텀', field: '식품', note: '커피대체음료' }
   ];
 
-  const consultationOrgs = [
-    { id: 'kb-investment', name: 'KB인베스트먼트', field: 'ICT, AI, 로봇, 바이오 초기 및 성장기업 투자', note: '초기 및 성장기업 투자 상담' },
-    { id: 'daekyo-investment', name: '대교인베스트먼트', field: '애니메이션, 캐릭터, OTT, 드라마 콘텐츠 투자', note: '콘텐츠 IP 투자 상담' },
-    { id: 'fast-ventures', name: '패스트벤처스', field: '혁신 스타트업 중심 초기단계 벤처투자', note: '초기 스타트업 투자 상담' },
-    { id: 'danal-investment', name: '다날투자파트너스', field: 'AI, 로봇, 콘텐츠, 핀테크 초기~Series A 투자', note: '초기부터 Series A까지 투자 상담' },
-    { id: 'logan-ventures', name: '로간벤처스(유)', field: '문화, 영상, 콘텐츠 가치평가 및 메타버스 플랫폼 지원', note: '문화콘텐츠 가치평가 및 사업화 상담' },
-    { id: 'smartstudy-ventures', name: '스마트스터디벤처스', field: '캐릭터, 콘텐츠 IP 사업화, 문화콘텐츠, 에듀테크 발굴', note: '콘텐츠 IP 사업화 상담' },
-    { id: 'ynarcher', name: '와이앤아처', field: '글로벌 스타트업 액셀러레이팅, 로컬 브랜드 콘텐츠 육성', note: '글로벌 진출 및 로컬 브랜드 육성 상담' },
+  const institutionOrgs = [
+    { id: 'kb-investment', name: 'KB인베스트먼트', field: 'ICT·AI·로봇·바이오 초기·성장기업 투자', note: '초기 및 성장기업 투자 상담' },
+    { id: 'daekyo-investment', name: '대교인베스트먼트', field: '애니메이션·캐릭터·OTT·드라마 콘텐츠 투자', note: '콘텐츠 IP 투자 상담' },
+    { id: 'fast-ventures', name: '패스트벤처스 (논의중)', field: '혁신 스타트업 중심 초기단계 벤처투자', note: '초기 스타트업 투자 상담' },
+    { id: 'logan-ventures', name: '로간벤처스(유)', field: '문화/영상/콘텐츠 가치평가 및 메타버스플랫폼 지원', note: '문화콘텐츠 가치평가 및 사업화 상담' },
+    { id: 'smartstudy-ventures', name: '스마트스터디벤처스', field: '캐릭터·콘텐츠 IP 사업화, 문화콘텐츠, 에듀테크 발굴', note: '콘텐츠 IP 사업화 상담' },
     { id: 'acdc', name: 'AC:DC(에이씨엔디씨)', field: '스타트업 지원 액셀러레이터, 게임 등 콘텐츠 스타트업 특화', note: '콘텐츠 스타트업 액셀러레이팅 상담' },
-    { id: 'smartrun', name: '스마트런', field: '상담 분야 추후 업데이트', note: '상담 분야 추후 업데이트' },
-    { id: 'nextchallenge', name: '재단법인 넥스트챌린지', field: '스타트업 액셀러레이팅, 투자유치, 글로벌 진출', note: '투자유치 및 글로벌 진출 상담' },
-    { id: 'gomao-ventures', name: '고마오벤처스', field: '임팩트, 초기 스타트업 투자 및 스케일업', note: '임팩트 투자 및 스케일업 상담' },
-    { id: 'newkids-investment', name: '뉴키즈인베스트먼트', field: '로컬, 임팩트, 기술 초기기업 투자 및 액셀러레이팅', note: '로컬 및 기술 초기기업 상담' },
+    { id: 'ynarcher', name: '와이앤아처', field: '글로벌 스타트업 엑셀러레이팅, 로컬 브랜드 콘텐츠 육성', note: '글로벌 진출 및 로컬 브랜드 육성 상담' },
+    { id: 'smartrun', name: '스타트런', field: 'IR피칭·투자유치·창업컨설팅', note: 'IR피칭 및 투자유치 상담' },
+    { id: 'nextchallenge', name: '재단법인 넥스트챌린지', field: '스타트업 엑셀러레이팅·투자유치·글로벌 진출', note: '투자유치 및 글로벌 진출 상담' },
+    { id: 'gomao-ventures', name: '고마오벤처스', field: '임팩트·초기 스타트업 투자 및 스케일업', note: '임팩트 투자 및 스케일업 상담' },
+    { id: 'newkids-investment', name: '뉴키즈인베스트먼트', field: '로컬·임팩트·기술 초기기업 투자·액셀러레이팅', note: '로컬 및 기술 초기기업 상담' },
     { id: 'spring-water', name: '스프링 워터', field: '액셀러레이팅, 투자연계', note: '액셀러레이팅 및 투자연계 상담' },
-    { id: 'make064', name: '메이크064', field: '제주 로컬, F&B 초기투자, 브랜딩, 유통, 수출', note: '로컬 브랜드 성장 상담' },
-    { id: 'lotte-ventures', name: '롯데벤처스', field: '유통, 식품, 관광, 서비스, AI 스타트업 투자', note: '유통 및 관광 스타트업 투자 상담' },
+    { id: 'make064', name: '메이크064', field: '제주 로컬·F&B 초기투자·브랜딩·유통·수출', note: '로컬 브랜드 성장 상담' },
     { id: 'jeju-content-agency', name: '제주콘텐츠진흥원', field: '지역 특화 콘텐츠 제작 지원 상담 및 사업화 연계', note: '제작지원 및 사업화 상담' },
     { id: 'jeju-hrd', name: '제주지역인적자원개발위원회', field: '인력양성, 일자리지원 등', note: '인력양성 및 일자리 지원 상담' },
-    { id: 'jeju-creative-economy', name: '제주창조경제혁신센터', field: '액셀러레이팅, 투자연계, TIPS', note: '액셀러레이팅 및 TIPS 연계 상담' },
-    { id: 'kb-financial', name: 'KB금융', field: '핀테크, AI 스타트업 육성, 투자, 사업협력', note: '스타트업 육성 및 사업협력 상담' },
-    { id: 'kibo-busan-content-finance', name: '기술보증기금 부산문화콘텐츠금융센터', field: '기술보증 및 문화콘텐츠 금융 상담', note: '콘텐츠 금융 및 보증 상담' }
+    { id: 'jeju-creative-economy', name: '제주창조경제혁신센터', field: '엑셀러레이팅, 투자연계, TIPS', note: '액셀러레이팅 및 TIPS 연계 상담' },
+    { id: 'kb-financial', name: 'KB제주종합금융센터', field: '기업 융자·투자·사업협력', note: '기업 금융 및 사업협력 상담' },
+    { id: 'kibo-busan-content-finance', name: '기술보증기금 부산문화콘텐츠금융센터', field: '콘텐츠 금융·보증·자금조달', note: '콘텐츠 금융 및 보증 상담' },
+    { id: 'jeju-economic-trade-agency', name: '제주특별자치도경제통상진흥원', field: '도내 기업 글로벌 유통 및 마케팅 지원', note: '글로벌 유통 및 마케팅 상담' },
+    { id: 'jeju-credit-guarantee-foundation', name: '제주특별자치도 신용보증재단', field: '도내 기업 보증ㆍ자금조달', note: '보증 및 자금조달 상담' },
+    { id: 'cheju-halla-k-hightech-platform', name: '제주한라대학교 K-하이테크플랫폼사업단', field: '기업 재직자교육 및 역량강화 지원 컨설팅', note: '재직자교육 및 역량강화 상담' },
+    { id: 'jeju-national-tech-commercialization', name: '제주대학교 산학협력단 기술사업화ㆍ창업지원센터', field: '기술사업화 및 창업지원 컨설팅', note: '기술사업화 및 창업지원 상담' },
+    { id: 'jeju-startup-onestop', name: '제주창조경제혁신센터 스타트업원스톱지원센터', field: '콘텐츠 스타트업 상표권, 저작권 현장상담', note: '상표권 및 저작권 현장 상담' },
+    { id: 'jeju-ip-center', name: '제주지식재산센터', field: '변리사 3명 별도코너', note: '지식재산권 전문 상담' }
   ];
+
+  const consultationOrgs = institutionOrgs.filter((org) => org.id !== 'ynarcher');
 
   // 상담을 받지 않는 시간대와 그 사유. 화면에는 남되 선택할 수 없게 표시됩니다.
   // 운영 계획이 바뀌면 이 목록만 고치면 됩니다. 전 시간대를 열려면 빈 객체로 두세요.
@@ -385,16 +391,6 @@
         bio: '2026 제주글로벌콘텐츠포럼 글로벌 포럼 토론연사.'
       },
       {
-        id: 'global-speaker-pending',
-        pending: true,
-        name: '해외 연사 섭외 중',
-        role: 'Global Content Expert',
-        org: '섭외 중',
-        track: 'Forum',
-        image: image('assets/images/speakers/speaker-07.jpg'),
-        bio: '글로벌 콘텐츠 산업 관점의 포럼 토론연사 섭외 중.'
-      },
-      {
         id: 'evi-sari',
         name: 'Evi Sari',
         role: '글로벌 LBE 부사장',
@@ -422,14 +418,13 @@
         bio: '공연, 전시, XR, 미디어아트 기반 이머시브 콘텐츠 기업 bauer lab 대표. 차세대 돔 LED 시어터 ORBYT 쇼룸과 글로벌 공연 콘텐츠 개발을 추진한다.'
       },
       {
-        id: 'ai-film-awardee',
-        pending: true,
-        name: 'AI 국제필름페스티벌 대상 수상자',
-        role: 'AI Film Creator',
-        org: '섭외 중',
+        id: 'samuel-lorca',
+        name: '사무엘로르카',
+        role: '콘텐츠분과 조직위원',
+        org: 'AI필름페스티벌',
         track: 'AI',
-        image: image('assets/images/speakers/speaker-06.jpg'),
-        bio: 'AI 국제필름페스티벌 대상 수상자로 글로벌 포럼 토론연사 섭외 중.'
+        image: image('assets/images/speakers/speaker-samuel-lorca.jpg'),
+        bio: 'AI필름페스티벌 콘텐츠 분과 조직위원으로 파리 8대학과 뉴욕 브루클린대에서 영화를 전공했으며, 아트나인과 전주 영화제 프로그래머로 활동했다.'
       }
     ],
     media: [
@@ -503,7 +498,7 @@
         tab: '글로벌포럼',
         title: '글로벌 포럼',
         sessions: [
-          { time: '15:00 - 16:00', title: 'DX/AX 전환에 따른 로컬 콘텐츠 산업(기업)의 대응방안', meta: '위성곤 제주특별자치도지사, Evi Sari 부사장, 김영록 대표, 조수현 대표, 섭외 중 연사' }
+          { time: '15:00 - 16:00', title: 'DX/AX 전환에 따른 로컬 콘텐츠 산업(기업)의 대응방안', meta: '위성곤 제주특별자치도지사, Evi Sari 부사장, 김영록 대표, 조수현 대표, 사무엘로르카 조직위원' }
         ]
       },
       {
@@ -523,6 +518,7 @@
         ]
       }
     ],
+    institutionOrgs,
     companies: consultationOrgs,
     reservationTimes,
     reservationBreaks,
