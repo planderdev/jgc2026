@@ -1473,6 +1473,33 @@
   object-fit: cover;
 }
 
+.program-company-thumb.is-logo {
+  display: grid;
+  place-items: center;
+  padding: var(--space-24);
+  border: 1px solid var(--color-border-muted);
+  background: var(--color-white);
+}
+
+.program-company-thumb.is-logo img {
+  width: 100%;
+  height: 100%;
+  max-width: 82%;
+  max-height: 68%;
+  object-fit: contain;
+}
+
+.program-company-thumb.is-logo.is-portrait-logo {
+  padding: var(--space-16);
+}
+
+.program-company-thumb.is-logo.is-portrait-logo img {
+  width: 64%;
+  height: 86%;
+  max-width: none;
+  max-height: none;
+}
+
 .program-company-content {
   min-width: 0;
 }
@@ -1764,6 +1791,35 @@
   background: var(--color-white);
   color: var(--color-text-primary);
   text-align: center;
+}
+
+.company-pill.has-logo {
+  min-height: 128px;
+  gap: var(--space-16);
+  padding: var(--space-16);
+}
+
+.company-pill .program-company-thumb.is-pill-logo {
+  width: min(150px, 100%);
+  height: 58px;
+  aspect-ratio: auto;
+  padding: var(--space-8) var(--space-16);
+  border-radius: var(--radius-sm);
+}
+
+.company-pill .program-company-thumb.is-pill-logo img {
+  width: 100%;
+  height: 100%;
+  max-width: 88%;
+  max-height: 78%;
+  object-fit: contain;
+}
+
+.company-pill-copy {
+  min-width: 0;
+  display: grid;
+  gap: calc(var(--space-8) / 2);
+  justify-items: center;
 }
 
 .company-pill strong {

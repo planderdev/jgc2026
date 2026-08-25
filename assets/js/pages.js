@@ -26,6 +26,32 @@
     'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=640&q=80'
   ];
 
+  const programLogoByTitle = {
+    '프리아이디어': 'assets/images/program/freeidea.svg',
+    '귤바티': 'assets/images/program/gyulbati.svg',
+    '인스피어': 'assets/images/program/insphere.svg',
+    '제주특별자치도경제통상진흥원': 'assets/images/program/jeju-business.svg',
+    '제주창조경제혁신센터': 'assets/images/program/jeju-creative.svg',
+    '제주지식재산센터': 'assets/images/program/jeju-intelle.svg',
+    '케이컴퍼니': 'assets/images/program/kcompany.svg',
+    '기술보증기금 부산문화콘텐츠금융센터': 'assets/images/program/kibo.svg',
+    '계란바구니': 'assets/images/program/memoreal.svg',
+    '재단법인 넥스트챌린지': 'assets/images/program/nc.svg',
+    '뉴키즈인베스트먼트': 'assets/images/program/newkid.svg',
+    '제주창조경제혁신센터 스타트업원스톱지원센터': 'assets/images/program/onestop.svg',
+    '사이': 'assets/images/program/teahouse.svg'
+  };
+
+  const programPortraitLogoTitles = new Set(['사이']);
+
+  function getProgramCompanyLogo(company) {
+    return company?.logo || programLogoByTitle[company?.name] || '';
+  }
+
+  function getProgramLogoVariant(company) {
+    return programPortraitLogoTitles.has(company?.name) ? ' is-portrait-logo' : '';
+  }
+
   function getProgramCompanyThumbnail(index, variant) {
     const offset = variant === 'is-compact' ? 3 : variant === 'is-exhibition' ? 6 : 0;
     return programCompanyThumbnails[(index + offset) % programCompanyThumbnails.length];
@@ -114,9 +140,19 @@
     `).join('');
 
     const tabLinks = Array.from(tabs.querySelectorAll('a'));
+    let activeTabId = '';
+
+    function revealScheduleTab(anchor) {
+      const shouldReveal = window.matchMedia?.('(max-width: 768px)').matches;
+      if (!shouldReveal) return;
+      const behavior = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+      anchor.scrollIntoView({ behavior, block: 'nearest', inline: 'center' });
+    }
+
     tabLinks.forEach((anchor) => {
       anchor.addEventListener('click', (event) => {
         event.preventDefault();
+        revealScheduleTab(anchor);
         document.querySelector(anchor.getAttribute('href')).scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
     });
@@ -128,9 +164,16 @@
         const node = document.getElementById(chapter.id);
         if (node && node.offsetTop <= scrollY) current = chapter.id;
       });
+      let activeAnchor = null;
       tabLinks.forEach((anchor) => {
-        anchor.classList.toggle('is-active', anchor.getAttribute('href') === `#${current}`);
+        const isActive = anchor.getAttribute('href') === `#${current}`;
+        anchor.classList.toggle('is-active', isActive);
+        if (isActive) activeAnchor = anchor;
       });
+      if (activeAnchor && activeTabId !== current) {
+        activeTabId = current;
+        revealScheduleTab(activeAnchor);
+      }
       const wrap = tabs.closest('.tabs-wrap');
       if (wrap) tabs.classList.toggle('is-fixed', window.scrollY > wrap.offsetTop - 75);
     }
@@ -142,15 +185,18 @@
   function renderProgramCompanyCard(company, index, variant = '') {
     const points = Array.isArray(company.points) ? company.points : [];
     const note = company.note || '';
-    const thumbnail = company.thumbnail || getProgramCompanyThumbnail(index, variant);
+    const logo = getProgramCompanyLogo(company);
+    const thumbnail = logo || company.thumbnail || getProgramCompanyThumbnail(index, variant);
+    const thumbClass = `program-company-thumb${logo ? ` is-logo${getProgramLogoVariant(company)}` : ''}`;
+    const thumbAlt = logo ? `${company.name} 로고` : `${company.name} 썸네일`;
     const body = points.length
       ? `<ul class="program-company-points">${points.map((point) => `<li>${escapeHtml(point)}</li>`).join('')}</ul>`
       : `<p class="program-company-note">${escapeHtml(note)}</p>`;
 
     return `
       <article class="program-company-card ${variant}">
-        <div class="program-company-thumb">
-          <img src="${escapeHtml(thumbnail)}" alt="${escapeHtml(company.name)} 임시 썸네일" loading="lazy" decoding="async">
+        <div class="${thumbClass}">
+          <img src="${escapeHtml(common().asset(thumbnail))}" alt="${escapeHtml(thumbAlt)}" loading="lazy" decoding="async">
         </div>
         <div class="program-company-content">
           <span class="ui-badge">${escapeHtml(company.field)}</span>
@@ -170,12 +216,23 @@
 
     if (institutionOrgs) {
       institutionOrgs.innerHTML = (data().institutionOrgs || [])
-        .map((org) => `
-          <div class="company-pill">
-            <strong>${escapeHtml(org.name)}</strong>
-            <span>${escapeHtml(org.field)}</span>
+        .map((org) => {
+          const logo = getProgramCompanyLogo(org);
+          const logoVariant = logo ? getProgramLogoVariant(org) : '';
+          return `
+          <div class="company-pill ${logo ? 'has-logo' : ''}">
+            ${logo ? `
+            <div class="program-company-thumb is-logo${logoVariant} is-pill-logo">
+              <img src="${escapeHtml(common().asset(logo))}" alt="${escapeHtml(org.name)} 로고" loading="lazy" decoding="async">
+            </div>
+            ` : ''}
+            <div class="company-pill-copy">
+              <strong>${escapeHtml(org.name)}</strong>
+              <span>${escapeHtml(org.field)}</span>
+            </div>
           </div>
-        `).join('');
+        `;
+        }).join('');
     }
 
     if (main) {
