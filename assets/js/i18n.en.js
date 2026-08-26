@@ -586,6 +586,7 @@
     [/^(.+) IR company detail$/, (m) => `${tr(m[1])} — IR company`],
     [/^(.+) program detail$/, (m) => `${tr(m[1])} — program`],
     [/^(.+) 임시 썸네일$/, (m) => `${tr(m[1])} placeholder thumbnail`],
+    [/^(.+) 로고$/, (m) => `${tr(m[1])} logo`],
     [/^(.+) 썸네일$/, (m) => `${tr(m[1])} thumbnail`],
     [/^(.+) portrait$/, (m) => `${tr(m[1])} portrait`],
     [/^체크인 QR (.+)$/, (m) => `Check-in QR ${m[1]}`],

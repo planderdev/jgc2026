@@ -216,7 +216,7 @@ async function checkRegistration(page) {
     localStorage.removeItem('jgcf2026.eventApplicationSequence');
   });
   await page.reload({ waitUntil: 'networkidle' });
-  await page.fill('input[name="companyName"]', 'QA 콘텐츠');
+  await page.fill('input[name="companyName"]', '__QA__ 콘텐츠'); // __QA__ 표시가 있어야 뒷정리가 지운다
   await page.fill('input[name="companyManagerName"]', '참가 신청자');
   await page.fill('input[name="phone"]', phone);
   await page.check('input[name="privacy"]');
@@ -247,7 +247,7 @@ async function checkReservation(page) {
   await page.getByRole('button', { name: /다음/ }).click();
   await page.locator('input[name="time"]:not([disabled])').first().check();
   await page.getByRole('button', { name: /다음/ }).click();
-  await page.fill('input[name="applicantCompany"]', 'QA Studio');
+  await page.fill('input[name="applicantCompany"]', '__QA__ Studio'); // __QA__ 표시가 있어야 뒷정리가 지운다
   await page.fill('input[name="managerName"]', '테스트 신청자');
   await page.fill('input[name="phone"]', phone);
   await page.fill('input[name="email"]', email);
