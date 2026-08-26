@@ -1,0 +1,205 @@
+/**
+ * 메일 발송기.
+ *
+ * public.mail_outbox 에 쌓인 대기 건을 꺼내 Resend로 보낸다.
+ * 호출자: DB의 jgcf_dispatch_mail() — 예약 확정·취소 직후, 그리고 1분마다 cron.
+ *
+ * 필요한 비밀값(Supabase → Edge Functions → Secrets):
+ *   RESEND_API_KEY  Resend API 키
+ *   DISPATCH_KEY    호출자 확인용. public.mail_settings.dispatch_key 와 같아야 한다
+ *   MAIL_FROM       보내는 사람. 예: JGCF 2026 운영사무국 <noreply@2026jejugcf.com>
+ */
+const BATCH = 20;
+const MAX_ATTEMPTS = 5;
+const SITE = 'https://2026jejugcf.com';
+const VENUE = '제주특별자치도 제주시 신산로 82 제주콘텐츠진흥원 내 1층 Be IN; (비인)';
+const CONTACT = '제주콘텐츠진흥원 064-735-0677';
+
+type Row = {
+  id: number;
+  kind: string;
+  to_email: string;
+  payload: Record<string, string>;
+  attempts: number;
+};
+
+const esc = (s: unknown) =>
+  String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]!));
+
+function layout(title: string, bodyHtml: string) {
+  return `<!doctype html><html lang="ko"><body style="margin:0;background:#f5f5f5;padding:24px 12px">
+<div style="max-width:560px;margin:0 auto;background:#fff;border:1px solid #e5e5e5;border-radius:12px;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:#1a1a1a">
+  <div style="padding:20px 24px;border-bottom:1px solid #eee">
+    <div style="font-size:13px;color:#666;letter-spacing:.02em">2026 제주글로벌콘텐츠포럼</div>
+    <div style="font-size:19px;font-weight:700;margin-top:4px">${esc(title)}</div>
+  </div>
+  <div style="padding:24px;font-size:15px;line-height:1.7">${bodyHtml}</div>
+  <div style="padding:16px 24px;border-top:1px solid #eee;font-size:12px;color:#777;line-height:1.6">
+    문의: ${esc(CONTACT)}<br>
+    이 메일은 발신 전용입니다. 회신하셔도 확인되지 않습니다.
+  </div>
+</div></body></html>`;
+}
+
+function detailTable(rows: [string, string][]) {
+  return `<table style="width:100%;border-collapse:collapse;margin:16px 0">${rows
+    .map(
+      ([k, v]) =>
+        `<tr><td style="padding:8px 0;color:#666;width:110px;vertical-align:top;font-size:14px">${esc(k)}</td>
+             <td style="padding:8px 0;font-weight:600">${esc(v)}</td></tr>`
+    )
+    .join('')}</table>`;
+}
+
+function button(href: string, label: string) {
+  return `<a href="${esc(href)}" style="display:inline-block;background:#1a1a1a;color:#fff;text-decoration:none;padding:11px 20px;border-radius:8px;font-size:14px;font-weight:600">${esc(label)}</a>`;
+}
+
+function render(row: Row): { subject: string; html: string } | null {
+  const p = row.payload || {};
+  const slot = `2026년 9월 16일(수) ${p.time_slot ?? ''}`;
+
+  if (row.kind === 'reservation_confirmed') {
+    return {
+      subject: `[JGCF 2026] 비즈니스 밋업 예약이 확정되었습니다 (${p.reservation_no ?? ''})`,
+      html: layout('비즈니스 밋업 예약 확정', `
+        <p>${esc(p.manager_name)} 님, 비즈니스 밋업 상담 예약이 확정되었습니다.</p>
+        ${detailTable([
+          ['예약번호', String(p.reservation_no ?? '')],
+          ['상담기관', String(p.company_name ?? '')],
+          ['상담 시간', slot],
+          ['신청 기업', String(p.applicant_company ?? '')],
+          ['장소', VENUE]
+        ])}
+        <p style="margin:20px 0 8px">예약 조회와 취소는 아래에서 하실 수 있습니다. 예약번호와 연락처가 필요합니다.</p>
+        <p>${button(`${SITE}/meetup/confirm`, '예약 조회·취소')}</p>
+        <p style="color:#666;font-size:13.5px;margin-top:20px">
+          · 예약 변경·취소는 <strong>9월 15일(화) 자정</strong>까지 가능합니다.<br>
+          · 참석이 어려우시면 꼭 취소해 주세요. 다른 기업이 그 시간을 쓸 수 있습니다.<br>
+          · 상담 10분 전까지 행사장 접수 데스크에서 출석 확인을 해주세요.
+        </p>`)
+    };
+  }
+
+  if (row.kind === 'reservation_cancelled') {
+    return {
+      subject: `[JGCF 2026] 비즈니스 밋업 예약이 취소되었습니다 (${p.reservation_no ?? ''})`,
+      html: layout('비즈니스 밋업 예약 취소', `
+        <p>${esc(p.manager_name)} 님, 아래 예약이 취소되었습니다.</p>
+        ${detailTable([
+          ['예약번호', String(p.reservation_no ?? '')],
+          ['상담기관', String(p.company_name ?? '')],
+          ['상담 시간', slot],
+          ['신청 기업', String(p.applicant_company ?? '')]
+        ])}
+        <p>직접 취소하지 않으셨다면 사무국으로 연락해 주세요.</p>
+        <p style="margin-top:16px">${button(`${SITE}/meetup/reserve`, '다시 예약하기')}</p>
+        <p style="color:#666;font-size:13.5px;margin-top:20px">예약 접수는 9월 15일(화) 자정까지입니다.</p>`)
+    };
+  }
+
+  if (row.kind === 'partner_cancelled') {
+    return {
+      subject: `[JGCF 2026] 상담 예약 취소 알림 — ${p.time_slot ?? ''} ${p.applicant_company ?? ''}`,
+      html: layout('상담 예약 취소 알림', `
+        <p>${esc(p.company_name)} 담당자님, 귀 기관에 배정된 상담 한 건이 취소되었습니다.</p>
+        ${detailTable([
+          ['상담 시간', slot],
+          ['신청 기업', String(p.applicant_company ?? '')],
+          ['담당자', String(p.manager_name ?? '')],
+          ['예약번호', String(p.reservation_no ?? '')]
+        ])}
+        <p>해당 시간은 다시 열려 다른 기업이 예약할 수 있습니다. 최신 일정은 아래에서 확인하세요.</p>
+        <p style="margin-top:16px">${button(`${SITE}/admin`, '상담 일정 확인')}</p>`)
+    };
+  }
+
+  return null;
+}
+
+Deno.serve(async (req) => {
+  const expected = Deno.env.get('DISPATCH_KEY') ?? '';
+  if (!expected || req.headers.get('x-dispatch-key') !== expected) {
+    return new Response('forbidden', { status: 403 });
+  }
+
+  const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+  const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+  const resendKey = Deno.env.get('RESEND_API_KEY');
+  const from = Deno.env.get('MAIL_FROM') ?? 'JGCF 2026 운영사무국 <noreply@2026jejugcf.com>';
+
+  const db = (path: string, init: RequestInit = {}) =>
+    fetch(`${supabaseUrl}/rest/v1/${path}`, {
+      ...init,
+      headers: {
+        apikey: serviceKey,
+        Authorization: `Bearer ${serviceKey}`,
+        'Content-Type': 'application/json',
+        ...(init.headers ?? {})
+      }
+    });
+
+  if (!resendKey) return new Response(JSON.stringify({ error: 'RESEND_API_KEY 없음' }), { status: 500 });
+
+  const pending: Row[] = await db(
+    `mail_outbox?status=eq.pending&attempts=lt.${MAX_ATTEMPTS}&order=created_at.asc&limit=${BATCH}` +
+      `&select=id,kind,to_email,payload,attempts`
+  ).then((r) => r.json());
+
+  let sent = 0;
+  let failed = 0;
+
+  for (const row of pending) {
+    const mail = render(row);
+    if (!mail) {
+      await db(`mail_outbox?id=eq.${row.id}`, {
+        method: 'PATCH',
+        body: JSON.stringify({ status: 'failed', attempts: row.attempts + 1, last_error: `알 수 없는 종류: ${row.kind}` })
+      });
+      failed++;
+      continue;
+    }
+
+    try {
+      const res = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${resendKey}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ from, to: [row.to_email], subject: mail.subject, html: mail.html })
+      });
+      if (res.ok) {
+        await db(`mail_outbox?id=eq.${row.id}`, {
+          method: 'PATCH',
+          body: JSON.stringify({ status: 'sent', attempts: row.attempts + 1, sent_at: new Date().toISOString(), last_error: null })
+        });
+        sent++;
+      } else {
+        const text = (await res.text()).slice(0, 400);
+        const attempts = row.attempts + 1;
+        await db(`mail_outbox?id=eq.${row.id}`, {
+          method: 'PATCH',
+          body: JSON.stringify({
+            status: attempts >= MAX_ATTEMPTS ? 'failed' : 'pending',
+            attempts,
+            last_error: `${res.status} ${text}`
+          })
+        });
+        failed++;
+      }
+    } catch (error) {
+      const attempts = row.attempts + 1;
+      await db(`mail_outbox?id=eq.${row.id}`, {
+        method: 'PATCH',
+        body: JSON.stringify({
+          status: attempts >= MAX_ATTEMPTS ? 'failed' : 'pending',
+          attempts,
+          last_error: String((error as Error).message).slice(0, 400)
+        })
+      });
+      failed++;
+    }
+  }
+
+  return new Response(JSON.stringify({ picked: pending.length, sent, failed }), {
+    headers: { 'Content-Type': 'application/json' }
+  });
+});

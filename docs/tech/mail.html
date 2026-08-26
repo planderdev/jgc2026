@@ -1,0 +1,99 @@
+<!doctype html>
+<!-- 자동 생성: node scripts/build-docs.mjs — 원고는 docs-src/tech/mail.md -->
+<html lang="ko" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>메일 발송 · JGCF 2026 가이드</title>
+  <meta name="description" content="예약 확인 메일과 취소 알림이 어떤 구조로 나가는지, 켜려면 무엇이 필요한지 정리했습니다.">
+  <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg">
+  <link rel="stylesheet" href="/docs/assets/docs.css">
+  <script>try{const t=localStorage.getItem('jgcf-docs-theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
+</head>
+<body>
+<a class="skip" href="#content">본문으로</a>
+<div class="layout">
+  <aside class="side" id="side">
+    <div class="side-head">
+      <a class="brand" href="/docs"><span class="mark">JG</span><span><strong>JGCF 2026</strong><small>OPERATIONS GUIDE</small></span></a>
+      <button class="side-toggle" type="button" aria-label="메뉴 닫기" data-side-close>×</button>
+    </div>
+    <button class="search-btn" type="button" data-search-open><span>검색</span><kbd>⌘K</kbd></button>
+    <a class="side-link" href="/" target="_blank" rel="noopener">↗ 사이트 열기</a>
+    <a class="side-link" href="/admin" target="_blank" rel="noopener">↗ 관리자 화면 열기</a>
+    <nav class="side-nav" aria-label="문서"><ul class="nav-flat"><li><a href="/docs">가이드 홈</a></li></ul><details class="nav-group"><summary>사무국 가이드<i></i></summary><ul><li><a href="/docs/secretariat/getting-started">시작하기</a></li><li><a href="/docs/secretariat/dashboard">관리자 화면</a></li><li><a href="/docs/secretariat/event-day">행사 당일</a></li><li><a href="/docs/secretariat/rules">운영 규칙</a></li><li><a href="/docs/secretariat/timeline">운영 타임라인</a></li><li><a href="/docs/secretariat/troubleshooting">문제 상황 대응</a></li></ul></details><details class="nav-group"><summary>상담기관 가이드<i></i></summary><ul><li><a href="/docs/partner/overview">상담기관 화면</a></li><li><a href="/docs/partner/notice-template">계정 안내 문구</a></li></ul></details><details class="nav-group"><summary>참가자 안내<i></i></summary><ul><li><a href="/docs/participant/register">행사 참가신청</a></li><li><a href="/docs/participant/meetup">밋업 예약·조회·취소</a></li></ul></details><details class="nav-group" open><summary>기술 가이드<i></i></summary><ul><li><a href="/docs/tech/architecture">구조</a></li><li><a href="/docs/tech/deploy">배포·도메인</a></li><li><a href="/docs/tech/i18n">영문판</a></li><li><a href="/docs/tech/qa">회귀 테스트·자동 점검</a></li><li><a href="/docs/tech/mail" aria-current="page">메일 발송</a></li><li><a href="/docs/tech/data">데이터 운영</a></li></ul></details><ul class="nav-flat"><li><a href="/docs/glossary">용어집</a></li><li><a href="/docs/faq">자주 묻는 질문</a></li></ul></nav>
+    <div class="side-foot">
+      <button type="button" class="theme" data-theme-toggle aria-label="테마 전환"><span class="sun">☀</span><span class="moon">☾</span></button>
+      <small></small>
+    </div>
+  </aside>
+  <div class="main">
+    <header class="topbar">
+      <button type="button" class="menu-btn" data-side-open aria-label="메뉴 열기">☰</button>
+      <span>메일 발송</span>
+      <button type="button" class="search-btn small" data-search-open aria-label="검색">⌕</button>
+    </header>
+    <div class="content-wrap">
+      <main id="content" class="content">
+        <p class="crumb">기술 가이드</p>
+        <h1>메일 발송</h1>
+        <p class="lede">예약 확인 메일과 취소 알림이 어떤 구조로 나가는지, 켜려면 무엇이 필요한지 정리했습니다.</p>
+        <h2 id="무엇이-언제-나가는가"><a class="anchor" href="#무엇이-언제-나가는가" aria-hidden="true">#</a>무엇이 언제 나가는가</h2>
+<div class="table-wrap"><table><thead><tr><th>종류</th><th>받는 사람</th><th>보내는 시점</th></tr></thead><tbody><tr><td>예약 확정 안내</td><td>신청 기업 담당자</td><td>밋업 예약이 확정될 때</td></tr><tr><td>예약 취소 안내</td><td>신청 기업 담당자</td><td>예약이 취소될 때(본인 취소·사무국 대신 취소 모두)</td></tr><tr><td>상담 취소 알림</td><td>상담기관</td><td>그 기관의 예약이 취소될 때</td></tr></tbody></table></div>
+<div class="callout info"><p class="callout-title">행사 참가신청은 메일이 나가지 않습니다</p><p>참가신청 폼은 이메일을 받지 않고 이름·연락처만 받습니다. 보낼 주소가 없어 확인 메일 대상이 아닙니다. 필요하면 폼에 메일 칸을 추가하고 개인정보처리방침의 수집 항목도 함께 고쳐야 합니다.</p>
+</div>
+
+<h2 id="구조"><a class="anchor" href="#구조" aria-hidden="true">#</a>구조</h2>
+<p>바로 보내지 않고 <strong>발송 대기열</strong>(<code>mail_outbox</code> 표)을 거칩니다.</p>
+<ol class="steps"><li><p><strong>쌓기</strong>예약이 확정·취소되면 DB 트리거가 보낼 메일을 대기열에 넣습니다</p>
+</li><li><p><strong>깨우기</strong>대기열에 새 줄이 생기면 곧바로 발송기를 호출합니다</p>
+</li><li><p><strong>보내기</strong>Edge Function <code>dispatch-mail</code>이 대기 건을 꺼내 Resend로 보내고 결과를 기록합니다</p>
+</li><li><p><strong>재시도</strong>1분마다 도는 cron이 실패했거나 놓친 건을 다시 시도합니다(최대 5회)</p>
+</li></ol>
+<p>대기열을 두는 이유는 메일 서비스가 잠깐 죽어도 <strong>예약 자체는 정상 처리되게</strong> 하기 위해서입니다. 발송이 실패해도 예약은 남고, 무엇이 왜 실패했는지도 남습니다.</p>
+<div class="callout good"><p class="callout-title">테스트 주소로는 보내지 않습니다</p><p><code>@example.com</code>으로 끝나는 주소는 대기열에 아예 쌓이지 않습니다(<code>jgcf_is_sendable</code>). QA가 만든 예약까지 발송되면 반송이 쌓여 도메인 평판이 나빠지기 때문입니다.</p>
+</div>
+
+<h2 id="켜려면-필요한-것"><a class="anchor" href="#켜려면-필요한-것" aria-hidden="true">#</a>켜려면 필요한 것</h2>
+<p>발송은 기본이 <strong>꺼짐</strong>입니다(<code>mail_settings.enabled = false</code>). 아래가 모두 준비되면 켭니다.</p>
+<ol class="steps"><li><p><strong>Resend 계정과 도메인 인증</strong><code>2026jejugcf.com</code>을 등록하고 안내되는 DNS 레코드(DKIM·SPF)를 네임서버에 추가합니다. 네임서버가 Vercel이므로 <code>vercel dns add</code>로 넣습니다</p>
+</li><li><p><strong>Edge Function 비밀값</strong>Supabase → Edge Functions → Secrets에 세 가지를 넣습니다</p>
+<div class="table-wrap"><table><thead><tr><th>이름</th><th>값</th></tr></thead><tbody><tr><td><code>RESEND_API_KEY</code></td><td>Resend에서 만든 API 키</td></tr><tr><td><code>DISPATCH_KEY</code></td><td><code>mail_settings.dispatch_key</code>와 같은 값</td></tr><tr><td><code>MAIL_FROM</code></td><td><code>JGCF 2026 운영사무국 &lt;noreply@2026jejugcf.com&gt;</code></td></tr></tbody></table></div>
+</li><li><p><strong>상담기관 수신 주소</strong>취소 알림을 받을 실제 주소입니다. 로그인 아이디(<code>기관아이디@2026jejugcf.com</code>)는 <strong>수신함이 없어</strong> 쓸 수 없습니다</p>
+<pre><code class="language-sql">update public.partner_users
+   set contact_email = &#39;meetup@example-org.kr&#39;
+ where company_id = &#39;kb-investment&#39;;
+</code></pre>
+<p>비어 있는 기관은 취소 알림을 <strong>건너뜁니다</strong>예약 처리는 그대로 되고 메일만 안 갑니다.</p>
+</li><li><p><strong>켜기</strong></p>
+<pre><code class="language-sql">update public.mail_settings set enabled = true where id = 1;
+</code></pre>
+</li></ol>
+<h2 id="상태-확인"><a class="anchor" href="#상태-확인" aria-hidden="true">#</a>상태 확인</h2>
+<p>사무국 계정으로 <code>jgcf_admin_mail_status()</code>를 호출하면 대기·발송·실패 건수, 수신 주소가 없는 기관 수, 최근 실패 10건을 볼 수 있습니다.</p>
+<pre><code class="language-sql">select public.jgcf_admin_mail_status();
+</code></pre>
+<p>문제가 생기면 <code>mail_outbox</code>의 <code>last_error</code>를 먼저 봅니다. 흔한 원인은 도메인 인증 미완료, API 키 오타, 수신 주소 오타입니다.</p>
+<h2 id="문구-고치기"><a class="anchor" href="#문구-고치기" aria-hidden="true">#</a>문구 고치기</h2>
+<p>메일 본문은 <code>supabase/functions/dispatch-mail/index.ts</code>의 <code>render()</code>에 있습니다. 고친 뒤 함수를 다시 배포하면 반영됩니다. 대기열에 이미 쌓인 건은 보낼 때 문구를 만들므로, 아직 안 나간 메일에도 새 문구가 적용됩니다.</p>
+
+        <nav class="pager">
+    <a class="prev" href="/docs/tech/qa"><small>이전</small><span>회귀 테스트·자동 점검</span></a>
+    <a class="next" href="/docs/tech/data"><small>다음</small><span>데이터 운영</span></a>
+  </nav>
+      </main>
+      <aside class="toc"><p>On this page</p><ul><li class="d2"><a href="#무엇이-언제-나가는가">무엇이 언제 나가는가</a></li><li class="d2"><a href="#구조">구조</a></li><li class="d2"><a href="#켜려면-필요한-것">켜려면 필요한 것</a></li><li class="d2"><a href="#상태-확인">상태 확인</a></li><li class="d2"><a href="#문구-고치기">문구 고치기</a></li></ul></aside>
+    </div>
+  </div>
+</div>
+<div class="search" data-search hidden>
+  <div class="search-box" role="dialog" aria-label="문서 검색">
+    <input type="search" placeholder="검색어를 입력하세요 (예: 출석, 비밀번호, 취소)" data-search-input autocomplete="off">
+    <ul data-search-results></ul>
+    <p class="search-hint">Esc 닫기 · ↑↓ 이동 · Enter 열기</p>
+  </div>
+</div>
+<script src="/docs/assets/docs.js" defer></script>
+</body>
+</html>
