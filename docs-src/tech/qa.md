@@ -19,7 +19,7 @@ npm run qa -- --only=render,ui  # 일부만
 npm run qa:live                 # 프로덕션 대상
 ```
 
-시스템 Chrome이 필요합니다(playwright-core). 테스트 데이터는 `__QA__` 표시를 남기며, 예약은 끝에 취소하지만 **참가신청은 남으므로** 돌린 뒤 [데이터 운영](/docs/tech/data)의 SQL로 지웁니다.
+시스템 Chrome이 필요합니다(playwright-core). 테스트 데이터는 `__QA__` 표시를 남기고, 실행이 끝나면 **QA가 스스로 지웁니다** — 예약·참가신청·첨부를 지운 뒤 잔여 0을 확인해 출력하며, 남은 게 있으면 FAIL 처리됩니다. 자세한 내용은 [데이터 운영](/docs/tech/data)을 보세요.
 
 ## 자동 점검 (GitHub Actions)
 

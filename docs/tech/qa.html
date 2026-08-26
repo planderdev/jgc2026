@@ -45,7 +45,7 @@
 npm run qa -- --only=render,ui  # 일부만
 npm run qa:live                 # 프로덕션 대상
 </code></pre>
-<p>시스템 Chrome이 필요합니다(playwright-core). 테스트 데이터는 <code>__QA__</code> 표시를 남기며, 예약은 끝에 취소하지만 <strong>참가신청은 남으므로</strong> 돌린 뒤 <a href="/docs/tech/data">데이터 운영</a>의 SQL로 지웁니다.</p>
+<p>시스템 Chrome이 필요합니다(playwright-core). 테스트 데이터는 <code>__QA__</code> 표시를 남기고, 실행이 끝나면 <strong>QA가 스스로 지웁니다</strong> — 예약·참가신청·첨부를 지운 뒤 잔여 0을 확인해 출력하며, 남은 게 있으면 FAIL 처리됩니다. 자세한 내용은 <a href="/docs/tech/data">데이터 운영</a>을 보세요.</p>
 <h2 id="자동-점검-github-actions"><a class="anchor" href="#자동-점검-github-actions" aria-hidden="true">#</a>자동 점검 (GitHub Actions)</h2>
 <p><code>.github/workflows/qa.yml</code> — <code>main</code> 푸시·PR마다:</p>
 <ol class="steps"><li><p><strong>CSS 빌드 일치</strong><code>npm run build</code> 후 <code>styles.css</code>가 커밋과 다르면 실패</p>

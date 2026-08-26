@@ -6,15 +6,27 @@ group: tech
 
 ## 테스트 데이터 정리
 
-관리자 화면에는 삭제 기능이 없습니다. Supabase 대시보드 → SQL Editor에서:
+**QA는 스스로 치웁니다.** `npm run qa`가 끝나면 그 실행이 만든 테스트 예약·참가신청·첨부를 지우고, 남은 게 없는지 다시 확인해 결과를 출력합니다.
 
-```sql
-delete from public.event_registrations where name like '%__QA__%';
-delete from public.reservations where applicant_company like '%__QA__%' or manager_name like '%__QA__%';
-select (select count(*) from public.reservations) r, (select count(*) from public.event_registrations) e;
+```
+■ 뒷정리  —  ✓ 예약 1 · 참가신청 1 · 첨부 2 삭제, 잔여 0
 ```
 
-`__QA__` 표시가 없는 행(실제 테스트 예약 등)은 명시적으로 번호를 지정해 지웁니다. **실제 모집 데이터는 보유기간 전에 지우지 마세요.**
+여기서 `잔여`가 0이 아니면 QA 전체가 FAIL 처리됩니다. 운영 DB에 테스트 데이터가 남았다는 뜻이니 반드시 확인하세요. 디버깅 때문에 데이터를 남기고 싶으면 `npm run qa -- --keep`을 쓰고, 끝나면 직접 지웁니다.
+
+:::warn QA는 운영 DB를 그대로 씁니다
+QA 스위트는 로컬 화면을 띄우지만 데이터는 운영 Supabase에 씁니다. 모집 기간에 돌려도 뒷정리가 테스트 건만 지우므로 진짜 신청은 안전하지만, 되도록 한산한 시간에 돌리세요.
+:::
+
+지우는 일은 서버 함수 `jgcf_qa_cleanup()`이 하고, 대상은 **QA 표시가 있는 행으로만** 한정됩니다 — 신청기업·담당자·이름에 `__QA__`가 들어 있거나 이메일이 `qa…@example.com`인 행입니다. 실제 신청자는 이 조건에 걸릴 수 없습니다. 사무국 계정만 실행할 수 있습니다.
+
+손으로 지워야 할 때는 Supabase 대시보드 → SQL Editor에서:
+
+```sql
+select public.jgcf_qa_cleanup();
+```
+
+`__QA__` 표시가 없는 행(직접 만든 테스트 예약 등)은 번호를 지정해 지웁니다. **실제 모집 데이터는 보유기간 전에 지우지 마세요.**
 
 ## Storage 정리
 

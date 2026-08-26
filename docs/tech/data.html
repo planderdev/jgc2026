@@ -40,12 +40,18 @@
         <h1>데이터 운영</h1>
         <p class="lede">테스트 데이터 정리, Storage 정리, 계정 생성, 백업 등 Supabase 쪽 운영 작업입니다.</p>
         <h2 id="테스트-데이터-정리"><a class="anchor" href="#테스트-데이터-정리" aria-hidden="true">#</a>테스트 데이터 정리</h2>
-<p>관리자 화면에는 삭제 기능이 없습니다. Supabase 대시보드 → SQL Editor에서:</p>
-<pre><code class="language-sql">delete from public.event_registrations where name like &#39;%__QA__%&#39;;
-delete from public.reservations where applicant_company like &#39;%__QA__%&#39; or manager_name like &#39;%__QA__%&#39;;
-select (select count(*) from public.reservations) r, (select count(*) from public.event_registrations) e;
+<p><strong>QA는 스스로 치웁니다.</strong> <code>npm run qa</code>가 끝나면 그 실행이 만든 테스트 예약·참가신청·첨부를 지우고, 남은 게 없는지 다시 확인해 결과를 출력합니다.</p>
+<pre><code>■ 뒷정리  —  ✓ 예약 1 · 참가신청 1 · 첨부 2 삭제, 잔여 0
 </code></pre>
-<p><code>__QA__</code> 표시가 없는 행(실제 테스트 예약 등)은 명시적으로 번호를 지정해 지웁니다. <strong>실제 모집 데이터는 보유기간 전에 지우지 마세요.</strong></p>
+<p>여기서 <code>잔여</code>가 0이 아니면 QA 전체가 FAIL 처리됩니다. 운영 DB에 테스트 데이터가 남았다는 뜻이니 반드시 확인하세요. 디버깅 때문에 데이터를 남기고 싶으면 <code>npm run qa -- --keep</code>을 쓰고, 끝나면 직접 지웁니다.</p>
+<div class="callout warn"><p class="callout-title">QA는 운영 DB를 그대로 씁니다</p><p>QA 스위트는 로컬 화면을 띄우지만 데이터는 운영 Supabase에 씁니다. 모집 기간에 돌려도 뒷정리가 테스트 건만 지우므로 진짜 신청은 안전하지만, 되도록 한산한 시간에 돌리세요.</p>
+</div>
+
+<p>지우는 일은 서버 함수 <code>jgcf_qa_cleanup()</code>이 하고, 대상은 <strong>QA 표시가 있는 행으로만</strong> 한정됩니다 — 신청기업·담당자·이름에 <code>__QA__</code>가 들어 있거나 이메일이 <code>qa…@example.com</code>인 행입니다. 실제 신청자는 이 조건에 걸릴 수 없습니다. 사무국 계정만 실행할 수 있습니다.</p>
+<p>손으로 지워야 할 때는 Supabase 대시보드 → SQL Editor에서:</p>
+<pre><code class="language-sql">select public.jgcf_qa_cleanup();
+</code></pre>
+<p><code>__QA__</code> 표시가 없는 행(직접 만든 테스트 예약 등)은 번호를 지정해 지웁니다. <strong>실제 모집 데이터는 보유기간 전에 지우지 마세요.</strong></p>
 <h2 id="storage-정리"><a class="anchor" href="#storage-정리" aria-hidden="true">#</a>Storage 정리</h2>
 <p>Storage 버킷은 SQL로 지울 수 없습니다. 두 가지 방법이 있습니다.</p>
 <ul><li><p><strong>대시보드</strong>: Storage → <code>meetup-attachments</code> → 파일 선택 → Delete</p>

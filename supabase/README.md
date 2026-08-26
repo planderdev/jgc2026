@@ -101,6 +101,8 @@ where reservation_no = 'JGCF-2026-XXXXXX';
   현장 방문자도 신청할 수 있도록 행사 중에는 열어 둡니다. 정원 제한은 없습니다.
 - **첨부 삭제** — 사무국 계정만 Storage 파일을 지울 수 있습니다(정책 "admin attachment delete").
   테스트 파일 정리와 행사 후 파기에 씁니다. 예약이 참조 중인 파일은 제외하고 지우세요.
+- **QA 뒷정리** — `jgcf_qa_cleanup()`은 사무국 전용이며, `__QA__` 표시 또는 `qa…@example.com`
+  이메일을 가진 행만 지웁니다. `npm run qa`가 실행 끝에 자동으로 호출합니다.
 - **출석 체크** — 행사 당일 사무국이 admin 페이지에서 예약·참가신청별로 출석을
   토글합니다(`jgcf_admin_set_attendance`, 관리자 전용, `attended_at`에 시각 기록).
   기관 화면에는 읽기 전용으로 보입니다. QR 스캔은 없고 이름·연락처 검색으로 찾습니다.
