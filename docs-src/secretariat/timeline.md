@@ -8,7 +8,7 @@ group: secretariat
 
 - 관리자 화면에 테스트 데이터가 남아 있지 않은지 확인 (밋업 예약·참가신청 탭이 비어 있어야 함)
 - 사무국 계정 2개로 로그인되는지 확인
-- 상담기관 20곳에 계정 개별 전달 ([계정 안내 문구](/docs/partner/notice-template))
+- 상담기관 23곳에 계정 개별 전달 ([계정 안내 문구](/docs/partner/notice-template))
 - Supabase Storage의 테스트 PDF 삭제 ([데이터 운영](/docs/tech/data#storage-정리))
 
 ## 모집 기간

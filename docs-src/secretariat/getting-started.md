@@ -19,7 +19,7 @@ group: secretariat
 
 ## 처음 로그인
 
-1. **주소 열기** — https://jgc2026.vercel.app/admin
+1. **주소 열기** — https://2026jejugcf.com/admin
 2. **엑셀의 값 입력** — "사무국 계정" 시트의 이메일과 비밀번호. 난수라 한 글자만 달라도 실패하므로 셀 값을 그대로 복사하세요.
 3. **현황 탭 확인** — 로그인되면 현황 탭이 먼저 열립니다. 모집 전에는 예약 0 · 참가신청 0이어야 정상입니다.
 
@@ -29,7 +29,7 @@ group: secretariat
 
 ## 비밀번호를 잊었을 때
 
-계정 도메인(2026jejugcf.com)이 아직 등록 전이라 **재설정 메일이 가지 않습니다.** 사무국이 직접 새 비밀번호를 지정해 전달합니다.
+계정 주소(`기관아이디@2026jejugcf.com`)는 로그인용 아이디일 뿐 **실제로 메일을 받는 주소가 아닙니다.** 그래서 재설정 메일이 가지 않습니다 — 사무국이 직접 새 비밀번호를 지정해 전달합니다.
 
 1. **Supabase 대시보드** — Authentication → Users ([바로가기](https://supabase.com/dashboard/project/ahabmxxenajosbdkzull/auth/users))
 2. **계정 검색 → Reset password** — 새 비밀번호 입력 후 저장

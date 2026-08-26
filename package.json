@@ -8,7 +8,7 @@
     "watch:css": "node ./scripts/build-css.mjs --watch",
     "build": "npm run build:css",
     "qa": "node ./scripts/qa/run.mjs",
-    "qa:live": "node ./scripts/qa/run.mjs --base=https://jgc2026.vercel.app"
+    "qa:live": "node ./scripts/qa/run.mjs --base=https://2026jejugcf.com"
   },
   "devDependencies": {
     "marked": "^14.1.4",

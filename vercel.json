@@ -4,5 +4,18 @@
   "outputDirectory": ".",
   "installCommand": "npm install",
   "cleanUrls": true,
-  "trailingSlash": false
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.2026jejugcf.com"
+        }
+      ],
+      "destination": "https://2026jejugcf.com/:path*",
+      "permanent": true
+    }
+  ]
 }

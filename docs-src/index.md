@@ -19,8 +19,8 @@ updated: 2026-08-23 기준
 
 | 무엇 | 주소 |
 | --- | --- |
-| 공개 사이트 | https://jgc2026.vercel.app |
-| 영문판 | https://jgc2026.vercel.app/en |
+| 공개 사이트 | https://2026jejugcf.com |
+| 영문판 | https://2026jejugcf.com/en |
 | 참가신청 | /register |
 | 밋업 예약 | /meetup/reserve |
 | 예약 조회·취소 | /meetup/confirm |
@@ -28,7 +28,7 @@ updated: 2026-08-23 기준
 | 이 가이드 | /docs |
 
 :::info 도메인
-정식 도메인 **2026jejugcf.com**은 프로젝트에 등록만 되어 있고 아직 연결 전입니다. 연결되면 위 주소가 모두 새 도메인으로 바뀌며, 절차는 [배포·도메인](/docs/tech/deploy)에 있습니다.
+정식 도메인은 **2026jejugcf.com**입니다(가비아 등록, 네임서버는 Vercel). `www` 주소로 들어와도 위 주소로 넘어갑니다. 예전 주소 `jgc2026.vercel.app`도 계속 열리지만, 안내에는 정식 도메인만 쓰세요.
 :::
 
 ## 바로 찾기
