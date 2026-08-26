@@ -100,7 +100,11 @@ export default () => runSuite('기능 플로우', async ({ browser, r }) => {
   await e.page.locator('[data-event-type-option][value=general]').check(); await e.page.waitForTimeout(300);
   await e.page.fill('[name=generalName]', `${QA_TAG} 자동검증`);
   await e.page.fill('[name=phone]', qaPhone(stamp()));
+  await e.page.fill('[data-event-register-form] [name=email]', 'not-an-email');
   await e.page.check('[data-event-register-form] [name=privacy]');
+  await e.page.click('[data-event-register-form] button[type=submit]'); await e.page.waitForTimeout(600);
+  r.check(!e.page.url().includes('register-complete'), '참가신청 잘못된 메일 주소 차단');
+  await e.page.fill('[data-event-register-form] [name=email]', `qa${stamp()}@example.com`);
   await e.page.click('[data-event-register-form] button[type=submit]');
   await e.page.waitForURL('**/register-complete**', { timeout: 15000 }).catch(() => {});
   await e.page.waitForTimeout(900);

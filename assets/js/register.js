@@ -2,6 +2,7 @@
   const common = () => window.JGCFCommon;
   const service = () => window.ReservationService;
   const COMPLETE_KEY = 'jgcf.registration.complete';
+  const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   function escapeHtml(value) {
     return String(value ?? '')
@@ -37,7 +38,8 @@
     const payload = {
       type,
       typeLabel: typeLabels[type] || type,
-      phone: fieldValue(form, 'phone')
+      phone: fieldValue(form, 'phone'),
+      email: fieldValue(form, 'email')
     };
 
     if (type === 'company') {
@@ -104,6 +106,12 @@
         common().toast('연락처를 정확하게 입력해 주세요.');
         return;
       }
+      if (!EMAIL_PATTERN.test(fieldValue(form, 'email'))) {
+        common().markInvalid(form, 'email', '메일 주소 형식이 올바르지 않습니다. 예: name@company.com');
+        common().focusField(form, 'email');
+        common().toast('메일 주소를 정확하게 입력해 주세요.');
+        return;
+      }
 
       const application = collectPayload(form);
 
@@ -127,7 +135,8 @@
             type_label: application.typeLabel,
             organization: application.organization,
             name: application.name,
-            phone: application.phone
+            phone: application.phone,
+            email: application.email
           }));
         } catch (error) {
           console.warn('참가신청 완료 정보를 저장하지 못했습니다.', error);
@@ -194,6 +203,7 @@
           ${registration.organization ? `<div class="confirm-row"><dt>소속</dt><dd>${escapeHtml(registration.organization)}</dd></div>` : ''}
           <div class="confirm-row"><dt>이름</dt><dd>${escapeHtml(registration.name)}</dd></div>
           <div class="confirm-row"><dt>연락처</dt><dd>${escapeHtml(registration.phone)}</dd></div>
+          ${registration.email ? `<div class="confirm-row"><dt>메일 주소</dt><dd>${escapeHtml(registration.email)}</dd></div>` : ''}
           <div class="confirm-row"><dt>행사 일시</dt><dd>2026. 9. 16. (수) 10:00–18:00</dd></div>
           <div class="confirm-row"><dt>행사 장소</dt><dd>제주특별자치도 제주시 신산로 82 제주콘텐츠진흥원 내 1층 Be IN; (비인)</dd></div>
         </dl>

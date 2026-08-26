@@ -136,7 +136,7 @@
         .filter((r) => match(r, ['reservation_no', 'applicant_company', 'manager_name', 'phone', 'email', 'company_name']));
     }
     if (tab === 'registrations') {
-      return registrations.filter((r) => match(r, ['registration_no', 'name', 'organization', 'phone']));
+      return registrations.filter((r) => match(r, ['registration_no', 'name', 'organization', 'phone', 'email']));
     }
     if (tab === 'overview') return [overview()];
     // summary — data.js의 상담기관 전체를 기준으로 예약이 없는 기관도 0건으로 보여준다
@@ -307,7 +307,7 @@
       return `<div class="admin-cards">${rows.map((r) => `<article class="admin-card">
         <header><strong>${esc(TYPE_LABEL[r.participant_type] || r.participant_type)}</strong>${attendButton('registration', r.registration_no, r.attended_at)}</header>
         <h4>${esc(r.name)}${r.organization ? ` <small>${esc(r.organization)}</small>` : ''}</h4>
-        <p>${telLink(r.phone)}</p>
+        <p>${telLink(r.phone)}${r.email ? ` · ${esc(r.email)}` : ''}</p>
         <p class="muted">${esc(r.registration_no)} · ${kst(r.created_at)}</p>
       </article>`).join('')}</div>`;
     }
@@ -395,8 +395,8 @@
         r.applicant_company, r.manager_name, r.phone, r.email, r.inquiry, r.attachment_name || '', kst(r.created_at), kst(r.cancelled_at),
         r.attended_at ? '출석' : '', kst(r.attended_at)];
     } else if (tab === 'registrations') {
-      header = ['신청번호','구분','이름','소속','연락처','신청일시','출석','출석시각'];
-      line = (r) => [r.registration_no, TYPE_LABEL[r.participant_type] || r.participant_type, r.name, r.organization || '', r.phone, kst(r.created_at),
+      header = ['신청번호','구분','이름','소속','연락처','메일','신청일시','출석','출석시각'];
+      line = (r) => [r.registration_no, TYPE_LABEL[r.participant_type] || r.participant_type, r.name, r.organization || '', r.phone, r.email || '', kst(r.created_at),
         r.attended_at ? '출석' : '', kst(r.attended_at)];
     } else {
       header = ['상담기관','예약률','확정','취소','확정 시간대'];

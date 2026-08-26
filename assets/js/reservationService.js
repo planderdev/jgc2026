@@ -150,7 +150,8 @@
       p_participant_type: payload.type,
       p_name: payload.name,
       p_organization: payload.organization || null,
-      p_phone: payload.phone
+      p_phone: payload.phone,
+      p_email: payload.email || null
     });
   }
 

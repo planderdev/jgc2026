@@ -98,6 +98,28 @@ function render(row: Row): { subject: string; html: string } | null {
     };
   }
 
+  if (row.kind === 'registration_confirmed') {
+    const typeLabel = { company: '기업', general: '일반', student: '학생' }[p.participant_type ?? ''] ?? '';
+    return {
+      subject: `[JGCF 2026] 행사 참가신청이 접수되었습니다 (${p.registration_no ?? ''})`,
+      html: layout('행사 참가신청 완료', `
+        <p>${esc(p.name)} 님, 2026 제주글로벌콘텐츠포럼 참가신청이 접수되었습니다.</p>
+        ${detailTable([
+          ['신청번호', String(p.registration_no ?? '')],
+          ['구분', typeLabel],
+          ...(p.organization ? ([['소속', String(p.organization)]] as [string, string][]) : []),
+          ['행사 일시', '2026년 9월 16일(수) 10:00–18:00'],
+          ['장소', VENUE]
+        ])}
+        <p style="margin:20px 0 8px">상담이 필요하시면 비즈니스 밋업도 예약하실 수 있습니다.</p>
+        <p>${button(`${SITE}/meetup/reserve`, '비즈니스 밋업 예약')}</p>
+        <p style="color:#666;font-size:13.5px;margin-top:20px">
+          · 행사 당일 접수 데스크에서 <strong>신청번호</strong>를 말씀해 주세요.<br>
+          · 프로그램은 <a href="${SITE}/program" style="color:#1a1a1a">행사 사이트</a>에서 확인하실 수 있습니다.
+        </p>`)
+    };
+  }
+
   if (row.kind === 'partner_cancelled') {
     return {
       subject: `[JGCF 2026] 상담 예약 취소 알림 — ${p.time_slot ?? ''} ${p.applicant_company ?? ''}`,
