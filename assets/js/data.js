@@ -206,7 +206,6 @@
     { id: 'megazone-cloud', name: '메가존클라우드', field: '클라우드', note: '국내 최대 클라우드 매니지드 서비스 제공기업' },
     { id: 'com2us-n', name: '컴투스엔', field: 'AI', note: 'AI 콘텐츠 기획 및 제작, AI, VFX, XR 뉴미디어 등 통합 비즈니스 진행' },
     { id: 'wondershare', name: '원더쉐어', field: 'AI / 플랫폼', note: 'AI 기반 영상편집 플랫폼 필모라 등 콘텐츠 제작 플랫폼 제공' },
-    { id: 'haenyeo-kitchen-exhibit', name: '해녀의 부엌', field: '관광 / 공연', note: '제주 해녀문화 IP 기반 공연, 미식, 관광 융합 콘텐츠' },
     { id: 'greenwood-exhibit', name: '그린우드', field: '애니메이션', note: '「신비할망」, 「프린세스 바리」 등 제주 기반 애니메이션 제작' },
     { id: 'inspire-exhibit', name: '인스피어', field: '영상 / 미디어아트', note: 'K-Heritage 데이터와 XR, AI 기반 몰입형 미디어아트 공간 콘텐츠' },
     { id: 'winops-exhibit', name: '위놉스', field: '영상, 애니, 실감형 콘텐츠', note: '애니메이션과 AR, VR, VFX 기반 실감형 콘텐츠 제작' },
@@ -221,13 +220,9 @@
     { id: 'haewoo-exhibit', name: '해우', field: '콘텐츠 / 제조', note: '머메이드다이빙 체험 교육 및 장비 제조' },
     { id: 'jito-forest', name: '지토의 숲', field: '콘텐츠', note: '핸드워시, 굿즈 등 로컬 콘텐츠 상품' },
     { id: 'make-a-better', name: '주식회사 메이크어베러', field: '식품', note: '식품 및 커피 기반 로컬 브랜드' },
-    { id: 'daz-land', name: '다즈랜드', field: '콘텐츠', note: '굿즈, 도서, 디자인 콘텐츠' },
     { id: 'the-green-box', name: '더그린박스', field: '콘텐츠', note: '굿즈 및 업사이클 체험 콘텐츠' },
-    { id: 'weekenders', name: '위켄더스', field: '식품', note: '건강기능성 음료와 간식' },
     { id: 'jejuseyo', name: '제주세요', field: '식품', note: '깻잎청 등 제주 로컬 식품' },
     { id: 'jeju-perfume-museum', name: '제주퍼퓸뮤지엄', field: '제조', note: '향수, 방향제 등 향 기반 제품' },
-    { id: 'hibella', name: '하이벨라', field: '제조', note: '목욕용품 및 화장품' },
-    { id: 'jeju-fnb', name: '제주에프엔비', field: '식품', note: '로컬식품 및 샤베트' },
     { id: 'jeju-citrus-lab', name: '제주시트러스랩', field: '제조', note: '제주 원료 기반 화장품' },
     { id: 'nitem', name: '니텀', field: '식품', note: '커피대체음료' }
   ];
@@ -316,7 +311,7 @@
         category: 'FIELD VISIT',
         title: 'IR Pitching Company Field Visit',
         date: `${eventDate} 09:30-13:30`,
-        location: '해녀의 부엌(북촌)',
+        location: '인스피어',
         image: image('assets/images/home/event-studio.jpg')
       },
       {
@@ -365,7 +360,7 @@
         category: 'EXHIBITION',
         title: 'Corporate Exhibition Zone',
         date: `${eventDate} 10:00-18:00`,
-        location: '전시존 참여기업 27개사',
+        location: '전시존 참여기업 22개사',
         image: image('assets/images/home/event-showcase.jpg')
       }
     ],
@@ -473,7 +468,7 @@
         tab: '현장방문',
         title: 'IR 피칭기업 현장방문',
         sessions: [
-          { time: '09:30 - 13:30', title: '기업탐방: 해녀의 부엌(북촌)', meta: 'IR 피칭기업 현장방문 / VC·AC 참여' }
+          { time: '09:30 - 13:30', title: '기업탐방: 인스피어', meta: 'IR 피칭기업 현장방문 / VC·AC 참여' }
         ]
       },
       {
@@ -489,8 +484,7 @@
         tab: '개막식',
         title: '개막식',
         sessions: [
-          { time: '14:30 - 14:45', title: '개막식', meta: '제주글로벌콘텐츠포럼 및 비즈니스 네트워킹 개막' },
-          { time: '14:45 - 15:00', title: '무대 전환', meta: '글로벌 포럼 진행 준비' }
+          { time: '14:30 - 14:45', title: '개막식', meta: '제주글로벌콘텐츠포럼 및 비즈니스 네트워킹 개막' }
         ]
       },
       {
