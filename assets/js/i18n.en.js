@@ -379,7 +379,7 @@
     '메일 주소': 'Email',
     '신청 확인 메일을 이 주소로 보내드립니다.': 'We will send your registration confirmation to this address.',
     '첨부파일': 'Attachment',
-    '회사 소개서 PDF, 20MB 이하': 'Company deck (PDF, up to 20MB)',
+    '회사 소개서 PDF, 3페이지 이내 · 20MB 이하': 'Company profile PDF, 3 pages or fewer · 20MB max',
     '상담 신청 내용': 'What you’d like to discuss',
     '비즈니스 밋업 예약 확인을 위한 개인정보 제공에 동의합니다.': 'I agree to the collection and sharing of my information to confirm this Business Meetup booking.',
     '신청 내용을 확인해 주세요': 'Review your booking',
