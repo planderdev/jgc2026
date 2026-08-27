@@ -20,7 +20,7 @@ export default () => runSuite('UI 회귀', async ({ browser, r }) => {
 
   // 홈 섹션 순서
   const order = await page.evaluate(() => [...document.querySelectorAll('main > section')].map((s) => s.className.split(' ')[0].replace('home-', '')).join(' → '));
-  r.check(order === 'hero → speakers → events → special → partners → faq → location', '홈 섹션 순서', order);
+  r.check(order === 'hero → speakers → events → special → partners → location', '홈 섹션 순서', order);
 
   // 연사 카드: 확정 연사만, 이벤트 카드보다 작게
   const sp = await page.evaluate(() => ({

@@ -270,35 +270,11 @@
     `).join('');
   }
 
-  function renderFaqPage() {
-    const mount = document.querySelector('[data-faq-page]');
-    if (!mount) return;
-    mount.innerHTML = data().faqs.concat([
-      {
-        q: '현장 등록도 가능한가요?',
-        a: '네. 행사 참가신청은 행사 당일 18:00까지 온라인으로 열려 있어, 현장에서도 휴대폰으로 바로 신청할 수 있습니다. 비즈니스 밋업 예약은 행사 전날(9월 15일) 자정에 마감됩니다.'
-      },
-      {
-        q: '비즈니스 밋업 예약을 취소할 수 있나요?',
-        a: '예약 조회·취소 페이지에서 예약번호와 담당자 연락처를 입력하면 예약 상태를 확인하고 취소할 수 있습니다. 취소는 행사 전날(9월 15일) 자정까지 가능하며, 이후 변경은 운영사무국(064-735-0677)에 문의해 주세요.'
-      }
-    ]).map((item, index) => `
-      <article class="faq-item ${index === 0 ? 'is-open' : ''}">
-        <button class="faq-question" type="button">
-          <span>${item.q}</span>
-          <i class="ri-arrow-down-s-line" aria-hidden="true"></i>
-        </button>
-        <div class="faq-answer"><p>${item.a}</p></div>
-      </article>
-    `).join('');
-    common().initAccordions(mount);
-  }
 
   document.addEventListener('DOMContentLoaded', () => {
     renderSpeakerGrid();
     renderSchedule();
     renderProgramCompanies();
     renderPartners();
-    renderFaqPage();
   });
 })();

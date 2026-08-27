@@ -120,19 +120,6 @@
     `;
   }
 
-  function renderHomeFaqItem(item, index) {
-    return `
-      <article class="faq-item ${index === 0 ? 'is-open' : ''}">
-        <button class="faq-question" type="button">
-          <span>${escapeHtml(item.q)}</span>
-          <i class="ri-arrow-down-s-line" aria-hidden="true"></i>
-        </button>
-        <div class="faq-answer">
-          <p>${escapeHtml(item.a)}</p>
-        </div>
-      </article>
-    `;
-  }
 
   function normalizeLogoClass(value) {
     return String(value || '').replace(/[^a-zA-Z0-9_-]/g, '');
@@ -285,16 +272,6 @@
     });
   }
 
-  function initHomeFaq() {
-    const section = document.querySelector('.home-faq');
-    const mount = section?.querySelector('[data-home-faq-list]');
-    const items = (data().faqs || []).slice(0, 4);
-    if (!section || !mount || !items.length) return;
-
-    mount.innerHTML = items.map(renderHomeFaqItem).join('');
-    window.JGCFCommon?.initAccordions?.(section);
-  }
-
   function initPartnerSection() {
     const mount = document.querySelector('[data-home-partner-groups]');
     const partnerData = data().homePartners || {};
@@ -308,7 +285,6 @@
     initHomeEvents();
     initSpecialPrograms();
     initHomeSpeakers();
-    initHomeFaq();
     initPartnerSection();
     refreshAos();
   });

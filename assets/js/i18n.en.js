@@ -78,7 +78,6 @@
     '주최/주관': 'Host / Organizer',
     '협력기관': 'Partners',
     '자주 묻는 질문': 'Frequently Asked Questions',
-    'FAQ 전체보기': 'All FAQs',
     '행사 장소 및 교통 안내': 'Venue & Transportation',
     '제주콘텐츠진흥원': 'Jeju Contents Agency',
     'Be IN; (비인)': 'Be IN;',
@@ -484,19 +483,11 @@
     '이미 참가신청이 접수된 연락처입니다.': 'This phone number is already registered.',
 
     // ── FAQ
-    '행사 참가 신청은 어떻게 진행되나요?': 'How do I register for the event?',
     '행사 참가신청과 비즈밋업 참가신청을 별도로 운영합니다. 행사 참가신청은 구분(기업, 일반, 학생), 이름 또는 소속 정보, 연락처, 개인정보 제공 동의 항목으로 구성됩니다.': 'Event registration and Business Meetup booking are separate. Event registration asks for your type (Company, General, Student), name or affiliation, phone number and consent to the privacy terms.',
-    '비즈밋업 예약은 어떤 방식으로 진행되나요?': 'How does Business Meetup booking work?',
     '신청 기업이 희망 상담기관과 시간을 선택해 예약합니다. 상담은 30분 단위로 진행되며, 이미 예약된 상담기관의 동일 시간대는 선택할 수 없습니다. 한 담당자가 여러 상담기관을 예약할 수 있고, 같은 시간에 두 곳이나 같은 기관을 두 번 예약하는 것만 제한됩니다. 예약 완료 후 "다른 기관도 예약하기"로 정보를 다시 입력하지 않고 이어서 예약할 수 있습니다.': 'Choose the institution and time you want. Consultations run in 30-minute slots; a slot already booked with that institution cannot be selected. One person can book several institutions — only the same slot at two places, or the same institution twice, is blocked. After booking, use "Book another institution" to continue without re-entering your details.',
-    '비즈밋업 신청 시 어떤 자료가 필요한가요?': 'What do I need to book a Business Meetup?',
     '신청 기업명, 담당자 이름, 연락처, 메일 주소, 회사 소개서 PDF(20MB 이하), 상담 신청 내용(3줄 이내)을 입력합니다.': 'Your company name, contact name, phone number, email, a company deck (PDF, up to 20MB) and a short note on what you’d like to discuss (up to 3 lines).',
-    '행사 장소와 운영 공간은 어디인가요?': 'Where is the event held?',
     '2026년 행사는 제주특별자치도 제주시 신산로 82 제주콘텐츠진흥원 내 1층 Be IN; (비인)에서 열리며, 포럼, IR 피칭, 전시, 상담 프로그램이 운영됩니다.': 'The 2026 event takes place at Be IN;, 1F, Jeju Contents Agency, 82 Sinsan-ro, Jeju-si. It hosts the forum, IR pitching, exhibition and consultation programs.',
-    '현장 등록도 가능한가요?': 'Can I register on site?',
     '네. 행사 참가신청은 행사 당일 18:00까지 온라인으로 열려 있어, 현장에서도 휴대폰으로 바로 신청할 수 있습니다. 비즈니스 밋업 예약은 행사 전날(9월 15일) 자정에 마감됩니다.': 'Yes. Event registration stays open online until 18:00 on the event day, so you can register from your phone on site. Business Meetup booking closes at midnight on Sep 15.',
-    '비즈니스 밋업 예약을 취소할 수 있나요?': 'Can I cancel a Business Meetup booking?',
-    '예약 조회·취소 페이지에서 예약번호와 담당자 연락처를 입력하면 예약 상태를 확인하고 취소할 수 있습니다. 취소는 행사 전날(9월 15일) 자정까지 가능하며, 이후 변경은 운영사무국(064-735-0677)에 문의해 주세요.': 'Yes. Enter your booking number and phone number on the Check / Cancel page. Cancellations are accepted until midnight on Sep 15; after that, contact the secretariat at +82-64-735-0677.',
-
     // ── 정책 (법적 문서는 한국어 원문이 기준이며, 아래는 참고용 번역)
     '수집하는 개인정보 항목': 'Information we collect',
     '2026 제주글로벌콘텐츠포럼 및 비즈니스 네트워킹 운영사무국은 행사 참가신청과 비즈니스 밋업 예약 과정에서 아래 항목을 수집합니다. 이용자가 직접 입력한 항목 외에 별도로 수집하는 정보는 없습니다.': 'The 2026 Jeju Global Content Forum & Business Networking Secretariat collects the following during event registration and Business Meetup booking. Nothing is collected beyond what you enter yourself.',

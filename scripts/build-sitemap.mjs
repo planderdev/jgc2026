@@ -13,7 +13,7 @@ if (!/^https?:\/\/[^/]+$/.test(base)) { console.error('사용법: node scripts/b
 // 경로, 우선순위. 홈·신청·예약이 가장 중요하다.
 const PAGES = [
   ['', 1.0], ['register', 0.9], ['meetup', 0.9], ['meetup/reserve', 0.9], ['meetup/confirm', 0.6],
-  ['program', 0.8], ['speakers', 0.8], ['about', 0.7], ['theme', 0.7], ['venue', 0.7], ['partners', 0.6], ['faq', 0.6],
+  ['program', 0.8], ['speakers', 0.8], ['about', 0.7], ['theme', 0.7], ['venue', 0.7], ['partners', 0.6],
   ['privacy', 0.2], ['copyright', 0.2], ['legal', 0.2]
 ];
 const today = new Date().toISOString().slice(0, 10);

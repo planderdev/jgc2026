@@ -23,7 +23,6 @@ const PAGES = {
   'speakers.html': ['Speakers | JGCF 2026', 'Forum and session speakers of JGCF 2026.'],
   'program.html': ['Program | JGCF 2026', 'Full schedule for Sep 16, 2026: site visit, Rising IR, opening, Global Forum, Main IR and MOU signing.'],
   'partners.html': ['Partners | JGCF 2026', 'Hosts, organizers and partner institutions of JGCF 2026.'],
-  'faq.html': ['FAQ | JGCF 2026', 'Frequently asked questions about registration, Business Meetup booking and the venue.'],
   'register.html': ['Register | JGCF 2026', 'Register for JGCF 2026 as a company, general participant or student. Instant confirmation with a registration number.'],
   'register-complete.html': ['Registration complete | JGCF 2026', 'Your JGCF 2026 registration is complete.'],
   'privacy.html': ['Privacy Policy | JGCF 2026', 'How the JGCF 2026 secretariat collects, uses and protects personal data.'],

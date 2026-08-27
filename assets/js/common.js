@@ -16,8 +16,7 @@
     { label: 'Speakers', href: 'speakers.html', key: 'speakers' },
     { label: 'Program', href: 'program.html', key: 'program' },
     { label: 'Business Meetup', href: 'meetup/index.html', key: 'meetup' },
-    { label: 'Partners', href: 'partners.html', key: 'partners' },
-    { label: 'FAQ', href: 'faq.html', key: 'faq' }
+    { label: 'Partners', href: 'partners.html', key: 'partners' }
   ];
 
   // 실제 계정이 열리면 URL을 채우세요. 비어 있으면 아이콘을 렌더링하지 않습니다.
