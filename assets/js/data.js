@@ -234,7 +234,6 @@
     { id: 'fast-ventures', name: '패스트벤처스 (논의중)', field: '혁신 스타트업 중심 초기단계 벤처투자', note: '초기 스타트업 투자 상담' },
     { id: 'logan-ventures', name: '로간벤처스(유)', field: '문화/영상/콘텐츠 가치평가 및 메타버스플랫폼 지원', note: '문화콘텐츠 가치평가 및 사업화 상담' },
     { id: 'smartstudy-ventures', name: '스마트스터디벤처스', field: '캐릭터·콘텐츠 IP 사업화, 문화콘텐츠, 에듀테크 발굴', note: '콘텐츠 IP 사업화 상담' },
-    { id: 'acdc', name: 'AC:DC(에이씨엔디씨)', field: '스타트업 지원 액셀러레이터, 게임 등 콘텐츠 스타트업 특화', note: '콘텐츠 스타트업 액셀러레이팅 상담' },
     { id: 'ynarcher', name: '와이앤아처', field: '글로벌 스타트업 엑셀러레이팅, 로컬 브랜드 콘텐츠 육성', note: '글로벌 진출 및 로컬 브랜드 육성 상담' },
     { id: 'smartrun', name: '스타트런', field: 'IR피칭·투자유치·창업컨설팅', note: 'IR피칭 및 투자유치 상담' },
     { id: 'nextchallenge', name: '재단법인 넥스트챌린지', field: '스타트업 엑셀러레이팅·투자유치·글로벌 진출', note: '투자유치 및 글로벌 진출 상담' },
@@ -255,7 +254,10 @@
     { id: 'jeju-ip-center', name: '제주지식재산센터', field: '변리사 3명 별도코너', note: '지식재산권 전문 상담' }
   ];
 
-  const consultationOrgs = institutionOrgs.filter((org) => org.id !== 'ynarcher');
+  // 원고 p9 기준. 와이앤아처·패스트벤처스는 VC·AC 목록에는 있지만
+  // 비즈밋업 상담기관은 아니다.
+  const NON_CONSULTATION = ['ynarcher', 'fast-ventures'];
+  const consultationOrgs = institutionOrgs.filter((org) => !NON_CONSULTATION.includes(org.id));
 
   // 상담을 받지 않는 시간대와 그 사유. 화면에는 남되 선택할 수 없게 표시됩니다.
   // 운영 계획이 바뀌면 이 목록만 고치면 됩니다. 전 시간대를 열려면 빈 객체로 두세요.
