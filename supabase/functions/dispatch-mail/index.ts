@@ -10,7 +10,10 @@
  *   MAIL_FROM       보내는 사람. 예: JGCF 2026 운영사무국 <noreply@2026jejugcf.com>
  */
 const BATCH = 20;
-const MAX_ATTEMPTS = 5;
+const MAX_ATTEMPTS = 5;      // 우리 쪽 원인으로 실패했을 때의 재시도 한도
+const MAX_DEFERRALS = 60;    // 한도 초과로 미리미리 보류한 횟수 상한(대략 하루치)
+// 재시도해도 결과가 같은 응답들. 주소가 틀렸거나 키가 잘못된 경우다.
+const PERMANENT = new Set([400, 401, 403, 404, 422]);
 const SITE = 'https://2026jejugcf.com';
 const VENUE = '제주특별자치도 제주시 신산로 82 제주콘텐츠진흥원 내 1층 Be IN; (비인)';
 const CONTACT = '제주콘텐츠진흥원 064-735-0677';
@@ -21,6 +24,7 @@ type Row = {
   to_email: string;
   payload: Record<string, string>;
   attempts: number;
+  deferrals: number;
 };
 
 const esc = (s: unknown) =>
@@ -53,6 +57,16 @@ function detailTable(rows: [string, string][]) {
 
 function button(href: string, label: string) {
   return `<a href="${esc(href)}" style="display:inline-block;background:#1a1a1a;color:#fff;text-decoration:none;padding:11px 20px;border-radius:8px;font-size:14px;font-weight:600">${esc(label)}</a>`;
+}
+
+/** Retry-After 헤더는 초 단위 숫자 또는 날짜다. 못 읽으면 null. */
+function retryAfterMs(value: string | null): number | null {
+  if (!value) return null;
+  const seconds = Number(value);
+  if (Number.isFinite(seconds) && seconds >= 0) return Math.min(seconds, 6 * 3600) * 1000;
+  const at = Date.parse(value);
+  if (!Number.isNaN(at)) return Math.max(0, Math.min(at - Date.now(), 6 * 3600 * 1000));
+  return null;
 }
 
 function render(row: Row): { subject: string; html: string } | null {
@@ -163,13 +177,32 @@ Deno.serve(async (req) => {
 
   if (!resendKey) return new Response(JSON.stringify({ error: 'RESEND_API_KEY 없음' }), { status: 500 });
 
+  const now = new Date().toISOString();
   const pending: Row[] = await db(
-    `mail_outbox?status=eq.pending&attempts=lt.${MAX_ATTEMPTS}&order=created_at.asc&limit=${BATCH}` +
-      `&select=id,kind,to_email,payload,attempts`
+    `mail_outbox?status=eq.pending&attempts=lt.${MAX_ATTEMPTS}` +
+      `&or=(deferred_until.is.null,deferred_until.lte.${now})` +
+      `&order=created_at.asc&limit=${BATCH}` +
+      `&select=id,kind,to_email,payload,attempts,deferrals`
   ).then((r) => r.json());
 
   let sent = 0;
   let failed = 0;
+  let deferred = 0;
+
+  /** 일시적 실패: 간격을 늘려 가며 다시 시도한다(2,4,8,16분… 최대 60분). */
+  const defer = async (r: Row, message: string) => {
+    const attempts = r.attempts + 1;
+    const wait = Math.min(60, 2 ** attempts) * 60 * 1000;
+    await db(`mail_outbox?id=eq.${r.id}`, {
+      method: 'PATCH',
+      body: JSON.stringify({
+        status: attempts >= MAX_ATTEMPTS ? 'failed' : 'pending',
+        attempts,
+        deferred_until: new Date(Date.now() + wait).toISOString(),
+        last_error: message
+      })
+    });
+  };
 
   for (const row of pending) {
     const mail = render(row);
@@ -191,37 +224,56 @@ Deno.serve(async (req) => {
       if (res.ok) {
         await db(`mail_outbox?id=eq.${row.id}`, {
           method: 'PATCH',
-          body: JSON.stringify({ status: 'sent', attempts: row.attempts + 1, sent_at: new Date().toISOString(), last_error: null })
+          body: JSON.stringify({
+            status: 'sent', attempts: row.attempts + 1,
+            sent_at: new Date().toISOString(), last_error: null, deferred_until: null
+          })
         });
         sent++;
-      } else {
-        const text = (await res.text()).slice(0, 400);
-        const attempts = row.attempts + 1;
+        continue;
+      }
+
+      const text = (await res.text()).slice(0, 400);
+
+      // 한도 초과: 시간이 지나면 풀린다. 재시도 횟수를 깎지 않고 미뤄 둔다.
+      // 그러지 않으면 행사 당일 한 번 걸렸을 때 메일이 영영 안 나간다.
+      if (res.status === 429) {
+        const deferrals = row.deferrals + 1;
+        const wait = retryAfterMs(res.headers.get('retry-after')) ?? 15 * 60 * 1000;
         await db(`mail_outbox?id=eq.${row.id}`, {
           method: 'PATCH',
           body: JSON.stringify({
-            status: attempts >= MAX_ATTEMPTS ? 'failed' : 'pending',
-            attempts,
-            last_error: `${res.status} ${text}`
+            status: deferrals >= MAX_DEFERRALS ? 'failed' : 'pending',
+            deferrals,
+            deferred_until: new Date(Date.now() + wait).toISOString(),
+            last_error: `429 (${deferrals}번째 보류) ${text}`
           })
         });
-        failed++;
+        deferred++;
+        continue;
       }
+
+      // 주소·키 오류처럼 다시 보내도 같은 결과인 응답은 즉시 포기한다.
+      if (PERMANENT.has(res.status)) {
+        await db(`mail_outbox?id=eq.${row.id}`, {
+          method: 'PATCH',
+          body: JSON.stringify({ status: 'failed', attempts: row.attempts + 1, last_error: `${res.status} ${text}` })
+        });
+        failed++;
+        continue;
+      }
+
+      // 그 밖(5xx 등)은 간격을 늘려 가며 다시 시도한다.
+      await defer(row, `${res.status} ${text}`);
+      failed++;
     } catch (error) {
-      const attempts = row.attempts + 1;
-      await db(`mail_outbox?id=eq.${row.id}`, {
-        method: 'PATCH',
-        body: JSON.stringify({
-          status: attempts >= MAX_ATTEMPTS ? 'failed' : 'pending',
-          attempts,
-          last_error: String((error as Error).message).slice(0, 400)
-        })
-      });
+      // 네트워크 오류도 일시적인 것으로 본다.
+      await defer(row, String((error as Error).message).slice(0, 400));
       failed++;
     }
   }
 
-  return new Response(JSON.stringify({ picked: pending.length, sent, failed }), {
+  return new Response(JSON.stringify({ picked: pending.length, sent, failed, deferred }), {
     headers: { 'Content-Type': 'application/json' }
   });
 });
