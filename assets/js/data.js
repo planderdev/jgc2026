@@ -263,19 +263,30 @@
 
   // 상담을 받지 않는 시간대와 그 사유. 화면에는 남되 선택할 수 없게 표시됩니다.
   // 운영 계획이 바뀌면 이 목록만 고치면 됩니다. 전 시간대를 열려면 빈 객체로 두세요.
-  // 상담은 30분 단위. 점심(12:00·12:30)은 선택 불가.
+  // 상담은 25분, 30분 간격으로 시작한다(남는 5분은 자리 정리). 10:00 시작,
+  // 마지막 상담은 16:30~16:55로 원고의 10:00~17:00 안에 끝난다.
+  // 점심(12:00·12:30)은 선택 불가.
   // 서버(jgcf_valid_slot)도 같은 규칙으로 검사하므로 바꿀 때 함께 바꾼다.
   const reservationBreaks = {
     '12:00': '점심시간',
     '12:30': '점심시간'
   };
 
+  const CONSULTATION_MINUTES = 25;
+
   const reservationTimes = [
     '10:00', '10:30', '11:00', '11:30',
     '12:00', '12:30', '13:00', '13:30',
     '14:00', '14:30', '15:00', '15:30',
-    '16:00', '16:30', '17:00', '17:30'
+    '16:00', '16:30'
   ];
+
+  /** '10:00' → '10:00 - 10:25'. 예약 값은 시작 시각 그대로 쓰고 표시만 범위로 한다. */
+  function slotRange(time) {
+    const [h, m] = time.split(':').map(Number);
+    const end = h * 60 + m + CONSULTATION_MINUTES;
+    return `${time} - ${String(Math.floor(end / 60)).padStart(2, '0')}:${String(end % 60).padStart(2, '0')}`;
+  }
 
   const homeIrImages = [
     image('assets/images/home/event-studio.jpg'),
@@ -503,6 +514,8 @@
     companies: consultationOrgs,
     reservationTimes,
     reservationBreaks,
+    consultationMinutes: CONSULTATION_MINUTES,
+    slotRange,
     partners: partnerGroups
   };
 })();

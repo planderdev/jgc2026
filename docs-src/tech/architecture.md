@@ -46,6 +46,6 @@ group: tech
 | --- | --- | --- |
 | 밋업 마감 9/16 00:00 KST | `jgcf_reservation_cutoff()` | `assets/js/admin.js` MEETUP_CUTOFF (D-day 표시) |
 | 참가신청 마감 9/16 18:00 | `jgcf_registration_cutoff()` | — |
-| 시간 슬롯 30분·점심 | `jgcf_valid_slot()` 정규식 | `assets/js/data.js` reservationTimes/Breaks |
+| 시간 슬롯 25분·점심 | `jgcf_valid_slot()` 정규식 | `assets/js/data.js` reservationTimes/Breaks |
 | 첨부 20MB | 버킷 `file_size_limit` | `assets/js/meetup.js` ATTACHMENT_MAX_MB |
 | 연락처 9~11자리 | 함수 내 검사 | `assets/js/common.js` isValidPhone |

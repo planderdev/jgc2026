@@ -112,9 +112,12 @@
     function drawTimes(taken) {
       const breaks = data().reservationBreaks || {};
       const takenSet = new Set(taken || []);
+      const range = data().slotRange || ((t) => t);
       timeMount.innerHTML = data().reservationTimes.map((time) => {
         const breakLabel = breaks[time];
-        const label = breakLabel ? `${time} ${breakLabel}` : (takenSet.has(time) ? `${time} 마감` : time);
+        // 상담 길이가 드러나도록 시작~종료로 보여준다. 저장되는 값은 시작 시각 그대로.
+        const shown = breakLabel ? time : range(time);
+        const label = breakLabel ? `${time} ${breakLabel}` : (takenSet.has(time) ? `${shown} 마감` : shown);
         const disabled = breakLabel || takenSet.has(time) ? 'disabled' : '';
         return `
           <label class="choice-card">

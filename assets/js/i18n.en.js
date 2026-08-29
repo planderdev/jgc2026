@@ -289,7 +289,7 @@
     '상담기관 선택': 'Choose an institution',
     '투자, 액셀러레이팅, 사업화 등 필요한 상담 분야에 맞는 AC·VC 및 기관을 선택합니다.': 'Pick the AC/VC or institution that matches what you need — investment, acceleration, commercialization and more.',
     '시간 예약': 'Pick a time',
-    '30분 단위 상담을 기준으로 희망 시간대를 선택합니다. 이미 예약된 동일 상담기관의 시간대는 비활성화됩니다.': 'Choose a 30-minute slot. Slots already booked with that institution are disabled.',
+    '상담 25분을 기준으로 희망 시간대를 선택합니다. 이미 예약된 동일 상담기관의 시간대는 비활성화됩니다.': 'Pick a time based on a 25-minute consultation. Slots already booked at the same institution are disabled.',
     '현장 상담': 'Meet on site',
     '예약번호 확인 후 신청 기업 담당자가 해당 기관 테이블을 방문해 상담을 진행합니다.': 'After your booking number is confirmed, visit the institution’s table at the booked time.',
     '상담기관': 'Institutions',
@@ -298,7 +298,7 @@
     '예약 변경은 어떻게 하나요?': 'How do I change a booking?',
     '예약 조회/취소 페이지에서 기존 예약을 취소한 뒤 원하는 상담기관과 시간으로 다시 신청할 수 있습니다.': 'Cancel the existing booking on the Check / Cancel page, then book again with the institution and time you want.',
     '상담 시간은 얼마나 제공되나요?': 'How long is each consultation?',
-    '상담은 30분 단위로 운영되며, 신청자는 예약한 기관 및 시간에 맞춰 테이블을 방문합니다.': 'Consultations run in 30-minute slots. Please visit the institution’s table at your booked time.',
+    '상담은 25분간 진행되며 30분 간격으로 시작합니다. 신청자는 예약한 기관 및 시간에 맞춰 테이블을 방문합니다.': 'Each consultation runs 25 minutes, starting every 30 minutes. Visit the table of the institution and time you booked.',
     'KB인베스트먼트': 'KB Investment',
     'ICT, AI, 로봇, 바이오 초기 및 성장기업 투자': 'Early- and growth-stage investment in ICT, AI, robotics and bio',
     '대교인베스트먼트': 'Daekyo Investment',
@@ -577,7 +577,7 @@
   // 숫자·이름이 섞인 문장. 캡처 그룹은 사전으로 한 번 더 번역한다.
   const R = [
     [/^(\d{2}:\d{2}) 점심시간$/, (m) => `${m[1]} Lunch break`],
-    [/^(\d{2}:\d{2}) 마감$/, (m) => `${m[1]} Full`],
+    [/^(\d{2}:\d{2}(?: - \d{2}:\d{2})?) 마감$/, (m) => `${m[1]} Full`],
     [/^2026\. 9\. 16\. \(수\) (.+) 상담$/, (m) => `Wed, Sep 16, 2026, ${m[1]}`],
     [/^2026\. 9\. 16\. \(수\) (.+)$/, (m) => `Wed, Sep 16, 2026, ${m[1]}`],
     [/^(.+) IR company detail$/, (m) => `${tr(m[1])} — IR company`],
