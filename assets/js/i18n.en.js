@@ -185,7 +185,7 @@
     '참여 기업 및 기관 협약식': 'Signing ceremony with participating companies and institutions',
     '참여 기업': 'Participating Companies',
     '메인 IR 8개사, 라이징 IR 5개사, 기업 전시존 23개사를 원고 기준으로 반영했습니다.': '8 Main IR, 5 Rising IR and 23 exhibition-zone companies, as listed in the official brief.',
-    'VC·AC·기관 24곳, 메인 IR 8개사, 라이징 IR 5개사, 기업 전시존 23개사를 원고 기준으로 반영했습니다.': '24 VC/AC and institutional partners, 8 Main IR companies, 5 Rising IR companies and 23 exhibition-zone companies, as listed in the official brief.',
+    'VC·AC·기관 25곳, 메인 IR 8개사, 라이징 IR 5개사, 기업 전시존 23개사를 원고 기준으로 반영했습니다.': '25 VC/AC and institutional partners, 8 Main IR companies, 5 Rising IR companies and 23 exhibition-zone companies, as listed in the official brief.',
     'VC·AC·기관 목록': 'VC/AC & Institutions',
     '진행중': 'In progress',
     '2026 지역관광 활성화 우수사례 선정': '2026 Selected as a best practice in regional tourism revitalization',
@@ -568,7 +568,10 @@
     '이미 취소되었거나 일치하는 예약이 없습니다.': 'Already cancelled, or no matching booking.',
     '예약번호 발급에 실패했습니다. 잠시 후 다시 시도해 주세요.': 'Could not issue a booking number. Please try again shortly.',
     '서버에 연결하지 못했습니다. 네트워크를 확인하고 다시 시도해 주세요.': 'Could not reach the server. Check your connection and try again.',
-    '처리 중 문제가 발생했습니다. 잠시 후 다시 시도해 주세요.': 'Something went wrong. Please try again shortly.'
+    '처리 중 문제가 발생했습니다. 잠시 후 다시 시도해 주세요.': 'Something went wrong. Please try again shortly.',
+    '다날투자파트너스': 'Danal Investment Partners',
+    'AI·테크·콘텐츠 스타트업 초기투자, 성장지원': 'Seed investment and growth support for AI, tech and content startups',
+    '초기투자 및 성장지원 상담': 'Seed investment and growth support consultation'
   };
 
   // 숫자·이름이 섞인 문장. 캡처 그룹은 사전으로 한 번 더 번역한다.

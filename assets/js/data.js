@@ -232,6 +232,7 @@
     { id: 'kb-investment', name: 'KB인베스트먼트', field: 'ICT·AI·로봇·바이오 초기·성장기업 투자', note: '초기 및 성장기업 투자 상담' },
     { id: 'daekyo-investment', name: '대교인베스트먼트', field: '애니메이션·캐릭터·OTT·드라마 콘텐츠 투자', note: '콘텐츠 IP 투자 상담' },
     { id: 'fast-ventures', name: '패스트벤처스 (논의중)', field: '혁신 스타트업 중심 초기단계 벤처투자', note: '초기 스타트업 투자 상담' },
+    { id: 'danal-investment', name: '다날투자파트너스', field: 'AI·테크·콘텐츠 스타트업 초기투자, 성장지원', note: '초기투자 및 성장지원 상담' },
     { id: 'logan-ventures', name: '로간벤처스(유)', field: '문화/영상/콘텐츠 가치평가 및 메타버스플랫폼 지원', note: '문화콘텐츠 가치평가 및 사업화 상담' },
     { id: 'smartstudy-ventures', name: '스마트스터디벤처스', field: '캐릭터·콘텐츠 IP 사업화, 문화콘텐츠, 에듀테크 발굴', note: '콘텐츠 IP 사업화 상담' },
     { id: 'ynarcher', name: '와이앤아처', field: '글로벌 스타트업 엑셀러레이팅, 로컬 브랜드 콘텐츠 육성', note: '글로벌 진출 및 로컬 브랜드 육성 상담' },
@@ -257,7 +258,7 @@
 
   // 원고 p9 기준. 와이앤아처·패스트벤처스는 VC·AC 목록에는 있지만
   // 비즈밋업 상담기관은 아니다.
-  const NON_CONSULTATION = ['ynarcher', 'fast-ventures'];
+  const NON_CONSULTATION = ['ynarcher', 'fast-ventures', 'danal-investment'];
   const consultationOrgs = institutionOrgs.filter((org) => !NON_CONSULTATION.includes(org.id));
 
   // 상담을 받지 않는 시간대와 그 사유. 화면에는 남되 선택할 수 없게 표시됩니다.
