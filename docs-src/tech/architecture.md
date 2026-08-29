@@ -11,7 +11,7 @@ group: tech
 | 사이트 | 정적 HTML + Tailwind CLI 빌드 CSS + 바닐라 JS | 헤더·푸터는 `assets/js/common.js`가 주입, 콘텐츠는 `assets/js/data.js` |
 | 호스팅 | Vercel (Pro), GitHub `main` 푸시 → 자동 배포 | cleanUrls (확장자 없는 주소) |
 | 데이터 | Supabase `jgcf2026` (서울, `ahabmxxenajosbdkzull`) | 테이블 4개 + Storage 버킷 1개 |
-| 인증 | Supabase Auth (이메일·비밀번호) | 사무국 2 · 상담기관 21 계정 |
+| 인증 | Supabase Auth (이메일·비밀번호) | 사무국 2 · 상담기관 22 계정 |
 | 저장소 | GitHub `planderdev/jgc2026` | `tmp/`는 gitignore(자격증명 파일 위치) |
 
 ## 보안 모델

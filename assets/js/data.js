@@ -243,13 +243,14 @@
     { id: 'make064', name: '메이크064', field: '제주 로컬·F&B 초기투자·브랜딩·유통·수출', note: '로컬 브랜드 성장 상담' },
     { id: 'jeju-content-agency', name: '제주콘텐츠진흥원', field: '지역 특화 콘텐츠 제작 지원 상담 및 사업화 연계', note: '제작지원 및 사업화 상담' },
     { id: 'jeju-hrd', name: '제주지역인적자원개발위원회', field: '인력양성, 일자리지원 등', note: '인력양성 및 일자리 지원 상담' },
-    { id: 'jeju-creative-economy', name: '제주창조경제혁신센터', field: '엑셀러레이팅, 투자연계, TIPS', note: '액셀러레이팅 및 TIPS 연계 상담' },
+    { id: 'creative-economy', name: '창조경제혁신센터', field: '엑셀러레이팅, 투자연계, TIPS', note: '액셀러레이팅 및 TIPS 연계 상담' },
     { id: 'kb-financial', name: 'KB제주종합금융센터', field: '기업 융자·투자·사업협력', note: '기업 금융 및 사업협력 상담' },
     { id: 'kibo-busan-content-finance', name: '기술보증기금 부산문화콘텐츠금융센터', field: '콘텐츠 금융·보증·자금조달', note: '콘텐츠 금융 및 보증 상담' },
     { id: 'jeju-economic-trade-agency', name: '제주특별자치도경제통상진흥원', field: '도내 기업 글로벌 유통 및 마케팅 지원', note: '글로벌 유통 및 마케팅 상담' },
     { id: 'jeju-credit-guarantee-foundation', name: '제주특별자치도 신용보증재단', field: '도내 기업 보증ㆍ자금조달', note: '보증 및 자금조달 상담' },
     { id: 'cheju-halla-k-hightech-platform', name: '제주한라대학교 K-하이테크플랫폼사업단', field: '기업 재직자교육 및 역량강화 지원 컨설팅', note: '재직자교육 및 역량강화 상담' },
     { id: 'jeju-national-tech-commercialization', name: '제주대학교 산학협력단 기술사업화ㆍ창업지원센터', field: '기술사업화 및 창업지원 컨설팅', note: '기술사업화 및 창업지원 상담' },
+    { id: 'jeju-creative-economy', name: '제주창조경제혁신센터', field: '콘텐츠 스타트업 상표권, 저작권 현장상담', note: '상표권 및 저작권 현장 상담' },
     { id: 'jeju-startup-onestop', name: '제주창조경제혁신센터 스타트업원스톱지원센터', field: '콘텐츠 스타트업 상표권, 저작권 현장상담', note: '상표권 및 저작권 현장 상담' },
     { id: 'jeju-ip-center', name: '제주지식재산센터', field: '변리사 3명 별도코너', note: '지식재산권 전문 상담' }
   ];
