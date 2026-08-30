@@ -349,6 +349,16 @@
 }
 
 @media (max-width: 768px) {
+  /* 일정 요약: 좁은 화면에서는 시간을 위로 쌓는다 */
+  .home-schedule-item {
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
+  .home-schedule-item time {
+    flex-basis: auto;
+  }
+
   .main-inner {
     padding: var(--space-0) var(--space-16);
   }

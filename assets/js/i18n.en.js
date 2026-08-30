@@ -44,6 +44,7 @@
     '밋업 예약하기': 'Book a Meetup',
     '연사 전체보기': 'All speakers',
     '프로그램 바로가기': 'Full program',
+    '전체 일정 보기': 'Full timetable',
     '해녀의 부엌(북촌)': "Haenyeo's Kitchen (Bukchon)",
     '라이징 IR 5개 기업': 'Rising IR — 5 companies',
     'DX/AX 전환 토크쇼': 'DX/AX Transformation Talk',

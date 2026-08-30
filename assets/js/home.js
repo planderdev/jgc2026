@@ -272,6 +272,29 @@
     });
   }
 
+  // 행사 일정 요약. 프로그램 페이지와 같은 원본(data().schedule)을 쓰므로
+  // 일정이 바뀌면 홈도 같이 바뀐다. 각 묶음의 첫 시작~마지막 종료만 보여준다.
+  function initHomeSchedule() {
+    const mount = document.querySelector('[data-home-schedule]');
+    const groups = data().schedule || [];
+    if (!mount || !groups.length) return;
+
+    mount.innerHTML = groups.map((group) => {
+      const first = group.sessions[0];
+      const last = group.sessions[group.sessions.length - 1];
+      const range = `${first.time.split(' - ')[0]} - ${last.time.split(' - ')[1] || ''}`;
+      return `
+        <li class="home-schedule-item">
+          <time>${range}</time>
+          <div>
+            <strong>${group.title}</strong>
+            <span>${group.sessions.map((s) => s.title).join(' · ')}</span>
+          </div>
+        </li>
+      `;
+    }).join('');
+  }
+
   function initPartnerSection() {
     const mount = document.querySelector('[data-home-partner-groups]');
     const partnerData = data().homePartners || {};
@@ -285,6 +308,7 @@
     initHomeEvents();
     initSpecialPrograms();
     initHomeSpeakers();
+    initHomeSchedule();
     initPartnerSection();
     refreshAos();
   });
