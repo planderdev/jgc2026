@@ -62,7 +62,10 @@
 </div>
 
 <h2 id="켜려면-필요한-것"><a class="anchor" href="#켜려면-필요한-것" aria-hidden="true">#</a>켜려면 필요한 것</h2>
-<p>발송은 기본이 <strong>꺼짐</strong>입니다(<code>mail_settings.enabled = false</code>). 아래가 모두 준비되면 켭니다.</p>
+<div class="callout good"><p class="callout-title">2026-08-30부터 켜져 있습니다</p><p>도메인 인증(Resend, Vercel 연동)·API 키 등록·4종 문안 실발송 검증을 마치고 <code>enabled = true</code> 상태입니다. 끄려면 <code>update public.mail_settings set enabled = false where id = 1;</code></p>
+</div>
+
+<p>다시 설정해야 할 때(프로젝트 이전 등)를 위한 절차입니다.</p>
 <ol class="steps"><li><p><strong>Resend 계정과 도메인 인증</strong><code>2026jejugcf.com</code>을 등록하고 안내되는 DNS 레코드(DKIM·SPF)를 네임서버에 추가합니다. 네임서버가 Vercel이므로 <code>vercel dns add</code>로 넣습니다</p>
 </li><li><p><strong>Edge Function 비밀값</strong>Supabase → Edge Functions → Secrets에 세 가지를 넣습니다</p>
 <div class="table-wrap"><table><thead><tr><th>이름</th><th>값</th></tr></thead><tbody><tr><td><code>RESEND_API_KEY</code></td><td>Resend에서 만든 API 키</td></tr><tr><td><code>DISPATCH_KEY</code></td><td><code>mail_settings.dispatch_key</code>와 같은 값</td></tr><tr><td><code>MAIL_FROM</code></td><td><code>JGCF 2026 운영사무국 &lt;noreply@2026jejugcf.com&gt;</code></td></tr></tbody></table></div>

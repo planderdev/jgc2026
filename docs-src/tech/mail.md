@@ -48,7 +48,11 @@ group: tech
 
 ## 켜려면 필요한 것
 
-발송은 기본이 **꺼짐**입니다(`mail_settings.enabled = false`). 아래가 모두 준비되면 켭니다.
+:::good 2026-08-30부터 켜져 있습니다
+도메인 인증(Resend, Vercel 연동)·API 키 등록·4종 문안 실발송 검증을 마치고 `enabled = true` 상태입니다. 끄려면 `update public.mail_settings set enabled = false where id = 1;`
+:::
+
+다시 설정해야 할 때(프로젝트 이전 등)를 위한 절차입니다.
 
 1. **Resend 계정과 도메인 인증** — `2026jejugcf.com`을 등록하고 안내되는 DNS 레코드(DKIM·SPF)를 네임서버에 추가합니다. 네임서버가 Vercel이므로 `vercel dns add`로 넣습니다
 2. **Edge Function 비밀값** — Supabase → Edge Functions → Secrets에 세 가지를 넣습니다
