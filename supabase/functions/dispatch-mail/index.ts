@@ -134,19 +134,22 @@ function render(row: Row): { subject: string; html: string } | null {
     };
   }
 
+  // 운영자(사무국) 수신. 기관에는 직접 보내지 않고 사무국이 필요할 때 전달한다.
   if (row.kind === 'partner_cancelled') {
     return {
-      subject: `[JGCF 2026] 상담 예약 취소 알림 — ${p.time_slot ?? ''} ${p.applicant_company ?? ''}`,
-      html: layout('상담 예약 취소 알림', `
-        <p>${esc(p.company_name)} 담당자님, 귀 기관에 배정된 상담 한 건이 취소되었습니다.</p>
+      subject: `[JGCF 2026] 상담 취소 — ${p.company_name ?? ''} ${p.time_slot ?? ''} (${p.applicant_company ?? ''})`,
+      html: layout('상담 예약 취소 알림 (사무국)', `
+        <p>사무국 담당자님, <strong>${esc(p.company_name)}</strong>에 배정된 상담 한 건이 취소되었습니다.</p>
         ${detailTable([
+          ['상담기관', String(p.company_name ?? '')],
           ['상담 시간', slot],
           ['신청 기업', String(p.applicant_company ?? '')],
           ['담당자', String(p.manager_name ?? '')],
+          ['연락처', String(p.phone ?? '')],
           ['예약번호', String(p.reservation_no ?? '')]
         ])}
-        <p>해당 시간은 다시 열려 다른 기업이 예약할 수 있습니다. 최신 일정은 아래에서 확인하세요.</p>
-        <p style="margin-top:16px">${button(`${SITE}/admin`, '상담 일정 확인')}</p>`)
+        <p>해당 시간은 다시 열려 다른 기업이 예약할 수 있습니다. 기관에 안내가 필요하면 전달해 주세요.</p>
+        <p style="margin-top:16px">${button(`${SITE}/admin`, '관리자 화면')}</p>`)
     };
   }
 

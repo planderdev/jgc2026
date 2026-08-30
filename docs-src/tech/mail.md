@@ -10,7 +10,7 @@ group: tech
 |---|---|---|
 | 예약 확정 안내 | 신청 기업 담당자 | 밋업 예약이 확정될 때 |
 | 예약 취소 안내 | 신청 기업 담당자 | 예약이 취소될 때(본인 취소·사무국 대신 취소 모두) |
-| 상담 취소 알림 | 상담기관 | 그 기관의 예약이 취소될 때 |
+| 상담 취소 알림 | **운영사무국**(운영자 메일 한 곳) | 예약이 취소될 때 |
 | 참가신청 접수 안내 | 참가 신청자 | 행사 참가신청이 접수될 때 |
 
 :::info 메일 주소가 없으면 접수는 되고 메일만 안 갑니다
@@ -63,15 +63,13 @@ group: tech
    | `DISPATCH_KEY` | `mail_settings.dispatch_key`와 같은 값 |
    | `MAIL_FROM` | `JGCF 2026 운영사무국 <noreply@2026jejugcf.com>` |
 
-3. **상담기관 수신 주소** — 취소 알림을 받을 실제 주소입니다. 로그인 아이디(`기관아이디@2026jejugcf.com`)는 **수신함이 없어** 쓸 수 없습니다
+3. **운영자 수신 주소** — 취소 알림은 상담기관에 직접 가지 않고 운영자 메일 한 곳으로 모입니다. 사무국이 받아서 필요한 기관에만 전달합니다.
 
    ```sql
-   update public.partner_users
-      set contact_email = 'meetup@example-org.kr'
-    where company_id = 'kb-investment';
+   update public.mail_settings set operator_email = 'ops@example.kr' where id = 1;
    ```
 
-   비어 있는 기관은 취소 알림을 **건너뜁니다** — 예약 처리는 그대로 되고 메일만 안 갑니다.
+   기관별 수신 주소(`partner_users.contact_email`)는 쓰지 않습니다.
 
 4. **켜기**
 
@@ -81,7 +79,7 @@ group: tech
 
 ## 상태 확인
 
-사무국 계정으로 `jgcf_admin_mail_status()`를 호출하면 지금 보낼 건(`pending`), 미뤄 둔 건(`deferred`)과 다음 재시도 시각(`next_retry_at`), 발송·실패 건수, 수신 주소가 없는 기관 수, 최근 실패 10건을 볼 수 있습니다.
+사무국 계정으로 `jgcf_admin_mail_status()`를 호출하면 지금 보낼 건(`pending`), 미뤄 둔 건(`deferred`)과 다음 재시도 시각(`next_retry_at`), 발송·실패 건수, 운영자 수신 주소, 최근 실패 10건을 볼 수 있습니다.
 
 ```sql
 select public.jgcf_admin_mail_status();
