@@ -153,9 +153,9 @@
     '주소': 'Address',
     '전화번호': 'Phone',
     '대중교통': 'Public transport',
-    '문화회관 후문 정류장 이용': 'Use the "Munhwahoegwan rear gate" bus stop',
-    '동광양·인화초등학교 방면: 간선 201, 221, 231, 260, 311, 335, 336, 341, 342, 348, 349 / 지선 415, 421, 423, 426, 465, 466': 'Toward Donggwangyang / Inhwa Elementary: Trunk 201, 221, 231, 260, 311, 335, 336, 341, 342, 348, 349 / Branch 415, 421, 423, 426, 465, 466',
-    '서측·신산로 방면: 간선 201 / 지선 426': 'Toward west / Sinsan-ro: Trunk 201 / Branch 426',
+    '문예회관 후문 정류장 이용': 'Use the "Culture & Arts Center rear gate" bus stop',
+    '동광양 방면: 간선 201, 221, 231, 260, 311, 335, 336, 341, 342, 348, 349 / 지선 415, 422, 424, 465 / 심야버스 3006': 'Toward Donggwangyang: Trunk 201, 221, 231, 260, 311, 335, 336, 341, 342, 348, 349 / Branch 415, 422, 424, 465 / Night bus 3006',
+    '인화초등학교 방면: 간선 201, 211, 221, 231, 260, 311, 335, 336, 341, 342, 348, 349 / 지선 415, 421, 423, 466 / 심야버스 3006, 3007': 'Toward Inhwa Elementary: Trunk 201, 211, 221, 231, 260, 311, 335, 336, 341, 342, 348, 349 / Branch 415, 421, 423, 466 / Night bus 3006, 3007',
     '주소 및 교통 정보': 'Address & transportation',
 
     // ── Program
