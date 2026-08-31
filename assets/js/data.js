@@ -73,7 +73,7 @@
     '인스피어': image('assets/images/program/insphere.svg'),
     '다날투자파트너스': image('assets/images/program/danal.svg'),
     '제주특별자치도경제통상진흥원': image('assets/images/program/jeju-business.svg'),
-    '창조경제혁신센터': image('assets/images/program/jeju-creative.svg'),
+    '창조경제혁신센터': image('assets/images/program/ccei.svg'),
     '제주창조경제혁신센터': image('assets/images/program/jeju-creative.svg'),
     '제주지식재산센터': image('assets/images/program/jeju-intelle.svg'),
     '케이컴퍼니': image('assets/images/program/kcompany.svg'),
