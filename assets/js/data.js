@@ -462,6 +462,15 @@
     ],
     schedule: [
       {
+        id: 'networking',
+        tab: '9/15 간담회',
+        title: '도내 기업-AC·VC 네트워킹 간담회',
+        date: '9/15(화)',
+        sessions: [
+          { time: '18:00 - 19:30', title: '도내 기업-AC·VC 네트워킹 간담회', meta: '행사 전날 9월 15일(화) / VC·AC, 도내 콘텐츠 기업', thumbnail: 'assets/images/home/event-networking.jpg' }
+        ]
+      },
+      {
         id: 'field-visit',
         tab: '현장방문',
         title: 'IR 피칭기업 현장방문',

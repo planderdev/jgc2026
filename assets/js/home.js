@@ -285,7 +285,7 @@
       const range = `${first.time.split(' - ')[0]} - ${last.time.split(' - ')[1] || ''}`;
       return `
         <li class="home-schedule-item">
-          <time>${range}</time>
+          <time>${group.date ? `<span>${group.date}</span> ` : ''}${range}</time>
           <div>
             <strong>${group.title}</strong>
             <span class="home-schedule-sub">${group.sessions.map((s) => `<em>${s.title}</em>`).join(' · ')}</span>
