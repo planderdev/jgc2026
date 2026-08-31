@@ -59,6 +59,63 @@
     }
   ];
 
+  const companyLogoByTitle = {
+    '메가존클라우드': image('assets/images/program/megazone.svg'),
+    '해녀의 부엌': image('assets/images/program/haenyeokitchen.svg'),
+    '컴투스엔': image('assets/images/program/com2us.webp'),
+    '원더쉐어': image('assets/images/program/wondershare.svg'),
+    '그린우드': image('assets/images/program/greenwood.png'),
+    '그리메': image('assets/images/program/grimae.jpg'),
+    '위놉스': image('assets/images/program/wenobs.png'),
+    '휴플': image('assets/images/program/huple.png'),
+    '프리아이디어': image('assets/images/program/freeidea.svg'),
+    '귤바티': image('assets/images/program/gyulbati.svg'),
+    '인스피어': image('assets/images/program/insphere.svg'),
+    '다날투자파트너스': image('assets/images/program/danal.svg'),
+    '제주특별자치도경제통상진흥원': image('assets/images/program/jeju-business.svg'),
+    '창조경제혁신센터': image('assets/images/program/jeju-creative.svg'),
+    '제주창조경제혁신센터': image('assets/images/program/jeju-creative.svg'),
+    '제주지식재산센터': image('assets/images/program/jeju-intelle.svg'),
+    '케이컴퍼니': image('assets/images/program/kcompany.svg'),
+    '기술보증기금 부산문화콘텐츠금융센터': image('assets/images/program/kibo.svg'),
+    '계란바구니': image('assets/images/program/memoreal.svg'),
+    '낭만지구인': image('assets/images/program/nangman.svg'),
+    '더그린박스': image('assets/images/program/greenbox.svg'),
+    '다즈랜드': image('assets/images/program/dajland.png'),
+    'KB인베스트먼트': image('assets/images/program/kb.svg'),
+    '대교인베스트먼트': image('assets/images/program/daekyo.svg'),
+    '패스트벤처스': image('assets/images/program/fastventures.png'),
+    '로간벤처스(유)': image('assets/images/program/logan.svg'),
+    '스마트스터디벤처스': image('assets/images/program/smartstudy.jpg'),
+    'AC:DC(에이씨엔디씨)': image('assets/images/program/acdc.svg'),
+    '와이앤아처': image('assets/images/program/y&archer.svg'),
+    '스타트런': image('assets/images/program/startrun.svg'),
+    '재단법인 넥스트챌린지': image('assets/images/program/nc.svg'),
+    '고마오벤처스': image('assets/images/program/gomaoh.svg'),
+    '뉴키즈인베스트먼트': image('assets/images/program/newkid.svg'),
+    '스프링 워터': image('assets/images/program/springwater.svg'),
+    '메이크064': image('assets/images/program/make064.png'),
+    '제주콘텐츠진흥원': image('assets/images/program/jeju-content.svg'),
+    '제주지역인적자원개발위원회': image('assets/images/program/jeju-people.svg'),
+    'KB제주종합금융센터': image('assets/images/program/kb-bank.svg'),
+    '제주특별자치도 신용보증재단': image('assets/images/program/jeju-credit.png'),
+    '제주한라대학교 K-하이테크플랫폼사업단': image('assets/images/program/k-hightech.webp'),
+    '제주대학교 산학협력단 기술사업화ㆍ창업지원센터': image('assets/images/program/jeju-univ.svg'),
+    '제주창조경제혁신센터 스타트업원스톱지원센터': image('assets/images/program/onestop.svg'),
+    '스타트업원스톱지원센터': image('assets/images/program/onestop.svg'),
+    '사이': image('assets/images/program/teahouse.svg')
+  };
+
+  const companyPortraitLogoTitles = new Set(['사이', '와이앤아처']);
+
+  function getCompanyLogo(company) {
+    return company?.logo || companyLogoByTitle[company?.name] || '';
+  }
+
+  function getCompanyLogoVariant(company) {
+    return companyPortraitLogoTitles.has(company?.name) ? ' is-portrait-logo' : '';
+  }
+
   const mainIrCompanies = [
     {
       id: 'haenyeo-kitchen',
@@ -288,6 +345,113 @@
     return `${time} - ${String(Math.floor(end / 60)).padStart(2, '0')}:${String(end % 60).padStart(2, '0')}`;
   }
 
+  const archiveFiles = {
+    2024: [
+      'jgc-2024-001.jpg',
+      'jgc-2024-002.jpg',
+      'jgc-2024-003.jpg',
+      'jgc-2024-004.jpg',
+      'jgc-2024-005.jpg',
+      'jgc-2024-006.jpg',
+      'jgc-2024-007.jpg',
+      'jgc-2024-008.jpg',
+      'jgc-2024-009.jpg',
+      'jgc-2024-010.jpg',
+      'jgc-2024-011.jpg',
+      'jgc-2024-012.jpg',
+      'jgc-2024-013.jpg',
+      'jgc-2024-014.jpg',
+      'jgc-2024-015.jpg',
+      'jgc-2024-016.jpg',
+      'jgc-2024-017.jpg',
+      'jgc-2024-018.jpg',
+      'jgc-2024-019.jpg',
+      'jgc-2024-020.jpg',
+      'jgc-2024-021.jpg',
+      'jgc-2024-022.jpg',
+      'jgc-2024-023.jpg',
+      'jgc-2024-024.jpg',
+      'jgc-2024-025.jpg',
+      'jgc-2024-026.jpg',
+      'jgc-2024-027.jpg',
+      'jgc-2024-028.jpg',
+      'jgc-2024-029.jpg',
+      'jgc-2024-030.jpg',
+      'jgc-2024-031.jpg',
+      'jgc-2024-032.jpg',
+      'jgc-2024-033.jpg',
+      'jgc-2024-034.jpg',
+      'jgc-2024-035.jpg',
+      'jgc-2024-036.jpg',
+      'jgc-2024-037.jpg',
+      'jgc-2024-038.jpg',
+      'jgc-2024-039.jpg',
+      'jgc-2024-040.jpg',
+      'jgc-2024-041.jpg',
+      'jgc-2024-042.jpg'
+    ],
+    2025: [
+      'DSC00002.jpg',
+      'DSC00046.jpg',
+      'DSC00060.jpg',
+      'DSC00073.jpg',
+      'DSC00080.jpg',
+      'DSC00084.jpg',
+      'DSC00105.jpg',
+      'DSC00111.jpg',
+      'DSC00115.jpg',
+      'DSC08177.jpg',
+      'DSC08284.jpg',
+      'DSC08289.jpg',
+      'DSC08408.jpg',
+      'DSC08633.jpg',
+      'DSC08636.jpg',
+      'DSC08660.jpg',
+      'DSC08684.jpg',
+      'DSC08735.jpg',
+      'DSC08749.jpg',
+      'DSC08779.jpg',
+      'DSC08862.jpg',
+      'DSC08871.jpg',
+      'DSC08894.jpg',
+      'DSC09092.jpg',
+      'DSC09147.jpg',
+      'DSC09163.jpg',
+      'DSC09180.jpg',
+      'DSC09395.jpg',
+      'DSC09438.jpg',
+      'DSC09439.jpg',
+      'DSC09448.jpg',
+      'DSC09457.jpg',
+      'DSC09472.jpg',
+      'DSC09491.jpg',
+      'DSC09532.jpg',
+      'DSC09578.jpg',
+      'DSC09643.jpg',
+      'DSC09761.jpg',
+      'DSC09767.jpg',
+      'DSC09777.jpg',
+      'DSC09803.jpg',
+      'DSC09822.jpg',
+      'DSC09840.jpg',
+      'DSC09852.jpg',
+      'DSC09874.jpg',
+      'DSC09891.jpg',
+      'DSC09899.jpg',
+      'DSC09903.jpg',
+      'DSC09905.jpg'
+    ]
+  };
+
+  const archiveAlbums = Object.entries(archiveFiles).map(([year, files]) => ({
+    year,
+    title: `${year}년 아카이브`,
+    images: files.map((file, index) => ({
+      src: image(`assets/images/archive/${year}/${file}`),
+      alt: `${year} 아카이브 이미지 ${String(index + 1).padStart(2, '0')}`
+    }))
+  }));
+
   const homeIrImages = [
     image('assets/images/home/event-studio.jpg'),
     image('assets/images/home/event-creator.jpg'),
@@ -322,6 +486,9 @@
     risingIrCompanies,
     exhibitionCompanies,
     consultationOrgs,
+    companyLogoByTitle,
+    getCompanyLogo,
+    getCompanyLogoVariant,
     homeEvents: [
       {
         category: 'FIELD VISIT',
@@ -404,20 +571,32 @@
       {
         id: 'evi-sari',
         name: 'Evi Sari',
-        role: '글로벌 LBE 부사장',
-        org: 'WildBrain CPLG',
+        role: '글로벌 LBE(공간 기반 엔터테인먼트) 부사장',
+        org: '와일드브레인 CPLG',
         track: 'LBE',
         image: image('assets/images/speakers/speaker-evi-sari.avif'),
-        bio: '글로벌 IP 기반 공간 경험, 라이선싱, LBE 사업 전략을 총괄하며 Peanuts, Teletubbies, Dr. Seuss 등 글로벌 IP의 공간형 엔터테인먼트 사업을 전개한다.'
+        bio: '글로벌 IP 기반 공간 경험, 라이선싱, LBE 사업 전략을 총괄하며 Peanuts, Teletubbies, Dr. Seuss 등 글로벌 IP의 공간형 엔터테인먼트 사업을 전개한다.',
+        intro: [
+          'WildBrain CPLG 글로벌 LBE(Location-Based Entertainment) 부사장',
+          '글로벌 IP 기반 공간 경험·라이선싱·LBE 사업 전략 총괄',
+          '아시아·태평양을 넘어 유럽·중동 등 글로벌 LBE 사업 확장 주도',
+          'Peanuts·Teletubbies·Dr. Seuss 등 글로벌 IP의 공간형 엔터테인먼트 사업 전개'
+        ]
       },
       {
         id: 'kim-young-rok',
         name: '김영록',
         role: '대표',
-        org: '넥스트챌린지',
+        org: '재단법인 넥스트챌린지',
         track: 'Startup',
-        image: image('assets/images/speakers/speaker-kim-young-rok.avif'),
-        bio: '글로벌 액셀러레이터 재단법인 넥스트챌린지 대표이자 벤처기업협회 부회장. 스타트업 액셀러레이팅과 글로벌 진출 전략을 다룬다.'
+        image: image('assets/images/speakers/speaker-kim-young-rok.png'),
+        bio: '글로벌 액셀러레이터 재단법인 넥스트챌린지 대표이자 벤처기업협회 부회장. 스타트업 액셀러레이팅과 글로벌 진출 전략을 다룬다.',
+        intro: [
+          '글로벌 액셀러레이터 재단법인 넥스트챌린지 대표 / 벤처기업협회 부회장',
+          '중국 상하이 푸단대학교 객좌교수 / 인천창조경제혁신센터 이사장 / 한양대창업대학원 lAB 교수',
+          '『변종의 늑대』·『진격의 늑대』·『미지의 늑대』 등 저서 9권, ‘늑대 시리즈’ 누적 10만 부 베스트셀러',
+          '중소벤처기업부 장관상·인천광역시장 표창'
+        ]
       },
       {
         id: 'cho-soo-hyun',
@@ -426,16 +605,29 @@
         org: 'bauer lab',
         track: 'Immersive',
         image: image('assets/images/speakers/speaker-cho-soo-hyun.jpg'),
-        bio: '공연, 전시, XR, 미디어아트 기반 이머시브 콘텐츠 기업 bauer lab 대표. 차세대 돔 LED 시어터 ORBYT 쇼룸과 글로벌 공연 콘텐츠 개발을 추진한다.'
+        bio: '공연, 전시, XR, 미디어아트 기반 이머시브 콘텐츠 기업 bauer lab 대표. 차세대 돔 LED 시어터 ORBYT 쇼룸과 글로벌 공연 콘텐츠 개발을 추진한다.',
+        intro: [
+          '공연·전시·XR·미디어아트 기반 이머시브 콘텐츠 기업 바우어랩 대표',
+          'SM엔터테인먼트·SM컬처파트너스·스마일게이트인베스트먼트·케이옥션 투자 유치',
+          '2026 차세대 돔 LED 시어터 「올빗(ORBYT) 쇼룸」 오픈',
+          '2026 글로벌 엔터테크 기업 BIGC와 글로벌 공연·콘텐츠 개발 MOU 체결',
+          '2025 CES 세라젬 브랜드관 연출·제작'
+        ]
       },
       {
         id: 'samuel-lorca',
-        name: '사무엘로르카',
+        name: '사무엘 로르카',
         role: '콘텐츠분과 조직위원',
         org: 'AI필름페스티벌',
         track: 'AI',
-        image: image('assets/images/speakers/speaker-samuel-lorca.jpg'),
-        bio: 'AI필름페스티벌 콘텐츠 분과 조직위원으로 파리 8대학과 뉴욕 브루클린대에서 영화를 전공했으며, 아트나인과 전주 영화제 프로그래머로 활동했다.'
+        image: image('assets/images/speakers/speaker-samuel-lorca.png'),
+        bio: 'AI필름페스티벌 콘텐츠 분과 조직위원으로 파리 8대학과 뉴욕 브루클린대에서 영화를 전공했으며, 아트나인과 전주 영화제 프로그래머로 활동했다.',
+        intro: [
+          '동국대학교 영화과 연출 전공',
+          'AI필름페스티벌 콘텐츠 분과 조직위원',
+          '파리 8대학, 뉴욕 브루클린대 영화 전공',
+          '아트나인, 전주 영화제 프로그래머'
+        ]
       }
     ],
     media: [
@@ -522,6 +714,7 @@
     ],
     institutionOrgs,
     companies: consultationOrgs,
+    archiveAlbums,
     reservationTimes,
     reservationBreaks,
     consultationMinutes: CONSULTATION_MINUTES,

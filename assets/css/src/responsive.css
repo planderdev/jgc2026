@@ -414,6 +414,57 @@
     font-size: var(--font-size-15);
   }
 
+  .speaker-card-more {
+    top: 12px;
+    right: 12px;
+    width: 40px;
+    height: 40px;
+    font-size: var(--font-size-22);
+  }
+
+  .speaker-modal {
+    width: min(520px, calc(100vw - 24px));
+    height: calc(100dvh - 24px);
+    max-height: calc(100dvh - 24px);
+    overflow: hidden;
+  }
+
+  @supports not (height: 100dvh) {
+    .speaker-modal {
+      height: calc(100vh - 24px);
+      max-height: calc(100vh - 24px);
+    }
+  }
+
+  .speaker-modal-panel {
+    height: 100%;
+    min-height: 0;
+    max-height: none;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .speaker-modal-media {
+    height: auto;
+    min-height: 260px;
+    flex: 0 0 min(40dvh, 330px);
+  }
+
+  .speaker-modal-content {
+    min-height: 0;
+    flex: 1 1 auto;
+    max-height: none;
+    padding: var(--space-32) var(--space-24) calc(var(--space-32) + env(safe-area-inset-bottom, 0px));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .speaker-modal-title {
+    margin-top: var(--space-24);
+    font-size: var(--font-size-32);
+  }
+
   .faq-list {
     margin-top: var(--space-32);
   }
@@ -878,7 +929,7 @@
   }
 
   .speaker-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
     gap: var(--space-16);
   }
 
@@ -890,6 +941,70 @@
 
   .program-company-thumb {
     aspect-ratio: 16 / 9;
+  }
+
+  .archive-page {
+    padding: var(--space-64) var(--space-0) var(--space-88);
+  }
+
+  .archive-gallery {
+    margin-top: var(--space-32);
+  }
+
+  .archive-tabs {
+    margin-bottom: var(--space-24);
+  }
+
+  .archive-tab {
+    min-height: 48px;
+    font-size: var(--font-size-18);
+  }
+
+  .archive-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-8);
+  }
+
+  .archive-thumb {
+    border-radius: var(--radius-xs);
+  }
+
+  .archive-thumb::after {
+    right: var(--space-8);
+    bottom: var(--space-8);
+    width: 36px;
+    height: 36px;
+    opacity: 1;
+    transform: none;
+    font-size: var(--font-size-18);
+  }
+
+  .archive-lightbox-top {
+    left: var(--space-16);
+    right: var(--space-16);
+  }
+
+  .archive-lightbox-close,
+  .archive-lightbox-nav {
+    width: 46px;
+    height: 46px;
+  }
+
+  .archive-lightbox-nav.is-prev {
+    left: var(--space-16);
+  }
+
+  .archive-lightbox-nav.is-next {
+    right: var(--space-16);
+  }
+
+  .archive-lightbox-slide {
+    padding: var(--space-80) var(--space-16) var(--space-48);
+  }
+
+  .archive-lightbox-slide img {
+    max-height: calc(100vh - 152px);
+    max-height: calc(100dvh - 152px);
   }
 
   .company-pill .program-company-thumb.is-pill-logo {
@@ -1279,12 +1394,48 @@
     font-size: var(--font-size-26);
   }
 
+  .speaker-modal-media {
+    height: auto;
+    min-height: 0;
+    flex-basis: min(38dvh, 300px);
+  }
+
+  .speaker-modal-title {
+    font-size: var(--font-size-30);
+  }
+
+  .speaker-modal-list {
+    font-size: var(--font-size-14);
+  }
+
   .home-hero {
     min-height: 620px;
   }
 
   .company-list {
     gap: var(--space-8);
+  }
+
+  .archive-grid {
+    gap: calc(var(--space-8) / 2);
+  }
+
+  .archive-lightbox-nav {
+    top: auto;
+    bottom: max(var(--space-16), env(safe-area-inset-bottom, 0px));
+    transform: none;
+  }
+
+  .archive-lightbox-nav.is-prev {
+    left: calc(50% - 58px);
+  }
+
+  .archive-lightbox-nav.is-next {
+    right: calc(50% - 58px);
+  }
+
+  .archive-lightbox-slide {
+    padding-bottom: var(--space-104);
   }
 }
 

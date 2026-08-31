@@ -12,9 +12,10 @@
  */
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { marked } from 'marked';
 
-const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SRC = path.join(root, 'docs-src');
 const OUT = path.join(root, 'docs');
 const SITE = 'JGCF 2026';
@@ -23,10 +24,10 @@ const GUIDE = 'JGCF 2026 가이드';
 const nav = JSON.parse(await fs.readFile(path.join(SRC, 'nav.json'), 'utf8'));
 
 function frontmatter(md) {
-  const m = md.match(/^---\n([\s\S]*?)\n---\n?/);
+  const m = md.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?/);
   const meta = {};
   if (m) {
-    m[1].split('\n').forEach((line) => {
+    m[1].split(/\r?\n/).forEach((line) => {
       const i = line.indexOf(':');
       if (i > 0) meta[line.slice(0, i).trim()] = line.slice(i + 1).trim().replace(/^"|"$/g, '');
     });
@@ -172,7 +173,7 @@ await fs.mkdir(path.join(OUT, 'assets'), { recursive: true });
 const searchIndex = [];
 let count = 0;
 for (const [idx, page] of pages.entries()) {
-  const md = await fs.readFile(path.join(SRC, `${page.path}.md`), 'utf8');
+  const md = (await fs.readFile(path.join(SRC, `${page.path}.md`), 'utf8')).replace(/\r\n?/g, '\n');
   const { meta, body } = frontmatter(md);
   if (!meta.title) meta.title = page.title;
   const { html, headings } = render(body);

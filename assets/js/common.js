@@ -15,6 +15,7 @@
     { label: 'About', href: 'theme.html', key: 'aboutGroup', children: aboutLinks },
     { label: 'Speakers', href: 'speakers.html', key: 'speakers' },
     { label: 'Program', href: 'program.html', key: 'program' },
+    { label: 'Archive', href: 'archive.html', key: 'archive' },
     { label: 'Business Meetup', href: 'meetup/index.html', key: 'meetup' },
     { label: 'Partners', href: 'partners.html', key: 'partners' }
   ];
@@ -197,6 +198,7 @@
                 <a href="${link('meetup/reserve.html')}">밋업 예약</a>
                 <a href="${link('meetup/confirm.html')}">예약 조회·취소</a>
                 <a href="${link('program.html')}">프로그램</a>
+                <a href="${link('archive.html')}">아카이브</a>
                 <a href="${link('partners.html')}">파트너</a>
               </div>
             </details>

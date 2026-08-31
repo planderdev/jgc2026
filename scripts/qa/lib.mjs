@@ -126,11 +126,11 @@ export function qaPhone(s = stamp()) { return `010-${s.slice(0, 4)}-${s.slice(4,
 
 export const ROUTES = [
   'index.html', 'about.html', 'speakers.html', 'program.html', 'register.html', 'register-complete.html',
-  'partners.html', 'venue.html', 'theme.html', 'privacy.html', 'copyright.html', 'legal.html',
+  'archive.html', 'partners.html', 'venue.html', 'theme.html', 'privacy.html', 'copyright.html', 'legal.html',
   'design-system.html', 'meetup/index.html', 'meetup/reserve.html', 'meetup/confirm.html', 'meetup/complete.html',
   // 영문판 (scripts/build-en.mjs 생성물)
   'en/index.html', 'en/about.html', 'en/speakers.html', 'en/program.html', 'en/register.html', 'en/register-complete.html',
-  'en/partners.html', 'en/venue.html', 'en/theme.html', 'en/privacy.html', 'en/copyright.html', 'en/legal.html',
+  'en/archive.html', 'en/partners.html', 'en/venue.html', 'en/theme.html', 'en/privacy.html', 'en/copyright.html', 'en/legal.html',
   'en/meetup/index.html', 'en/meetup/reserve.html', 'en/meetup/confirm.html', 'en/meetup/complete.html'
 ];
 

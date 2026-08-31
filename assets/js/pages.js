@@ -26,30 +26,12 @@
     'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=640&q=80'
   ];
 
-  const programLogoByTitle = {
-    '프리아이디어': 'assets/images/program/freeidea.svg',
-    '귤바티': 'assets/images/program/gyulbati.svg',
-    '인스피어': 'assets/images/program/insphere.svg',
-    '제주특별자치도경제통상진흥원': 'assets/images/program/jeju-business.svg',
-    '제주창조경제혁신센터': 'assets/images/program/jeju-creative.svg',
-    '제주지식재산센터': 'assets/images/program/jeju-intelle.svg',
-    '케이컴퍼니': 'assets/images/program/kcompany.svg',
-    '기술보증기금 부산문화콘텐츠금융센터': 'assets/images/program/kibo.svg',
-    '계란바구니': 'assets/images/program/memoreal.svg',
-    '재단법인 넥스트챌린지': 'assets/images/program/nc.svg',
-    '뉴키즈인베스트먼트': 'assets/images/program/newkid.svg',
-    '제주창조경제혁신센터 스타트업원스톱지원센터': 'assets/images/program/onestop.svg',
-    '사이': 'assets/images/program/teahouse.svg'
-  };
-
-  const programPortraitLogoTitles = new Set(['사이']);
-
   function getProgramCompanyLogo(company) {
-    return company?.logo || programLogoByTitle[company?.name] || '';
+    return data().getCompanyLogo?.(company) || company?.logo || '';
   }
 
   function getProgramLogoVariant(company) {
-    return programPortraitLogoTitles.has(company?.name) ? ' is-portrait-logo' : '';
+    return data().getCompanyLogoVariant?.(company) || '';
   }
 
   function getProgramCompanyThumbnail(index, variant) {
@@ -83,25 +65,115 @@
     return `<span class="partner-logo-symbol ${logoClass}" role="img" aria-label="${label}"></span>`;
   }
 
-  function renderSpeakerGrid() {
-    const grid = document.querySelector('[data-speaker-grid]');
-    if (!grid) return;
-    grid.innerHTML = data().speakers.map((speaker) => `
-      <article class="speaker-profile-card ${speaker.pending ? 'is-pending' : ''}" id="${escapeHtml(speaker.id)}" data-aos="fade-up">
-        ${speaker.pending
-          ? `<div class="speaker-placeholder" role="img" aria-label="연사 섭외 중"><i class="ri-user-line" aria-hidden="true"></i><span>TBA</span></div>`
-          : `<img src="${common().asset(speaker.image)}" alt="${escapeHtml(speaker.name)} portrait" loading="lazy" decoding="async">`}
-        <div class="speaker-info">
-          <span class="ui-badge">${escapeHtml(speaker.track)}</span>${speaker.pending ? ' <span class="ui-badge speaker-pending-badge">섭외 중</span>' : ''}
-          <h2 class="speaker-name">${escapeHtml(speaker.name)}</h2>
+  let lastSpeakerTrigger = null;
+
+  function speakerById(id) {
+    return (data().speakers || []).find((speaker) => speaker.id === id);
+  }
+
+  function renderSpeakerIntroList(speaker, className = 'speaker-modal-list') {
+    const introItems = Array.isArray(speaker?.intro) ? speaker.intro : [];
+    if (!introItems.length) return '';
+    return `<ul class="${className}">${introItems.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>`;
+  }
+
+  function getSpeakerModal() {
+    let modal = document.querySelector('[data-speaker-modal]');
+    if (modal) return modal;
+
+    modal = document.createElement('dialog');
+    modal.className = 'speaker-modal';
+    modal.dataset.speakerModal = '';
+    modal.setAttribute('aria-labelledby', 'speaker-modal-title');
+    document.body.appendChild(modal);
+
+    modal.addEventListener('click', (event) => {
+      if (event.target === modal || event.target.closest('[data-speaker-modal-close]')) {
+        modal.close();
+      }
+    });
+
+    modal.addEventListener('close', () => {
+      if (lastSpeakerTrigger) lastSpeakerTrigger.focus();
+      lastSpeakerTrigger = null;
+    });
+
+    return modal;
+  }
+
+  function openSpeakerModal(speaker, trigger) {
+    if (!speaker) return;
+    const modal = getSpeakerModal();
+    lastSpeakerTrigger = trigger || null;
+    const intro = renderSpeakerIntroList(speaker);
+    const media = speaker.pending
+      ? `<div class="speaker-placeholder" role="img" aria-label="연사 섭외 중"><i class="ri-user-line" aria-hidden="true"></i><span>TBA</span></div>`
+      : `<img src="${common().asset(speaker.image)}" alt="${escapeHtml(speaker.name)} portrait" decoding="async">`;
+
+    modal.innerHTML = `
+      <article class="speaker-modal-panel">
+        <div class="speaker-modal-media">${media}</div>
+        <div class="speaker-modal-content">
+          <button class="speaker-modal-close" type="button" data-speaker-modal-close aria-label="닫기">
+            <span class="speaker-modal-close-mark" aria-hidden="true"></span>
+          </button>
+          <span class="ui-badge">${escapeHtml(speaker.track)}</span>
+          <h2 class="speaker-modal-title" id="speaker-modal-title">${escapeHtml(speaker.name)}</h2>
           <p class="speaker-role">
             <span>${escapeHtml(speaker.role)}</span>
             <span aria-hidden="true">|</span>
             <span>${escapeHtml(speaker.org)}</span>
           </p>
+          ${speaker.bio ? `<p class="speaker-modal-bio">${escapeHtml(speaker.bio)}</p>` : ''}
+          ${intro ? `<div class="speaker-modal-section"><h3>주요 약력</h3>${intro}</div>` : ''}
         </div>
       </article>
-    `).join('');
+    `;
+
+    modal.showModal();
+    modal.querySelector('[data-speaker-modal-close]')?.focus();
+  }
+
+  function renderSpeakerGrid() {
+    const grid = document.querySelector('[data-speaker-grid]');
+    if (!grid) return;
+    grid.innerHTML = data().speakers.map((speaker) => {
+      const cardClass = ['speaker-profile-card', speaker.pending ? 'is-pending' : '']
+        .filter(Boolean)
+        .join(' ');
+      return `
+        <article class="${cardClass}" id="${escapeHtml(speaker.id)}" data-speaker-id="${escapeHtml(speaker.id)}" data-aos="fade-up" tabindex="0" role="button" aria-haspopup="dialog" aria-label="${escapeHtml(speaker.name)} 약력 보기">
+          <span class="speaker-card-more" aria-hidden="true"><i class="ri-add-line" aria-hidden="true"></i></span>
+          ${speaker.pending
+            ? `<div class="speaker-placeholder" role="img" aria-label="연사 섭외 중"><i class="ri-user-line" aria-hidden="true"></i><span>TBA</span></div>`
+            : `<img src="${common().asset(speaker.image)}" alt="${escapeHtml(speaker.name)} portrait" loading="lazy" decoding="async">`}
+          <div class="speaker-info">
+            <span class="ui-badge">${escapeHtml(speaker.track)}</span>${speaker.pending ? ' <span class="ui-badge speaker-pending-badge">섭외 중</span>' : ''}
+            <h2 class="speaker-name">${escapeHtml(speaker.name)}</h2>
+            <p class="speaker-role">
+              <span>${escapeHtml(speaker.role)}</span>
+              <span aria-hidden="true">|</span>
+              <span>${escapeHtml(speaker.org)}</span>
+            </p>
+          </div>
+        </article>
+      `;
+    }).join('');
+
+    if (grid.dataset.speakerModalBound) return;
+    grid.dataset.speakerModalBound = 'true';
+    grid.addEventListener('click', (event) => {
+      const card = event.target.closest('[data-speaker-id]');
+      if (!card) return;
+      openSpeakerModal(speakerById(card.dataset.speakerId), card);
+    });
+    grid.addEventListener('keydown', (event) => {
+      if (event.key !== 'Enter' && event.key !== ' ') return;
+      const card = event.target.closest('[data-speaker-id]');
+      if (!card) return;
+      event.preventDefault();
+      openSpeakerModal(speakerById(card.dataset.speakerId), card);
+    });
   }
 
   function renderSchedule() {
@@ -253,6 +325,205 @@
     }
   }
 
+  let archiveSwiper = null;
+  let lastArchiveTrigger = null;
+  const DEFAULT_ARCHIVE_YEAR = '2025';
+
+  function archiveAlbumByYear(year) {
+    return (data().archiveAlbums || []).find((album) => album.year === String(year));
+  }
+
+  function setArchivePageYear(root, year) {
+    const buttons = Array.from(root.querySelectorAll('[data-archive-tab]'));
+    const panels = Array.from(root.querySelectorAll('[data-archive-panel]'));
+
+    buttons.forEach((button) => {
+      const active = button.dataset.archiveTab === year;
+      button.classList.toggle('is-active', active);
+      button.setAttribute('aria-selected', String(active));
+      button.tabIndex = active ? 0 : -1;
+    });
+
+    panels.forEach((panel) => {
+      const active = panel.dataset.archivePanel === year;
+      panel.hidden = !active;
+      panel.classList.toggle('is-active', active);
+    });
+  }
+
+  function updateArchiveCounter(modal, swiper) {
+    const count = modal.querySelector('[data-archive-count]');
+    if (!count || !swiper) return;
+    const total = Number(swiper.slides?.length || 0);
+    const current = Number((swiper.realIndex ?? swiper.activeIndex) || 0) + 1;
+    count.textContent = `${current} / ${total}`;
+  }
+
+  function getArchiveLightbox() {
+    let modal = document.querySelector('[data-archive-lightbox]');
+    if (modal) return modal;
+
+    modal = document.createElement('dialog');
+    modal.className = 'archive-lightbox';
+    modal.dataset.archiveLightbox = '';
+    modal.setAttribute('aria-label', '아카이브 이미지 보기');
+    document.body.appendChild(modal);
+
+    modal.addEventListener('click', (event) => {
+      if (event.target === modal || event.target.closest('[data-archive-close]')) {
+        modal.close();
+      }
+    });
+
+    modal.addEventListener('keydown', (event) => {
+      if (!archiveSwiper) return;
+      if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        archiveSwiper.slidePrev();
+      }
+      if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        archiveSwiper.slideNext();
+      }
+    });
+
+    modal.addEventListener('close', () => {
+      document.documentElement.classList.remove('no-scroll');
+      document.body.classList.remove('no-scroll');
+      if (archiveSwiper) {
+        archiveSwiper.destroy(true, true);
+        archiveSwiper = null;
+      }
+      if (lastArchiveTrigger) lastArchiveTrigger.focus();
+      lastArchiveTrigger = null;
+    });
+
+    return modal;
+  }
+
+  function openArchiveLightbox(album, index, trigger) {
+    if (!album || !album.images?.length) return;
+    const modal = getArchiveLightbox();
+    const slides = album.images.map((item, itemIndex) => `
+      <div class="swiper-slide">
+        <figure class="archive-lightbox-slide">
+          <img src="${escapeHtml(common().asset(item.src))}" alt="${escapeHtml(item.alt)}" loading="lazy" decoding="async" fetchpriority="low">
+          <figcaption>${escapeHtml(album.year)} ${String(itemIndex + 1).padStart(2, '0')} / ${album.images.length}</figcaption>
+        </figure>
+      </div>
+    `).join('');
+
+    lastArchiveTrigger = trigger || null;
+    modal.innerHTML = `
+      <div class="archive-lightbox-shell">
+        <div class="archive-lightbox-top">
+          <span class="archive-lightbox-count" data-archive-count>1 / ${album.images.length}</span>
+          <button class="archive-lightbox-close" type="button" data-archive-close aria-label="아카이브 닫기">
+            <span class="speaker-modal-close-mark" aria-hidden="true"></span>
+          </button>
+        </div>
+        <button class="archive-lightbox-nav is-prev" type="button" data-archive-prev aria-label="이전 이미지">
+          <i class="ri-arrow-left-line" aria-hidden="true"></i>
+        </button>
+        <div class="swiper archive-lightbox-swiper">
+          <div class="swiper-wrapper">${slides}</div>
+        </div>
+        <button class="archive-lightbox-nav is-next" type="button" data-archive-next aria-label="다음 이미지">
+          <i class="ri-arrow-right-line" aria-hidden="true"></i>
+        </button>
+      </div>
+    `;
+
+    modal.showModal();
+    document.documentElement.classList.add('no-scroll');
+    document.body.classList.add('no-scroll');
+
+    if (typeof window.Swiper === 'function') {
+      archiveSwiper = new window.Swiper(modal.querySelector('.archive-lightbox-swiper'), {
+        initialSlide: index,
+        loop: album.images.length > 1,
+        speed: 420,
+        keyboard: {
+          enabled: true
+        },
+        navigation: {
+          prevEl: modal.querySelector('[data-archive-prev]'),
+          nextEl: modal.querySelector('[data-archive-next]')
+        },
+        on: {
+          init() { updateArchiveCounter(modal, this); },
+          slideChange() { updateArchiveCounter(modal, this); }
+        }
+      });
+    } else {
+      modal.querySelectorAll('[data-archive-prev], [data-archive-next]').forEach((button) => { button.hidden = true; });
+      updateArchiveCounter(modal, { slides: album.images, activeIndex: index, realIndex: index });
+    }
+
+    modal.querySelector('[data-archive-close]')?.focus();
+  }
+
+  function renderArchivePage() {
+    const root = document.querySelector('[data-archive-gallery]');
+    if (!root) return;
+    const albums = data().archiveAlbums || [];
+    if (!albums.length) return;
+
+    const requestedYear = archiveAlbumByYear(window.location.hash.replace('#', ''))?.year;
+    const defaultYear = archiveAlbumByYear(DEFAULT_ARCHIVE_YEAR)?.year || albums[0].year;
+    const activeYear = requestedYear || defaultYear;
+    root.innerHTML = `
+      <div class="archive-tabs" role="tablist" aria-label="아카이브 연도">
+        ${albums.map((album) => `
+          <button class="archive-tab ${album.year === activeYear ? 'is-active' : ''}" type="button" role="tab" id="archive-tab-${escapeHtml(album.year)}" aria-selected="${album.year === activeYear}" aria-controls="archive-panel-${escapeHtml(album.year)}" tabindex="${album.year === activeYear ? '0' : '-1'}" data-archive-tab="${escapeHtml(album.year)}">
+            ${escapeHtml(album.year)}
+            <span>${album.images.length}</span>
+          </button>
+        `).join('')}
+      </div>
+      <div class="archive-panels">
+        ${albums.map((album) => `
+          <section class="archive-panel ${album.year === activeYear ? 'is-active' : ''}" id="archive-panel-${escapeHtml(album.year)}" role="tabpanel" aria-labelledby="archive-tab-${escapeHtml(album.year)}" data-archive-panel="${escapeHtml(album.year)}" ${album.year === activeYear ? '' : 'hidden'}>
+            <div class="archive-grid">
+              ${album.images.map((item, index) => `
+                <button class="archive-thumb" type="button" data-archive-year="${escapeHtml(album.year)}" data-archive-index="${index}" aria-label="${escapeHtml(item.alt)} 보기">
+                  <img src="${escapeHtml(common().asset(item.src))}" alt="${escapeHtml(item.alt)}" loading="lazy" decoding="async" fetchpriority="low">
+                </button>
+              `).join('')}
+            </div>
+          </section>
+        `).join('')}
+      </div>
+    `;
+
+    root.addEventListener('click', (event) => {
+      const tab = event.target.closest('[data-archive-tab]');
+      if (tab) {
+        setArchivePageYear(root, tab.dataset.archiveTab);
+        history.replaceState(null, '', `#${tab.dataset.archiveTab}`);
+        return;
+      }
+
+      const thumb = event.target.closest('[data-archive-year]');
+      if (!thumb) return;
+      const album = archiveAlbumByYear(thumb.dataset.archiveYear);
+      openArchiveLightbox(album, Number(thumb.dataset.archiveIndex || 0), thumb);
+    });
+
+    root.addEventListener('keydown', (event) => {
+      if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+      const current = event.target.closest('[data-archive-tab]');
+      if (!current) return;
+      event.preventDefault();
+      const buttons = Array.from(root.querySelectorAll('[data-archive-tab]'));
+      const dir = event.key === 'ArrowRight' ? 1 : -1;
+      const next = buttons[(buttons.indexOf(current) + dir + buttons.length) % buttons.length];
+      setArchivePageYear(root, next.dataset.archiveTab);
+      next.focus();
+      history.replaceState(null, '', `#${next.dataset.archiveTab}`);
+    });
+  }
+
   function renderPartners() {
     const mount = document.querySelector('[data-partners]');
     if (!mount) return;
@@ -274,6 +545,7 @@
     renderSpeakerGrid();
     renderSchedule();
     renderProgramCompanies();
+    renderArchivePage();
     renderPartners();
   });
 })();

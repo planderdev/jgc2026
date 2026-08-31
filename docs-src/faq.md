@@ -37,4 +37,4 @@ description: 운영 중 가장 자주 나오는 질문과 짧은 답입니다. �
 
 ## 첨부가 안 올라간대요
 
-PDF, 20MB 이하만 됩니다. 화면이 이유를 칸 아래에 표시합니다. → [문제 상황 대응](/docs/secretariat/troubleshooting#첨부파일이-안-올라간대요)
+PDF, 3페이지 이내, 20MB 이하만 됩니다. 화면이 이유를 칸 아래에 표시합니다. → [문제 상황 대응](/docs/secretariat/troubleshooting#첨부파일이-안-올라간대요)

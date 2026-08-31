@@ -19,22 +19,61 @@
       .replace(/'/g, '&#039;');
   }
 
-  // 첨부 상한. 서버 버킷(file_size_limit)과 같은 값이어야 한다.
+  // 첨부 상한. 용량은 서버 버킷(file_size_limit)과 같은 값이어야 한다.
+  const ATTACHMENT_MAX_PAGES = 3;
   const ATTACHMENT_MAX_MB = 20;
+
+  async function countPdfPages(file) {
+    if (!file) return 0;
+    try {
+      const text = await file.text();
+      return (text.match(/\/Type\s*\/Page\b/g) || []).length;
+    } catch (error) {
+      console.warn('PDF 페이지 수를 읽지 못했습니다.', error);
+      return 0;
+    }
+  }
 
   function companyById(id) {
     return data().companies.find((company) => company.id === id);
   }
 
+  function getCompanyLogo(company) {
+    return data().getCompanyLogo?.(company) || company?.logo || '';
+  }
+
+  function getCompanyLogoVariant(company) {
+    return data().getCompanyLogoVariant?.(company) || '';
+  }
+
+  function renderCompanyLogo(company, className = '', decorative = false) {
+    const logo = getCompanyLogo(company);
+    if (!logo) return '';
+    const logoClass = `program-company-thumb is-logo${getCompanyLogoVariant(company)}${className ? ` ${className}` : ''}`;
+    const hiddenAttr = decorative ? ' aria-hidden="true"' : '';
+    const alt = decorative ? '' : `${company.name} 로고`;
+    return `
+      <div class="${logoClass}">
+        <img src="${escapeHtml(common().asset(logo))}" alt="${escapeHtml(alt)}"${hiddenAttr} decoding="async">
+      </div>
+    `;
+  }
+
   function renderCompanyList() {
     const mount = document.querySelector('[data-company-list]');
     if (!mount) return;
-    mount.innerHTML = data().companies.map((company) => `
-      <div class="company-pill">
-        <strong>${escapeHtml(company.name)}</strong>
-        <span>${escapeHtml(company.field)}</span>
-      </div>
-    `).join('');
+    mount.innerHTML = data().companies.map((company) => {
+      const logo = getCompanyLogo(company);
+      return `
+        <div class="company-pill ${logo ? 'has-logo' : ''}">
+          ${renderCompanyLogo(company, 'is-pill-logo')}
+          <div class="company-pill-copy">
+            <strong>${escapeHtml(company.name)}</strong>
+            <span>${escapeHtml(company.field)}</span>
+          </div>
+        </div>
+      `;
+    }).join('');
   }
 
   function renderClosedNotice(form) {
@@ -96,18 +135,22 @@
       console.warn('프리필 정보를 읽지 못했습니다.', error);
     }
 
-    companyMount.innerHTML = data().companies.map((company) => `
-      <label class="choice-card">
-        <input type="radio" name="companyId" value="${escapeHtml(company.id)}">
-        <span>
+    companyMount.innerHTML = data().companies.map((company) => {
+      const logo = getCompanyLogo(company);
+      return `
+        <label class="choice-card ${logo ? 'has-logo' : ''}">
+          <input type="radio" name="companyId" value="${escapeHtml(company.id)}">
           <span>
-            ${escapeHtml(company.name)}<br>
-            <small>${escapeHtml(company.field)}</small>
+            ${renderCompanyLogo(company, 'is-choice-logo', true)}
+            <span class="choice-card-copy">
+              ${escapeHtml(company.name)}<br>
+              <small>${escapeHtml(company.field)}</small>
+            </span>
+            <i class="ri-arrow-right-line" aria-hidden="true"></i>
           </span>
-          <i class="ri-arrow-right-line" aria-hidden="true"></i>
-        </span>
-      </label>
-    `).join('');
+        </label>
+      `;
+    }).join('');
 
     function drawTimes(taken) {
       const breaks = data().reservationBreaks || {};
@@ -232,6 +275,13 @@
           common().toast(`첨부파일은 ${ATTACHMENT_MAX_MB}MB 이하여야 합니다.`);
           return false;
         }
+        const pageCount = await countPdfPages(file);
+        if (pageCount > ATTACHMENT_MAX_PAGES) {
+          common().markInvalid(form, 'attachment', `회사 소개서는 ${ATTACHMENT_MAX_PAGES}페이지 이내 PDF만 첨부할 수 있습니다. 현재 ${pageCount}페이지입니다.`);
+          common().focusField(form, 'attachment');
+          common().toast(`회사 소개서는 ${ATTACHMENT_MAX_PAGES}페이지 이내로 줄여서 첨부해 주세요.`);
+          return false;
+        }
         if (!state.privacy) {
           common().markInvalid(form, 'privacy', '');
           common().focusField(form, 'privacy');
@@ -299,7 +349,7 @@
         if (!upload.ok) {
           common().toast(upload.reason === 'network'
             ? service().messageFor('network')
-            : `첨부파일을 올리지 못했습니다. PDF 형식과 ${ATTACHMENT_MAX_MB}MB 이하인지 확인해 주세요.`);
+            : `첨부파일을 올리지 못했습니다. PDF 형식, ${ATTACHMENT_MAX_PAGES}페이지 이내, ${ATTACHMENT_MAX_MB}MB 이하인지 확인해 주세요.`);
           return;
         }
 

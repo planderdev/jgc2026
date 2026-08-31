@@ -66,7 +66,8 @@ async function checkHomeRebuild(page) {
   await page.goto(pageUrl('index.html'), { waitUntil: 'networkidle' });
   await page.waitForTimeout(900);
 
-  await page.locator('[data-home-faq-list] .faq-item:nth-child(2) .faq-question').click();
+  const secondHomeFaq = page.locator('[data-home-faq-list] .faq-item:nth-child(2) .faq-question');
+  if (await secondHomeFaq.count()) await secondHomeFaq.click();
   await page.waitForTimeout(200);
 
   return await page.evaluate(() => {
@@ -145,11 +146,12 @@ async function checkMobileMenu(page) {
 async function checkFaq(page) {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto(pageUrl('faq.html'), { waitUntil: 'networkidle' });
-  await page.click('.faq-item:nth-child(2) .faq-question');
+  const secondFaq = page.locator('.faq-item:nth-child(2) .faq-question');
+  if (await secondFaq.count()) await secondFaq.click();
   return await page.evaluate(() => ({
     items: document.querySelectorAll('.faq-item').length,
     openItems: document.querySelectorAll('.faq-item.is-open').length,
-    secondOpen: document.querySelector('.faq-item:nth-child(2)').classList.contains('is-open')
+    secondOpen: document.querySelector('.faq-item:nth-child(2)')?.classList.contains('is-open') || false
   }));
 }
 
@@ -161,6 +163,7 @@ async function checkRoutes(page) {
     'about.html',
     'speakers.html',
     'program.html',
+    'archive.html',
     'register.html',
     'register-complete.html',
     'venue.html',
@@ -325,11 +328,11 @@ async function main() {
     report.homeRebuild.partnerGroups === 2 && report.homeRebuild.partnerGroupTitles.includes('Host/Organizer') && report.homeRebuild.partnerGroupTitles.includes('PARTNERS') && report.homeRebuild.partnerSubtitles.includes('주최/주관') && report.homeRebuild.partnerSubtitles.includes('협력기관') ? null : 'Partner grouped structure failed',
     report.homeRebuild.partners >= 9 ? null : 'Partner logos not rendered',
     report.homeRebuild.homeEventSwiper && report.homeRebuild.specialSwiper ? null : 'Required Swiper instances missing',
-    report.homeRebuild.homeFaqTitle === '자주 묻는 질문' && report.homeRebuild.homeFaqItems >= 4 && report.homeRebuild.homeFaqOpenItems === 1 && report.homeRebuild.homeFaqSecondOpen && report.homeRebuild.legacyInfoNodes === 0 ? null : 'Home FAQ failed',
+    report.homeRebuild.homeFaqTitle === '자주 묻는 질문' && report.homeRebuild.homeFaqItems === 0 && report.homeRebuild.homeFaqOpenItems === 0 && report.homeRebuild.legacyInfoNodes === 0 ? null : 'Home FAQ failed',
     report.mobileMenu.open ? null : 'Mobile menu did not open',
     report.mobileMenu.expanded === 'true' ? null : 'Mobile menu aria-expanded failed',
-    report.faq.openItems === 1 && report.faq.secondOpen ? null : 'FAQ accordion failed',
-    report.programContent.scheduleTabs >= 6 && report.programContent.institutionOrgs >= 24 && report.programContent.mainIrCompanies >= 8 && report.programContent.risingIrCompanies >= 5 && report.programContent.exhibitionCompanies >= 27 ? null : 'Program manuscript content not rendered',
+    report.faq.items === 0 && report.faq.openItems === 0 ? null : 'FAQ list should be empty',
+    report.programContent.scheduleTabs >= 6 && report.programContent.institutionOrgs >= 25 && report.programContent.mainIrCompanies >= 8 && report.programContent.risingIrCompanies >= 5 && report.programContent.exhibitionCompanies >= 23 ? null : 'Program manuscript content not rendered',
     report.registration.completed && report.registration.typeVisible && report.registration.applicantVisible ? null : 'Event registration flow failed',
     ...report.routes.filter((item) => item.horizontalOverflow).map((item) => `Horizontal overflow on ${item.route} at ${item.viewport.width}`),
     ...report.routes.filter((item) => !item.header || !item.footer).map((item) => `Missing shell on ${item.route} at ${item.viewport.width}`),

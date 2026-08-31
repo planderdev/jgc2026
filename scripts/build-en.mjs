@@ -11,8 +11,10 @@
  */
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const SITE_ORIGIN = 'https://jgc2026.vercel.app';
 
 // 페이지별 영문 제목·설명. 여기 없는 페이지는 만들지 않는다.
 const PAGES = {
@@ -22,14 +24,15 @@ const PAGES = {
   'venue.html': ['Venue | JGCF 2026', 'Be IN;, 1F, Jeju Contents Agency, 82 Sinsan-ro, Jeju-si. Address, phone and public transport.'],
   'speakers.html': ['Speakers | JGCF 2026', 'Forum and session speakers of JGCF 2026.'],
   'program.html': ['Program | JGCF 2026', 'Full schedule for Sep 16, 2026: site visit, Rising IR, opening, Global Forum, Main IR and MOU signing.'],
+  'archive.html': ['Archive | JGCF 2026', 'Browse photos from the 2024 and 2025 Jeju Global Content Forum archive.'],
   'partners.html': ['Partners | JGCF 2026', 'Hosts, organizers and partner institutions of JGCF 2026.'],
   'register.html': ['Register | JGCF 2026', 'Register for JGCF 2026 as a company, general participant or student. Instant confirmation with a registration number.'],
   'register-complete.html': ['Registration complete | JGCF 2026', 'Your JGCF 2026 registration is complete.'],
   'privacy.html': ['Privacy Policy | JGCF 2026', 'How the JGCF 2026 secretariat collects, uses and protects personal data.'],
   'copyright.html': ['Copyright Policy | JGCF 2026', 'Copyright terms for content on the JGCF 2026 website.'],
   'legal.html': ['Legal Notice | JGCF 2026', 'Legal notice for the JGCF 2026 website.'],
-  'meetup/index.html': ['Business Meetup | JGCF 2026', 'Book a 30-minute 1:1 consultation with one of 20 ACs, VCs and institutions at JGCF 2026.'],
-  'meetup/reserve.html': ['Book a Meetup | JGCF 2026', 'Choose an institution and time slot to book your Business Meetup.'],
+  'meetup/index.html': ['Business Meetup | JGCF 2026', 'Book a 30-minute 1:1 consultation with one of 22 ACs, VCs and institutions at JGCF 2026.'],
+  'meetup/reserve.html': ['Book a Meetup | JGCF 2026', 'Choose one of 22 institutions and a time slot to book your Business Meetup.'],
   'meetup/confirm.html': ['Check / Cancel Booking | JGCF 2026', 'Check or cancel your Business Meetup booking with your booking number and phone number.'],
   'meetup/complete.html': ['Booking complete | JGCF 2026', 'Your Business Meetup booking is complete.']
 };
@@ -58,6 +61,11 @@ async function build() {
   for (const [rel, [title, description]] of Object.entries(PAGES)) {
     const src = await fs.readFile(path.join(root, rel), 'utf8');
     const depth = rel.split('/').length - 1;
+    const cleanRoute = rel
+      .replace(/(^|\/)index\.html$/, '$1')
+      .replace(/\.html$/, '')
+      .replace(/\/$/, '');
+    const enUrl = `${SITE_ORIGIN}/en${cleanRoute ? `/${cleanRoute}` : ''}`;
     let out = src;
 
     out = out.replace(/<html lang="ko">/, '<html lang="en">');
@@ -66,6 +74,8 @@ async function build() {
     out = out.replace(/(<meta property="og:title" content=")[^"]*(")/, `$1${title}$2`);
     out = out.replace(/(<meta property="og:description" content=")[^"]*(")/, `$1${description}$2`);
     out = out.replace(/(<meta property="og:locale" content=")[^"]*(")/, '$1en_US$2');
+    out = out.replace(/(<link rel="canonical" href=")[^"]*(")/, `$1${enUrl}$2`);
+    out = out.replace(/(<meta property="og:url" content=")[^"]*(")/, `$1${enUrl}$2`);
 
     // href / src / srcset 절대 경로화
     out = out.replace(/\b(href|src)="([^"]*)"/g, (m, attr, value) => {

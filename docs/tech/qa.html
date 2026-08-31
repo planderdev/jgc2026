@@ -40,7 +40,7 @@
         <h1>회귀 테스트·자동 점검</h1>
         <p class="lede">로컬 회귀 스위트 4종과 GitHub Actions 자동 점검의 범위입니다.</p>
         <h2 id="스위트"><a class="anchor" href="#스위트" aria-hidden="true">#</a>스위트</h2>
-<div class="table-wrap"><table><thead><tr><th>스위트</th><th>검사</th><th>실행</th></tr></thead><tbody><tr><td><strong>render</strong></td><td>35페이지(ko+en) × 3뷰포트: JS 에러·실패 요청·가로 오버플로·h1·메타/OG·접근성 기본</td><td>자동 + 수동</td></tr><tr><td><strong>ui</strong></td><td>과거에 실제로 깨졌던 지점 18개: clean URL, 헤더 중앙, About 클릭, 홈 순서·연사 카드, 푸터, /meetup 링크, 모바일 메뉴 키보드, 404·robots·sitemap, <strong>EN 한글 잔존·언어 스위치·hreflang</strong></td><td>자동 + 수동</td></tr><tr><td><strong>flows</strong></td><td>실제 DB에 예약·참가신청을 만들어 생성→마감 반영→중복 차단→조회→취소→재개방</td><td><strong>수동만</strong></td></tr><tr><td><strong>security</strong></td><td>공개 키로 테이블·뷰·버킷 직접 공격 → 거부 확인, 목록 밖 시간·익명 출석 호출 거부</td><td>자동 + 수동</td></tr></tbody></table></div>
+<div class="table-wrap"><table><thead><tr><th>스위트</th><th>검사</th><th>실행</th></tr></thead><tbody><tr><td><strong>render</strong></td><td>35페이지(ko+en) × 3뷰포트: JS 에러·실패 요청·가로 오버플로·h1·메타/OG·접근성 기본</td><td>자동 + 수동</td></tr><tr><td><strong>ui</strong></td><td>과거에 실제로 깨졌던 지점 18개: clean URL, 헤더 중앙, About 클릭, 홈 순서·연사 카드, 푸터, /meetup 링크, 모바일 메뉴 키보드, 404·robots·sitemap, <strong>EN 한글 잔존·언어 스위치·hreflang</strong></td><td>자동 + 수동</td></tr><tr><td><strong>flows</strong></td><td>실제 DB에 예약·참가신청을 만들어 생성→마감 반영→중복 차단→조회→취소→재개방</td><td><strong>수동만</strong></td></tr><tr><td><strong>security</strong></td><td>공개 키로 테이블·뷰·버킷 직접 공격 → 거부 확인, 목록 밖 시간·익명 출석 호출·익명 첨부 삭제 거부</td><td>자동 + 수동</td></tr></tbody></table></div>
 <pre><code>npm run qa                      # 로컬(정적 서버 4199, cleanUrls 에뮬레이션)
 npm run qa -- --only=render,ui  # 일부만
 npm run qa:live                 # 프로덕션 대상
