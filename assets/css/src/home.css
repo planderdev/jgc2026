@@ -700,6 +700,10 @@
 }
 
 /* ── 행사 일정 요약 ─────────────────────────────────────────── */
+.home-schedule {
+  padding-bottom: var(--space-120);
+}
+
 .home-schedule .main-inner {
   padding-top: var(--space-48);
 }

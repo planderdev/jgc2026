@@ -47,19 +47,14 @@
 </li></ul>
 <h2 id="자동-점검과의-관계"><a class="anchor" href="#자동-점검과의-관계" aria-hidden="true">#</a>자동 점검과의 관계</h2>
 <p>GitHub Actions 자동 점검이 ✗여도 <strong>배포는 막히지 않습니다.</strong> 막고 싶으면 Vercel의 Deployment Protection 또는 Ignored Build Step에 연결합니다.</p>
-<h2 id="정식-도메인-연결-2026jejugcf-com"><a class="anchor" href="#정식-도메인-연결-2026jejugcf-com" aria-hidden="true">#</a>정식 도메인 연결 (2026jejugcf.com)</h2>
-<p>도메인은 Vercel 프로젝트에 등록만 되어 있고 구매·DNS는 보류 중입니다.</p>
-<ol class="steps"><li><p><strong>도메인 구매</strong>등록업체에서 <code>2026jejugcf.com</code> 구매</p>
-</li><li><p><strong>DNS 설정</strong>A 레코드 <code>@</code> → <code>76.76.21.21</code>, CNAME <code>www</code> → <code>cname.vercel-dns.com</code></p>
-</li><li><p><strong>Vercel에서 확인</strong>Project → Settings → Domains에서 Valid 표시 확인(전파 최대 수 시간)</p>
-</li><li><p><strong>사이트 주소 갱신</strong>아래 두 명령을 실행하고 커밋·푸시</p>
-</li></ol>
-<pre><code>node scripts/set-share-urls.mjs https://2026jejugcf.com
-node scripts/build-sitemap.mjs https://2026jejugcf.com
+<h2 id="정식-도메인-2026jejugcf-com"><a class="anchor" href="#정식-도메인-2026jejugcf-com" aria-hidden="true">#</a>정식 도메인 (2026jejugcf.com)</h2>
+<p><strong>2026-08-26에 연결이 끝났습니다.</strong> 현재 구성은 이렇습니다.</p>
+<div class="table-wrap"><table><thead><tr><th>항목</th><th>값</th></tr></thead><tbody><tr><td>등록업체</td><td>가비아</td></tr><tr><td>네임서버</td><td><code>ns1.vercel-dns.com</code> / <code>ns2.vercel-dns.com</code> (DNS는 Vercel이 관리)</td></tr><tr><td>www</td><td><code>www.2026jejugcf.com</code> → 정식 주소로 308 리다이렉트 (<code>vercel.json</code>)</td></tr><tr><td>예전 주소</td><td><code>jgc2026.vercel.app</code>도 계속 열림. 안내에는 정식 도메인만 사용</td></tr><tr><td>메일 발송 인증</td><td>Resend↔Vercel 연동으로 SPF·DKIM 레코드 자동 등록, 도메인 Verified</td></tr></tbody></table></div>
+<p>DNS 레코드를 추가할 일이 생기면(예: 다른 서비스 인증) 가비아가 아니라 <strong>Vercel</strong>에서 합니다 — 대시보드 Domains → 2026jejugcf.com, 또는 <code>vercel dns add</code>.</p>
+<div class="callout warn"><p class="callout-title">도메인을 옮기거나 바꿀 때</p><p>사이트 주소가 바뀌면 아래 두 명령으로 전 페이지의 OG·canonical·sitemap을 갱신하고 커밋합니다. 가이드·계정 안내 문구도 함께 봐야 합니다.</p>
+<pre><code>node scripts/set-share-urls.mjs https://새주소
+node scripts/build-sitemap.mjs https://새주소
 </code></pre>
-<ol class="steps" start="5"><li><p><strong>문서·문구 갱신</strong>이 가이드, 계정 안내 문구, 관리자 QR은 사이트 origin을 쓰므로 자동 반영</p>
-</li></ol>
-<div class="callout info"><p class="callout-title">도메인이 연결되면 가능해지는 것</p><p>계정 도메인 메일이 수신되므로 비밀번호 재설정 메일이 동작하고, 예약 확인 메일·취소 시 기관 알림(발신 도메인 인증 필요)을 구현할 수 있습니다.</p>
 </div>
 
 <h2 id="유지보수-스크립트"><a class="anchor" href="#유지보수-스크립트" aria-hidden="true">#</a>유지보수 스크립트</h2>
@@ -70,7 +65,7 @@ node scripts/build-sitemap.mjs https://2026jejugcf.com
     <a class="next" href="/docs/tech/i18n"><small>다음</small><span>영문판</span></a>
   </nav>
       </main>
-      <aside class="toc"><p>On this page</p><ul><li class="d2"><a href="#배포-흐름">배포 흐름</a></li><li class="d2"><a href="#자동-점검과의-관계">자동 점검과의 관계</a></li><li class="d2"><a href="#정식-도메인-연결-2026jejugcf-com">정식 도메인 연결 (2026jejugcf.com)</a></li><li class="d2"><a href="#유지보수-스크립트">유지보수 스크립트</a></li></ul></aside>
+      <aside class="toc"><p>On this page</p><ul><li class="d2"><a href="#배포-흐름">배포 흐름</a></li><li class="d2"><a href="#자동-점검과의-관계">자동 점검과의 관계</a></li><li class="d2"><a href="#정식-도메인-2026jejugcf-com">정식 도메인 (2026jejugcf.com)</a></li><li class="d2"><a href="#유지보수-스크립트">유지보수 스크립트</a></li></ul></aside>
     </div>
   </div>
 </div>

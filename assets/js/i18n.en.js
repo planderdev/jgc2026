@@ -24,6 +24,8 @@
     '예약 조회·취소': 'Check / Cancel Booking',
     '예약 조회/취소': 'Check / Cancel Booking',
     '제주글로벌콘텐츠포럼 및 비즈니스 네트워킹 운영사무국': 'Jeju Global Content Forum & Business Networking Secretariat',
+    '비인공연장 등 제주콘텐츠진흥원 일원': 'BeIN; Theater and around Jeju Contents Agency',
+    '2026. 9. 16. Wed 10:00-18:00 / 비인공연장 등 제주콘텐츠진흥원 일원': 'Wed, Sep 16, 2026, 10:00–18:00 / BeIN; Theater and around Jeju Contents Agency',
     '제주특별자치도 제주시 신산로 82 제주콘텐츠진흥원 내 1층 Be IN; (비인)': 'Be IN;, 1F, Jeju Contents Agency, 82 Sinsan-ro, Jeju-si, Jeju Special Self-Governing Province',
     '제주특별자치도 제주시 신산로 82 제주콘텐츠진흥원 내 1층 Be IN;(비인)': 'Be IN;, 1F, Jeju Contents Agency, 82 Sinsan-ro, Jeju-si, Jeju Special Self-Governing Province',
     '제주특별자치도 제주시 신산로 82 제주콘텐츠진흥원 내 1층': '1F, Jeju Contents Agency, 82 Sinsan-ro, Jeju-si, Jeju',

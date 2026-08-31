@@ -15,24 +15,27 @@ group: tech
 
 GitHub Actions 자동 점검이 ✗여도 **배포는 막히지 않습니다.** 막고 싶으면 Vercel의 Deployment Protection 또는 Ignored Build Step에 연결합니다.
 
-## 정식 도메인 연결 (2026jejugcf.com)
+## 정식 도메인 (2026jejugcf.com)
 
-도메인은 Vercel 프로젝트에 등록만 되어 있고 구매·DNS는 보류 중입니다.
+**2026-08-26에 연결이 끝났습니다.** 현재 구성은 이렇습니다.
 
-1. **도메인 구매** — 등록업체에서 `2026jejugcf.com` 구매
-2. **DNS 설정** — A 레코드 `@` → `76.76.21.21`, CNAME `www` → `cname.vercel-dns.com`
-3. **Vercel에서 확인** — Project → Settings → Domains에서 Valid 표시 확인(전파 최대 수 시간)
-4. **사이트 주소 갱신** — 아래 두 명령을 실행하고 커밋·푸시
+| 항목 | 값 |
+|---|---|
+| 등록업체 | 가비아 |
+| 네임서버 | `ns1.vercel-dns.com` / `ns2.vercel-dns.com` (DNS는 Vercel이 관리) |
+| www | `www.2026jejugcf.com` → 정식 주소로 308 리다이렉트 (`vercel.json`) |
+| 예전 주소 | `jgc2026.vercel.app`도 계속 열림. 안내에는 정식 도메인만 사용 |
+| 메일 발송 인증 | Resend↔Vercel 연동으로 SPF·DKIM 레코드 자동 등록, 도메인 Verified |
+
+DNS 레코드를 추가할 일이 생기면(예: 다른 서비스 인증) 가비아가 아니라 **Vercel**에서 합니다 — 대시보드 Domains → 2026jejugcf.com, 또는 `vercel dns add`.
+
+:::warn 도메인을 옮기거나 바꿀 때
+사이트 주소가 바뀌면 아래 두 명령으로 전 페이지의 OG·canonical·sitemap을 갱신하고 커밋합니다. 가이드·계정 안내 문구도 함께 봐야 합니다.
 
 ```
-node scripts/set-share-urls.mjs https://2026jejugcf.com
-node scripts/build-sitemap.mjs https://2026jejugcf.com
+node scripts/set-share-urls.mjs https://새주소
+node scripts/build-sitemap.mjs https://새주소
 ```
-
-5. **문서·문구 갱신** — 이 가이드, 계정 안내 문구, 관리자 QR은 사이트 origin을 쓰므로 자동 반영
-
-:::info 도메인이 연결되면 가능해지는 것
-계정 도메인 메일이 수신되므로 비밀번호 재설정 메일이 동작하고, 예약 확인 메일·취소 시 기관 알림(발신 도메인 인증 필요)을 구현할 수 있습니다.
 :::
 
 ## 유지보수 스크립트

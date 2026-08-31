@@ -15,7 +15,7 @@ const MAX_DEFERRALS = 60;    // 한도 초과로 미리미리 보류한 횟수 �
 // 재시도해도 결과가 같은 응답들. 주소가 틀렸거나 키가 잘못된 경우다.
 const PERMANENT = new Set([400, 401, 403, 404, 422]);
 const SITE = 'https://2026jejugcf.com';
-const VENUE = '제주특별자치도 제주시 신산로 82 제주콘텐츠진흥원 내 1층 Be IN; (비인)';
+const VENUE = '비인공연장 등 제주콘텐츠진흥원 일원 (제주특별자치도 제주시 신산로 82)';
 const CONTACT = '제주콘텐츠진흥원 064-735-0677';
 
 type Row = {

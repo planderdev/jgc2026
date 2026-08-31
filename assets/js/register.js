@@ -205,7 +205,7 @@
           <div class="confirm-row"><dt>연락처</dt><dd>${escapeHtml(registration.phone)}</dd></div>
           ${registration.email ? `<div class="confirm-row"><dt>메일 주소</dt><dd>${escapeHtml(registration.email)}</dd></div>` : ''}
           <div class="confirm-row"><dt>행사 일시</dt><dd>2026. 9. 16. (수) 10:00–18:00</dd></div>
-          <div class="confirm-row"><dt>행사 장소</dt><dd>제주특별자치도 제주시 신산로 82 제주콘텐츠진흥원 내 1층 Be IN; (비인)</dd></div>
+          <div class="confirm-row"><dt>행사 장소</dt><dd>비인공연장 등 제주콘텐츠진흥원 일원</dd></div>
         </dl>
         <div class="step-actions">
           <a class="ui-button secondary" href="${common().link('program.html')}">프로그램 보기</a>

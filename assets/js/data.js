@@ -2,8 +2,8 @@
   const image = (path) => path;
   const eventDate = '2026.09.16';
   const eventTime = '10:00-18:00';
-  const eventPlace = '제주특별자치도 제주시 신산로 82 제주콘텐츠진흥원 내 1층 Be IN; (비인)';
-  const eventVenueDetail = '제주특별자치도 제주시 신산로 82 제주콘텐츠진흥원 내 1층 Be IN; (비인)';
+  const eventPlace = '비인공연장 등 제주콘텐츠진흥원 일원';
+  const eventVenueDetail = '비인공연장 등 제주콘텐츠진흥원 일원';
   const eventPeriod = `${eventDate} - ${eventDate}`;
 
   const partnerLogoLabels = {
