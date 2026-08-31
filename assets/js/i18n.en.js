@@ -308,7 +308,6 @@
     'ICT·AI·로봇·바이오 초기·성장기업 투자': 'Investment in early-stage and growth companies in ICT, AI, robotics and bio',
     '애니메이션·캐릭터·OTT·드라마 콘텐츠 투자': 'Investment in animation, character, OTT and drama content',
     '애니메이션, 캐릭터, OTT, 드라마 콘텐츠 투자': 'Investment in animation, character, OTT and drama content',
-    '패스트벤처스 (논의중)': 'Fast Ventures (under discussion)',
     '패스트벤처스': 'Fast Ventures',
     '혁신 스타트업 중심 초기단계 벤처투자': 'Early-stage venture investment in innovative startups',
     '로간벤처스(유)': 'Logan Ventures',
