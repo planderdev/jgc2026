@@ -173,7 +173,7 @@
     '기업탐방: 인스피어': 'Company visit: Inspire',
     'IR 피칭기업 현장방문 / VC·AC 참여': 'IR company site visit / with VCs & ACs',
     '라이징 IR 피칭': 'Rising IR Pitching',
-    '제주지역인적자원개발위원회 추천 창업 3년 미만 기업 5개사 피칭': 'Pitches by 5 startups under 3 years old, recommended by the Jeju Regional HRD Council',
+    '제주도내 3년 미만 기업 5개사 피칭': 'Five Jeju companies under three years old pitch',
     '사이, 계란바구니, 낭만지구인, 귤바티, 해우 / VC·AC 참여': 'Sai, Egg Basket, Romantic Earthling, Gyulbati, Haewoo / with VCs & ACs',
     '제주글로벌콘텐츠포럼 및 비즈니스 네트워킹 개막': 'Opening of the Jeju Global Content Forum & Business Networking',
     '9/15 간담회': 'Sept 15 Meetup',

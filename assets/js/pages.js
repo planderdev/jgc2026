@@ -124,7 +124,6 @@
             <div class="session-copy">
               <div class="session-kicker">
                 <time class="session-time">${escapeHtml(session.time)}</time>
-                <span>Session ${String(sessionIndex + 1).padStart(2, '0')}</span>
               </div>
               <h3 class="session-title">${escapeHtml(session.title)}</h3>
               <p class="session-meta">${escapeHtml(session.meta)}</p>
