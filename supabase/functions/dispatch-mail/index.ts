@@ -17,6 +17,7 @@ const PERMANENT = new Set([400, 401, 403, 404, 422]);
 const SITE = 'https://2026jejugcf.com';
 const VENUE = '비인공연장 등 제주콘텐츠진흥원 일원 (제주특별자치도 제주시 신산로 82)';
 const CONTACT = '제주콘텐츠진흥원 064-735-0677';
+const REPLY_TO = 'broccoli-404@naver.com'; // 회신 수신함. From은 인증 도메인(noreply@)이어야 한다
 
 type Row = {
   id: number;
@@ -40,7 +41,7 @@ function layout(title: string, bodyHtml: string) {
   <div style="padding:24px;font-size:15px;line-height:1.7">${bodyHtml}</div>
   <div style="padding:16px 24px;border-top:1px solid #eee;font-size:12px;color:#777;line-height:1.6">
     문의: ${esc(CONTACT)}<br>
-    이 메일은 발신 전용입니다. 회신하셔도 확인되지 않습니다.
+    이 메일에 회신하시면 운영사무국이 확인합니다.
   </div>
 </div></body></html>`;
 }
@@ -222,7 +223,7 @@ Deno.serve(async (req) => {
       const res = await fetch('https://api.resend.com/emails', {
         method: 'POST',
         headers: { Authorization: `Bearer ${resendKey}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ from, to: [row.to_email], subject: mail.subject, html: mail.html })
+        body: JSON.stringify({ from, to: [row.to_email], reply_to: [REPLY_TO], subject: mail.subject, html: mail.html })
       });
       if (res.ok) {
         await db(`mail_outbox?id=eq.${row.id}`, {

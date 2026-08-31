@@ -63,6 +63,8 @@ group: tech
    | `DISPATCH_KEY` | `mail_settings.dispatch_key`와 같은 값 |
    | `MAIL_FROM` | `JGCF 2026 운영사무국 <noreply@2026jejugcf.com>` |
 
+발신(From)은 인증 도메인이어야 하므로 바꿀 수 없고, **회신(Reply-To)은 사무국 실수신함**(`broccoli-404@naver.com`)으로 갑니다. 회신 주소는 `dispatch-mail/index.ts`의 `REPLY_TO` 상수에서 바꿉니다.
+
 3. **운영자 수신 주소** — 취소 알림은 상담기관에 직접 가지 않고 운영자 메일 한 곳으로 모입니다. 사무국이 받아서 필요한 기관에만 전달합니다.
 
    ```sql

@@ -14,7 +14,7 @@
 
 ## 사무국 사용법
 
-**관리자 페이지(권장)**: https://jgc2026.vercel.app/admin
+**관리자 페이지(권장)**: https://2026jejugcf.com/admin
 
 사무국 계정으로 로그인하면 예약·참가신청 목록, 검색·필터, 기관별 현황,
 CSV 내려받기, 대신 취소, 첨부 PDF 열람을 쓸 수 있습니다.
@@ -139,7 +139,7 @@ node scripts/build-sitemap.mjs https://2026jejugcf.com
 npm run build && git commit -am "chore: 공유 주소를 2026jejugcf.com 으로" && git push
 ```
 
-`jgc2026.vercel.app` 주소는 그대로 남아 새 도메인으로 자동 리다이렉트됩니다.
+이전 Vercel 기본 주소도 계속 접속됩니다.
 
 ## 영문판 (/en/)
 

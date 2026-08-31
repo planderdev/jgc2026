@@ -24,7 +24,6 @@ GitHub Actions 자동 점검이 ✗여도 **배포는 막히지 않습니다.** 
 | 등록업체 | 가비아 |
 | 네임서버 | `ns1.vercel-dns.com` / `ns2.vercel-dns.com` (DNS는 Vercel이 관리) |
 | www | `www.2026jejugcf.com` → 정식 주소로 308 리다이렉트 (`vercel.json`) |
-| 예전 주소 | `jgc2026.vercel.app`도 계속 열림. 안내에는 정식 도메인만 사용 |
 | 메일 발송 인증 | Resend↔Vercel 연동으로 SPF·DKIM 레코드 자동 등록, 도메인 Verified |
 
 DNS 레코드를 추가할 일이 생기면(예: 다른 서비스 인증) 가비아가 아니라 **Vercel**에서 합니다 — 대시보드 Domains → 2026jejugcf.com, 또는 `vercel dns add`.

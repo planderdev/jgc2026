@@ -4,7 +4,7 @@
 
 ```bash
 npm run qa                                   # 로컬 파일 기준 (서버 자동 기동)
-npm run qa:live                              # 배포 사이트(jgc2026.vercel.app) 기준
+npm run qa:live                              # 배포 사이트(2026jejugcf.com) 기준
 npm run qa -- --only=render,ui               # 일부만
 ```
 

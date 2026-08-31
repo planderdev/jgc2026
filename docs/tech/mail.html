@@ -69,7 +69,9 @@
 <ol class="steps"><li><p><strong>Resend 계정과 도메인 인증</strong><code>2026jejugcf.com</code>을 등록하고 안내되는 DNS 레코드(DKIM·SPF)를 네임서버에 추가합니다. 네임서버가 Vercel이므로 <code>vercel dns add</code>로 넣습니다</p>
 </li><li><p><strong>Edge Function 비밀값</strong>Supabase → Edge Functions → Secrets에 세 가지를 넣습니다</p>
 <div class="table-wrap"><table><thead><tr><th>이름</th><th>값</th></tr></thead><tbody><tr><td><code>RESEND_API_KEY</code></td><td>Resend에서 만든 API 키</td></tr><tr><td><code>DISPATCH_KEY</code></td><td><code>mail_settings.dispatch_key</code>와 같은 값</td></tr><tr><td><code>MAIL_FROM</code></td><td><code>JGCF 2026 운영사무국 &lt;noreply@2026jejugcf.com&gt;</code></td></tr></tbody></table></div>
-</li><li><p><strong>운영자 수신 주소</strong>취소 알림은 상담기관에 직접 가지 않고 운영자 메일 한 곳으로 모입니다. 사무국이 받아서 필요한 기관에만 전달합니다.</p>
+</li></ol>
+<p>발신(From)은 인증 도메인이어야 하므로 바꿀 수 없고, <strong>회신(Reply-To)은 사무국 실수신함</strong>(<code>broccoli-404@naver.com</code>)으로 갑니다. 회신 주소는 <code>dispatch-mail/index.ts</code>의 <code>REPLY_TO</code> 상수에서 바꿉니다.</p>
+<ol class="steps" start="3"><li><p><strong>운영자 수신 주소</strong>취소 알림은 상담기관에 직접 가지 않고 운영자 메일 한 곳으로 모입니다. 사무국이 받아서 필요한 기관에만 전달합니다.</p>
 <pre><code class="language-sql">update public.mail_settings set operator_email = &#39;ops@example.kr&#39; where id = 1;
 </code></pre>
 <p>기관별 수신 주소(<code>partner_users.contact_email</code>)는 쓰지 않습니다.</p>
