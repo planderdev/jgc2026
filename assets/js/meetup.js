@@ -64,12 +64,13 @@
     if (!mount) return;
     mount.innerHTML = data().companies.map((company) => {
       const logo = getCompanyLogo(company);
+      const field = company.field ? `<span>${escapeHtml(company.field)}</span>` : '';
       return `
         <div class="company-pill ${logo ? 'has-logo' : ''}">
           ${renderCompanyLogo(company, 'is-pill-logo')}
           <div class="company-pill-copy">
             <strong>${escapeHtml(company.name)}</strong>
-            <span>${escapeHtml(company.field)}</span>
+            ${field}
           </div>
         </div>
       `;
@@ -137,14 +138,14 @@
 
     companyMount.innerHTML = data().companies.map((company) => {
       const logo = getCompanyLogo(company);
+      const field = company.field ? `<br><small>${escapeHtml(company.field)}</small>` : '';
       return `
         <label class="choice-card ${logo ? 'has-logo' : ''}">
           <input type="radio" name="companyId" value="${escapeHtml(company.id)}">
           <span>
             ${renderCompanyLogo(company, 'is-choice-logo', true)}
             <span class="choice-card-copy">
-              ${escapeHtml(company.name)}<br>
-              <small>${escapeHtml(company.field)}</small>
+              ${escapeHtml(company.name)}${field}
             </span>
             <i class="ri-arrow-right-line" aria-hidden="true"></i>
           </span>

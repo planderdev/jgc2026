@@ -15,17 +15,6 @@
     return String(value || '').replace(/[^a-zA-Z0-9_-]/g, '');
   }
 
-  const programCompanyThumbnails = [
-    'https://cdn.pixabay.com/photo/2015/01/08/18/27/startup-593341_1280.jpg',
-    'https://images.unsplash.com/photo-1603201667141-5a2d4c673378?auto=format&fit=crop&w=640&q=80',
-    'https://cdn.pixabay.com/photo/2015/01/08/18/27/startup-593342_1280.jpg',
-    'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=640&q=80',
-    'https://cdn.pixabay.com/photo/2020/01/19/13/40/startup-4777863_1280.jpg',
-    'https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=640&q=80',
-    'https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=640&q=80',
-    'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=640&q=80'
-  ];
-
   function getProgramCompanyLogo(company) {
     return data().getCompanyLogo?.(company) || company?.logo || '';
   }
@@ -34,20 +23,15 @@
     return data().getCompanyLogoVariant?.(company) || '';
   }
 
-  function getProgramCompanyThumbnail(index, variant) {
-    const offset = variant === 'is-compact' ? 3 : variant === 'is-exhibition' ? 6 : 0;
-    return programCompanyThumbnails[(index + offset) % programCompanyThumbnails.length];
-  }
-
   const scheduleThumbnails = [
-    'assets/images/home/program-tour.jpg',
-    'assets/images/home/program-business.jpg',
-    'assets/images/home/event-opening.jpg',
-    'assets/images/program/session-stage.jpg',
-    'assets/images/home/event-conference.jpg',
-    'assets/images/home/event-networking.jpg',
-    'assets/images/home/event-showcase.jpg',
-    'assets/images/home/event-audience.jpg'
+    'assets/images/archive/2025/DSC09457.jpg',
+    'assets/images/archive/2025/DSC08633.jpg',
+    'assets/images/archive/2025/DSC09761.jpg',
+    'assets/images/archive/2025/DSC09180.jpg',
+    'assets/images/archive/2025/DSC09532.jpg',
+    'assets/images/archive/2024/jgc-2024-013.jpg',
+    'assets/images/archive/2025/DSC09822.jpg',
+    'assets/images/archive/2025/DSC08633.jpg'
   ];
 
   function getScheduleThumbnail(chapterIndex, sessionIndex) {
@@ -66,6 +50,8 @@
   }
 
   let lastSpeakerTrigger = null;
+  let speakerScrollLock = null;
+  let speakerTouchY = null;
 
   function speakerById(id) {
     return (data().speakers || []).find((speaker) => speaker.id === id);
@@ -75,6 +61,58 @@
     const introItems = Array.isArray(speaker?.intro) ? speaker.intro : [];
     if (!introItems.length) return '';
     return `<ul class="${className}">${introItems.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>`;
+  }
+
+  function lockSpeakerPageScroll() {
+    if (speakerScrollLock) return;
+    const bodyStyle = document.body.style;
+    speakerScrollLock = {
+      y: window.scrollY || document.documentElement.scrollTop || 0,
+      htmlLocked: document.documentElement.classList.contains('no-scroll'),
+      bodyLocked: document.body.classList.contains('no-scroll'),
+      position: bodyStyle.position,
+      top: bodyStyle.top,
+      left: bodyStyle.left,
+      right: bodyStyle.right,
+      width: bodyStyle.width
+    };
+
+    document.documentElement.classList.add('no-scroll');
+    document.body.classList.add('no-scroll');
+    bodyStyle.position = 'fixed';
+    bodyStyle.top = `-${speakerScrollLock.y}px`;
+    bodyStyle.left = '0';
+    bodyStyle.right = '0';
+    bodyStyle.width = '100%';
+  }
+
+  function unlockSpeakerPageScroll() {
+    if (!speakerScrollLock) return;
+    const state = speakerScrollLock;
+    const bodyStyle = document.body.style;
+
+    if (!state.htmlLocked) document.documentElement.classList.remove('no-scroll');
+    if (!state.bodyLocked) document.body.classList.remove('no-scroll');
+    bodyStyle.position = state.position;
+    bodyStyle.top = state.top;
+    bodyStyle.left = state.left;
+    bodyStyle.right = state.right;
+    bodyStyle.width = state.width;
+
+    speakerScrollLock = null;
+    window.scrollTo(0, state.y);
+  }
+
+  function scrollSpeakerModalContent(modal, deltaY) {
+    const scroller = modal?.querySelector('.speaker-modal-content');
+    if (!scroller || scroller.scrollHeight <= scroller.clientHeight || !deltaY) return false;
+
+    const max = scroller.scrollHeight - scroller.clientHeight;
+    const next = Math.min(max, Math.max(0, scroller.scrollTop + deltaY));
+    if (next === scroller.scrollTop) return true;
+
+    scroller.scrollTop = next;
+    return true;
   }
 
   function getSpeakerModal() {
@@ -93,7 +131,36 @@
       }
     });
 
+    modal.addEventListener('wheel', (event) => {
+      if (!modal.open) return;
+      if (scrollSpeakerModalContent(modal, event.deltaY)) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+    }, { passive: false });
+
+    modal.addEventListener('touchstart', (event) => {
+      speakerTouchY = event.touches.length === 1 ? event.touches[0].clientY : null;
+    }, { passive: true });
+
+    modal.addEventListener('touchmove', (event) => {
+      if (!modal.open || speakerTouchY === null || event.touches.length !== 1) return;
+      const currentY = event.touches[0].clientY;
+      const deltaY = speakerTouchY - currentY;
+      if (scrollSpeakerModalContent(modal, deltaY)) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      speakerTouchY = currentY;
+    }, { passive: false });
+
+    modal.addEventListener('touchend', () => {
+      speakerTouchY = null;
+    });
+
     modal.addEventListener('close', () => {
+      speakerTouchY = null;
+      unlockSpeakerPageScroll();
       if (lastSpeakerTrigger) lastSpeakerTrigger.focus();
       lastSpeakerTrigger = null;
     });
@@ -131,6 +198,7 @@
     `;
 
     modal.showModal();
+    lockSpeakerPageScroll();
     modal.querySelector('[data-speaker-modal-close]')?.focus();
   }
 
@@ -257,9 +325,11 @@
     const points = Array.isArray(company.points) ? company.points : [];
     const note = company.note || '';
     const logo = getProgramCompanyLogo(company);
-    const thumbnail = logo || company.thumbnail || getProgramCompanyThumbnail(index, variant);
-    const thumbClass = `program-company-thumb${logo ? ` is-logo${getProgramLogoVariant(company)}` : ''}`;
-    const thumbAlt = logo ? `${company.name} 로고` : `${company.name} 썸네일`;
+    const thumbClass = `program-company-thumb${logo ? ` is-logo${getProgramLogoVariant(company)}` : ' is-empty-logo'}`;
+    const thumb = logo
+      ? `<img src="${escapeHtml(common().asset(logo))}" alt="${escapeHtml(`${company.name} 로고`)}" loading="lazy" decoding="async">`
+      : '';
+    const badge = company.field ? `<span class="ui-badge">${escapeHtml(company.field)}</span>` : '';
     const body = points.length
       ? `<ul class="program-company-points">${points.map((point) => `<li>${escapeHtml(point)}</li>`).join('')}</ul>`
       : `<p class="program-company-note">${escapeHtml(note)}</p>`;
@@ -267,10 +337,10 @@
     return `
       <article class="program-company-card ${variant}">
         <div class="${thumbClass}">
-          <img src="${escapeHtml(common().asset(thumbnail))}" alt="${escapeHtml(thumbAlt)}" loading="lazy" decoding="async">
+          ${thumb}
         </div>
         <div class="program-company-content">
-          <span class="ui-badge">${escapeHtml(company.field)}</span>
+          ${badge}
           <h4>${escapeHtml(company.name)}</h4>
           ${company.project ? `<p class="program-company-project">${escapeHtml(company.project)}</p>` : ''}
           ${body}
@@ -290,6 +360,7 @@
         .map((org) => {
           const logo = getProgramCompanyLogo(org);
           const logoVariant = logo ? getProgramLogoVariant(org) : '';
+          const field = org.field ? `<span>${escapeHtml(org.field)}</span>` : '';
           return `
           <div class="company-pill ${logo ? 'has-logo' : ''}">
             ${logo ? `
@@ -299,7 +370,7 @@
             ` : ''}
             <div class="company-pill-copy">
               <strong>${escapeHtml(org.name)}</strong>
-              <span>${escapeHtml(org.field)}</span>
+              ${field}
             </div>
           </div>
         `;

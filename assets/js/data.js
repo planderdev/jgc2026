@@ -68,6 +68,7 @@
     '그리메': image('assets/images/program/grimae.jpg'),
     '위놉스': image('assets/images/program/wenobs.png'),
     '휴플': image('assets/images/program/huple.png'),
+    '해우': image('assets/images/program/haewoo.jpg'),
     '프리아이디어': image('assets/images/program/freeidea.svg'),
     '귤바티': image('assets/images/program/gyulbati.svg'),
     '인스피어': image('assets/images/program/insphere.svg'),
@@ -310,7 +311,7 @@
     { id: 'jeju-national-tech-commercialization', name: '제주대학교 산학협력단 기술사업화ㆍ창업지원센터', field: '기술사업화 및 창업지원 컨설팅', note: '기술사업화 및 창업지원 상담' },
     { id: 'jeju-creative-economy', name: '제주창조경제혁신센터', field: '콘텐츠 스타트업 상표권, 저작권 현장상담', note: '상표권 및 저작권 현장 상담' },
     { id: 'jeju-startup-onestop', name: '제주창조경제혁신센터 스타트업원스톱지원센터', field: '콘텐츠 스타트업 상표권, 저작권 현장상담', note: '상표권 및 저작권 현장 상담' },
-    { id: 'jeju-ip-center', name: '제주지식재산센터', field: '변리사 3명 별도코너', note: '지식재산권 전문 상담' }
+    { id: 'jeju-ip-center', name: '제주지식재산센터', field: '', note: '' }
   ];
 
   // 원고 p9 기준. 와이앤아처·패스트벤처스는 VC·AC 목록에는 있지만
@@ -453,14 +454,14 @@
   }));
 
   const homeIrImages = [
-    image('assets/images/home/event-studio.jpg'),
-    image('assets/images/home/event-creator.jpg'),
-    image('assets/images/home/event-showcase.jpg'),
-    image('assets/images/home/program-business.jpg'),
-    image('assets/images/home/program-tour.jpg'),
-    image('assets/images/home/event-conference.jpg'),
-    image('assets/images/home/event-audience.jpg'),
-    image('assets/images/home/event-meetup.jpg')
+    image('assets/images/archive/2025/DSC09761.jpg'),
+    image('assets/images/archive/2025/DSC08633.jpg'),
+    image('assets/images/archive/2025/DSC09532.jpg'),
+    image('assets/images/archive/2025/DSC09457.jpg'),
+    image('assets/images/archive/2025/DSC09643.jpg'),
+    image('assets/images/archive/2025/DSC09180.jpg'),
+    image('assets/images/archive/2025/DSC09822.jpg'),
+    image('assets/images/archive/2024/jgc-2024-013.jpg')
   ];
 
   const homeIrTones = [
@@ -495,56 +496,56 @@
         title: 'IR Pitching Company Field Visit',
         date: `${eventDate} 09:30-13:30`,
         location: '인스피어',
-        image: image('assets/images/home/event-studio.jpg')
+        image: image('assets/images/archive/2025/DSC08633.jpg')
       },
       {
         category: 'RISING IR',
         title: 'Rising IR Pitching',
         date: `${eventDate} 13:30-14:30`,
         location: '라이징 IR 5개 기업',
-        image: image('assets/images/home/event-creator.jpg')
+        image: image('assets/images/archive/2025/DSC09761.jpg')
       },
       {
         category: 'OPENING',
         title: 'Opening Ceremony',
         date: `${eventDate} 14:30-14:45`,
         location: eventVenueDetail,
-        image: image('assets/images/home/event-opening.jpg')
+        image: image('assets/images/archive/2025/DSC09180.jpg')
       },
       {
         category: 'FORUM',
         title: 'Global Content Forum',
         date: `${eventDate} 15:00-16:00`,
         location: 'DX/AX 전환 토크쇼',
-        image: image('assets/images/home/event-conference.jpg')
+        image: image('assets/images/archive/2025/DSC09532.jpg')
       },
       {
         category: 'MAIN IR',
         title: 'Main IR Pitching',
         date: `${eventDate} 16:00-17:40`,
         location: '제주 콘텐츠 기업 8개사',
-        image: image('assets/images/home/program-business.jpg')
+        image: image('assets/images/archive/2024/jgc-2024-013.jpg')
       },
       {
         category: 'MOU',
         title: 'MOU Ceremony',
         date: `${eventDate} 17:40-18:00`,
         location: '협약 기업 MOU 체결',
-        image: image('assets/images/home/event-audience.jpg')
+        image: image('assets/images/archive/2025/DSC09822.jpg')
       },
       {
         category: 'MEETUP',
         title: 'Business Meetup',
         date: `${eventDate} 10:00-18:00`,
         location: 'AC·VC 기업 상담소',
-        image: image('assets/images/home/event-meetup.jpg')
+        image: image('assets/images/archive/2025/DSC09643.jpg')
       },
       {
         category: 'EXHIBITION',
         title: 'Corporate Exhibition Zone',
         date: `${eventDate} 10:00-18:00`,
         location: '전시존 참여기업 23개사',
-        image: image('assets/images/home/event-showcase.jpg')
+        image: image('assets/images/archive/2025/DSC08633.jpg')
       }
     ],
     specialPrograms: mainIrCompanies.map((company, index) => ({
@@ -586,8 +587,8 @@
       {
         id: 'kim-young-rok',
         name: '김영록',
-        role: '대표',
-        org: '재단법인 넥스트챌린지',
+        role: '재단법인 넥스트챌린지 대표',
+        org: '(재)넥스트챌린지',
         track: 'Startup',
         image: image('assets/images/speakers/speaker-kim-young-rok.png'),
         bio: '글로벌 액셀러레이터 재단법인 넥스트챌린지 대표이자 벤처기업협회 부회장. 스타트업 액셀러레이팅과 글로벌 진출 전략을 다룬다.',
@@ -595,23 +596,28 @@
           '글로벌 액셀러레이터 재단법인 넥스트챌린지 대표 / 벤처기업협회 부회장',
           '중국 상하이 푸단대학교 객좌교수 / 인천창조경제혁신센터 이사장 / 한양대창업대학원 lAB 교수',
           '『변종의 늑대』·『진격의 늑대』·『미지의 늑대』 등 저서 9권, ‘늑대 시리즈’ 누적 10만 부 베스트셀러',
-          '중소벤처기업부 장관상·인천광역시장 표창'
+          '중소벤처기업부 장관상·제주특별자치도 명예도민'
         ]
       },
       {
         id: 'cho-soo-hyun',
         name: '조수현',
         role: '대표',
-        org: 'bauer lab',
+        org: '㈜바우어랩',
         track: 'Immersive',
-        image: image('assets/images/speakers/speaker-cho-soo-hyun.jpg'),
-        bio: '공연, 전시, XR, 미디어아트 기반 이머시브 콘텐츠 기업 bauer lab 대표. 차세대 돔 LED 시어터 ORBYT 쇼룸과 글로벌 공연 콘텐츠 개발을 추진한다.',
+        image: image('assets/images/speakers/speaker-cho-soo-hyun.png'),
+        bio: '공연·전시·XR·미디어아트 기반 이머시브 콘텐츠 기업 바우어랩 대표.',
         intro: [
-          '공연·전시·XR·미디어아트 기반 이머시브 콘텐츠 기업 바우어랩 대표',
-          'SM엔터테인먼트·SM컬처파트너스·스마일게이트인베스트먼트·케이옥션 투자 유치',
+          '캘리포니아예술대학교(CalArts) MFA – 퍼포먼스 영상·통합미디어',
+          '2025 IAAPA Brass Ring Awards 수상 – 바우어랩 <부치하난>',
+          'Most Creative Theatrical Production: Limited Operation 부문',
+          '2024 대중문화예술 제작스태프 대상 한국콘텐츠진흥원장상',
+          '월트 디즈니 이매지니어링(Walt Disney Imagineering) Educational Initiative',
+          '파라마운트 리조트 시즌 어트랙션 R&D',
+          '씽크웰(Thinkwell) AVCI',
+          'SM컬처파트너스, 케이옥션, 알바트로스 인베스트먼트, 인터베스트 투자 유치',
           '2026 차세대 돔 LED 시어터 「올빗(ORBYT) 쇼룸」 오픈',
-          '2026 글로벌 엔터테크 기업 BIGC와 글로벌 공연·콘텐츠 개발 MOU 체결',
-          '2025 CES 세라젬 브랜드관 연출·제작'
+          '2026 이머시브 시어터 「미지헌」 오픈 (2027년 3월 예정)'
         ]
       },
       {
@@ -634,22 +640,22 @@
       {
         title: 'DX/AX 전환에 따른 로컬 콘텐츠 산업의 대응방안',
         category: 'Forum Topic',
-        image: image('assets/images/program/session-stage.jpg')
+        image: image('assets/images/archive/2025/DSC09532.jpg')
       },
       {
         title: '제주 콘텐츠 기업 8개사 메인 IR 피칭',
         category: 'Main IR',
-        image: image('assets/images/home/program-business.jpg')
+        image: image('assets/images/archive/2024/jgc-2024-013.jpg')
       },
       {
         title: 'AC·VC와 도내 기업을 잇는 비즈니스 밋업',
         category: 'Meetup',
-        image: image('assets/images/meetup/meetup-room.jpg')
+        image: image('assets/images/archive/2025/DSC09643.jpg')
       },
       {
         title: '기업 전시존에서 만나는 제주 콘텐츠 비즈니스',
         category: 'Exhibition',
-        image: image('assets/images/home/event-showcase.jpg')
+        image: image('assets/images/archive/2025/DSC08633.jpg')
       }
     ],
     schedule: [
@@ -659,7 +665,7 @@
         title: '도내 기업-AC·VC 네트워킹 간담회',
         date: '9/15(화)',
         sessions: [
-          { time: '18:00 - 19:30', title: '도내 기업-AC·VC 네트워킹 간담회', meta: '행사 전날 9월 15일(화) / VC·AC, 도내 콘텐츠 기업', thumbnail: 'assets/images/home/event-networking.jpg' }
+          { time: '18:00 - 19:30', title: '도내 기업-AC·VC 네트워킹 간담회', meta: '행사 전날 9월 15일(화) / VC·AC, 도내 콘텐츠 기업', thumbnail: 'assets/images/archive/2025/DSC09457.jpg' }
         ]
       },
       {
@@ -683,8 +689,7 @@
         tab: '개막식',
         title: '개막식',
         sessions: [
-          { time: '14:30 - 14:45', title: '개막식', meta: '제주글로벌콘텐츠포럼 및 비즈니스 네트워킹 개막' },
-          { time: '14:45 - 15:00', title: '무대 전환', meta: '글로벌 포럼 진행 준비' }
+          { time: '14:30 - 14:45', title: '개막식', meta: '제주글로벌콘텐츠포럼 및 비즈니스 네트워킹 개막' }
         ]
       },
       {

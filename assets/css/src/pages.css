@@ -1303,7 +1303,8 @@
 
 .speaker-modal {
   width: min(920px, calc(100vw - 32px));
-  max-height: min(780px, calc(100vh - 32px));
+  height: min(780px, calc(100dvh - 32px));
+  max-height: calc(100dvh - 32px);
   padding: var(--space-0);
   border: 0;
   border-radius: var(--radius-md);
@@ -1311,6 +1312,7 @@
   color: var(--color-text-primary);
   box-shadow: var(--shadow-lg);
   overflow: hidden;
+  overscroll-behavior: contain;
 }
 
 .speaker-modal::backdrop {
@@ -1320,10 +1322,11 @@
 }
 
 .speaker-modal-panel {
-  min-height: min(640px, calc(100vh - 32px));
+  height: 100%;
+  min-height: 0;
   display: grid;
   grid-template-columns: minmax(260px, 0.82fr) minmax(0, 1fr);
-  max-height: min(780px, calc(100vh - 32px));
+  max-height: none;
   background: var(--color-white);
 }
 
@@ -1342,11 +1345,20 @@
 .speaker-modal-content {
   position: relative;
   min-width: 0;
-  max-height: min(640px, calc(100vh - 32px));
+  min-height: 0;
+  max-height: none;
   padding: var(--space-48) var(--space-48) var(--space-40);
   overflow-y: auto;
   overscroll-behavior: contain;
+  touch-action: pan-y;
   -webkit-overflow-scrolling: touch;
+}
+
+@supports not (height: 100dvh) {
+  .speaker-modal {
+    height: min(780px, calc(100vh - 32px));
+    max-height: calc(100vh - 32px);
+  }
 }
 
 .speaker-modal-close {
@@ -1663,6 +1675,11 @@
   overflow: hidden;
   border-radius: var(--radius-sm);
   background: var(--color-neutral-200);
+}
+
+.program-company-thumb.is-empty-logo {
+  border: 1px solid var(--color-border-muted);
+  background: var(--color-white);
 }
 
 .program-company-thumb img {
@@ -2174,7 +2191,7 @@
   align-items: center;
   background:
     linear-gradient(90deg, var(--color-alpha-brand-86), var(--color-alpha-brand-44)),
-    url("../images/archive/2025/DSC09767.jpg") center/cover no-repeat;
+    url("../images/archive/2025/DSC09643.jpg") center/cover no-repeat;
   color: var(--color-white);
 }
 
