@@ -278,7 +278,6 @@
     { id: 'haewoo-exhibit', name: '해우', field: '콘텐츠 / 제조', note: '머메이드다이빙 체험 교육 및 장비 제조' },
     { id: 'jito-forest', name: '지토의 숲', field: '콘텐츠', note: '핸드워시, 굿즈 등' },
     { id: 'make-a-better', name: '주식회사 메이크어베러', field: '식품', note: '식품, 커피' },
-    { id: 'daz-land', name: '다즈랜드', field: '콘텐츠', note: '굿즈, 도서, 디자인' },
     { id: 'the-green-box', name: '더그린박스', field: '콘텐츠', note: '굿즈, 업사이클 체험' },
     { id: 'jejuseyo', name: '제주세요', field: '식품', note: '깻잎청 등' },
     { id: 'jeju-perfume-museum', name: '제주퍼퓸뮤지엄', field: '제조', note: '향수, 방향제 등' },
@@ -536,15 +535,15 @@
       {
         category: 'MEETUP',
         title: 'Business Meetup',
-        date: `${eventDate} 10:00-18:00`,
-        location: 'AC·VC 기업 상담소',
+        date: `${eventDate} 10:00-17:00`,
+        location: '제주콘텐츠진흥원 Be IN; 로비 등',
         image: image('assets/images/archive/2025/DSC09643.jpg')
       },
       {
         category: 'EXHIBITION',
         title: 'Corporate Exhibition Zone',
         date: `${eventDate} 10:00-18:00`,
-        location: '전시존 참여기업 23개사',
+        location: '전시존 참여기업 22개사',
         image: image('assets/images/archive/2025/DSC08633.jpg')
       }
     ],

@@ -1,7 +1,7 @@
 /**
  * UI 회귀 — 과거에 실제로 깨졌던 지점들.
  * clean URL, 헤더 중앙정렬, GNB 활성 상태, About 드롭다운 클릭, 모바일 메뉴 접근성,
- * 홈 섹션 순서, 연사 카드 크기, 푸터 배치, /meetup 상대 링크.
+ * 홈 섹션 순서, 연사/프로그램 카드 크기, 푸터 배치, /meetup 상대 링크.
  */
 import { baseUrl, newPage, runSuite, EN_ROUTES } from './lib.mjs';
 
@@ -22,14 +22,14 @@ export default () => runSuite('UI 회귀', async ({ browser, r }) => {
   const order = await page.evaluate(() => [...document.querySelectorAll('main > section')].map((s) => s.className.split(' ')[0].replace('home-', '')).join(' → '));
   r.check(order === 'hero → speakers → events → schedule → special → partners → location', '홈 섹션 순서', order);
 
-  // 연사 카드: 확정 연사만, 이벤트 카드보다 작게
+  // 연사 카드: 확정 연사만, 프로그램 이벤트 카드와 같은 폭
   const sp = await page.evaluate(() => ({
     names: [...document.querySelectorAll('.home-speakers .home-event-title')].map((e) => e.textContent.trim()),
     speaker: Math.round(document.querySelector('.home-speaker-card')?.getBoundingClientRect().width || 0),
     event: Math.round(document.querySelector('.home-event-card:not(.home-speaker-card)')?.getBoundingClientRect().width || 0)
   }));
   r.check(sp.names.length > 0 && !sp.names.some((n) => /섭외 중/.test(n)), '홈 연사: 섭외 중 카드 제외', `${sp.names.length}명`);
-  r.check(sp.speaker > 0 && sp.speaker < sp.event, '홈 연사 카드가 이벤트 카드보다 작음', `${sp.speaker} < ${sp.event}`);
+  r.check(sp.speaker > 0 && sp.speaker === sp.event, '홈 연사 카드와 프로그램 카드 폭 동일', `${sp.speaker} = ${sp.event}`);
 
   // GNB 활성: 홈 없음, speakers 페이지는 Speakers
   const activeHome = await page.evaluate(() => [...document.querySelectorAll('.nav-item.is-active .nav-pill')].map((e) => e.textContent.trim()));

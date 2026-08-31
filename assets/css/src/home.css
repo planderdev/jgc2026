@@ -224,17 +224,7 @@
   padding: var(--space-0) var(--space-0) var(--space-120);
 }
 
-/* 연사 카드: 이벤트 카드 골격을 쓰되 한 단계 작게. 한 화면에 더 많은 얼굴이 보이도록 */
-.home-speakers .swiper-slide {
-  width: 320px;
-  height: auto;
-  padding-right: var(--space-24);
-}
-
-.home-event-card.home-speaker-card {
-  width: 296px;
-}
-
+/* 연사 카드: 프로그램 이벤트 카드와 같은 폭으로 홈 캐러셀 리듬을 맞춘다. */
 .home-speaker-card .home-event-title {
   margin-top: var(--space-16);
   font-size: var(--font-size-22);
@@ -278,6 +268,7 @@
 }
 
 .home-events .swiper-slide,
+.home-speakers .swiper-slide,
 .home-special .swiper-slide {
   width: 408px;
   height: auto;
@@ -285,6 +276,7 @@
 }
 
 .home-event-card,
+.home-event-card.home-speaker-card,
 .home-special-card {
   width: 378px;
   height: 100%;

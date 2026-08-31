@@ -1476,23 +1476,16 @@
   }
 
   .home-events .swiper-slide,
+  .home-speakers .swiper-slide,
   .home-special .swiper-slide {
     width: 270px;
     padding-right: var(--space-16);
   }
 
   .home-event-card,
+  .home-event-card.home-speaker-card,
   .home-special-card {
     width: 252px;
-  }
-
-  .home-speakers .swiper-slide {
-    width: 232px;
-    padding-right: var(--space-16);
-  }
-
-  .home-event-card.home-speaker-card {
-    width: 216px;
   }
 
   .home-event-title {
@@ -1628,23 +1621,16 @@
   }
 
   .home-events .swiper-slide,
+  .home-speakers .swiper-slide,
   .home-special .swiper-slide {
     width: 220px;
     padding-right: var(--space-16);
   }
 
   .home-event-card,
+  .home-event-card.home-speaker-card,
   .home-special-card {
     width: 205px;
-  }
-
-  .home-speakers .swiper-slide {
-    width: 196px;
-    padding-right: var(--space-16);
-  }
-
-  .home-event-card.home-speaker-card {
-    width: 182px;
   }
 
   .home-event-media {

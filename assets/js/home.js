@@ -64,6 +64,29 @@
     };
   }
 
+  function programCarouselOptions({ nextEl, prevEl }) {
+    return {
+      loop: false,
+      rewind: true,
+      slidesPerView: 'auto',
+      ...carouselEdgeOffsetOptions(),
+      speed: 620,
+      grabCursor: true,
+      simulateTouch: true,
+      allowTouchMove: true,
+      threshold: 5,
+      navigation: {
+        nextEl,
+        prevEl
+      },
+      autoplay: reduceMotion ? false : {
+        delay: 2800,
+        disableOnInteraction: false,
+        pauseOnMouseEnter: true
+      }
+    };
+  }
+
   function renderHomeEventCard(item) {
     return `
       <div class="swiper-slide">
@@ -198,22 +221,10 @@
     if (!section || !mount || !items.length) return;
 
     mount.innerHTML = items.map(renderHomeEventCard).join('');
-    makeSwiper('.home-events-swiper', {
-      loop: false,
-      rewind: true,
-      slidesPerView: 'auto',
-      ...carouselEdgeOffsetOptions(),
-      speed: 620,
-      navigation: {
-        nextEl: '.home-events-next',
-        prevEl: '.home-events-prev'
-      },
-      autoplay: reduceMotion ? false : {
-        delay: 2800,
-        disableOnInteraction: false,
-        pauseOnMouseEnter: true
-      }
-    });
+    makeSwiper('.home-events-swiper', programCarouselOptions({
+      nextEl: '.home-events-next',
+      prevEl: '.home-events-prev'
+    }));
   }
 
   function initSpecialPrograms() {
@@ -229,6 +240,10 @@
       slidesPerView: 'auto',
       ...carouselEdgeOffsetOptions(),
       speed: 620,
+      grabCursor: true,
+      simulateTouch: true,
+      allowTouchMove: true,
+      threshold: 5,
       navigation: {
         nextEl: '.home-special-next',
         prevEl: '.home-special-prev'
@@ -254,22 +269,10 @@
     }
 
     mount.innerHTML = items.map(renderHomeSpeakerCard).join('');
-    makeSwiper('.home-speakers-swiper', {
-      loop: false,
-      rewind: true,
-      slidesPerView: 'auto',
-      ...carouselEdgeOffsetOptions(),
-      speed: 620,
-      navigation: {
-        nextEl: '.home-speakers-next',
-        prevEl: '.home-speakers-prev'
-      },
-      autoplay: reduceMotion ? false : {
-        delay: 3000,
-        disableOnInteraction: false,
-        pauseOnMouseEnter: true
-      }
-    });
+    makeSwiper('.home-speakers-swiper', programCarouselOptions({
+      nextEl: '.home-speakers-next',
+      prevEl: '.home-speakers-prev'
+    }));
   }
 
   // 행사 일정 요약. 프로그램 페이지와 같은 원본(data().schedule)을 쓰므로
