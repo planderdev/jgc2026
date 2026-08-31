@@ -288,7 +288,7 @@
           <time>${range}</time>
           <div>
             <strong>${group.title}</strong>
-            <span>${group.sessions.map((s) => s.title).join(' · ')}</span>
+            <span class="home-schedule-sub">${group.sessions.map((s) => `<em>${s.title}</em>`).join(' · ')}</span>
           </div>
         </li>
       `;

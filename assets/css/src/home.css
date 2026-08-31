@@ -734,9 +734,14 @@
   color: var(--color-text-primary);
 }
 
-.home-schedule-item span {
+.home-schedule-item .home-schedule-sub {
   display: block;
   margin-top: var(--space-8);
   font-size: var(--font-size-14);
   color: var(--color-neutral-600);
+}
+
+/* 세션 제목을 요소로 감싸야 영문판 번역기가 개별 문구로 인식한다 */
+.home-schedule-sub em {
+  font-style: normal;
 }
