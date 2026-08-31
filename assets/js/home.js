@@ -288,7 +288,13 @@
           <time>${group.date ? `<span>${group.date}</span> ` : ''}${range}</time>
           <div>
             <strong>${group.title}</strong>
-            <span class="home-schedule-sub">${group.sessions.map((s) => `<em>${s.title}</em>`).join(' · ')}</span>
+            ${(() => {
+              // 세션이 묶음 제목과 같은 한 건뿐이면 같은 말을 두 번 쓰지 않는다
+              const subs = group.sessions.filter((s) => s.title !== group.title);
+              return subs.length
+                ? `<span class="home-schedule-sub">${subs.map((s) => `<em>${s.title}</em>`).join(' · ')}</span>`
+                : '';
+            })()}
           </div>
         </li>
       `;
