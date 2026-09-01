@@ -282,12 +282,14 @@
   height: 100%;
 }
 
-.home-events .swiper-slide {
+.home-events .swiper-slide,
+.home-speakers .swiper-slide {
   width: auto;
   padding-right: var(--space-0);
 }
 
-.home-program-card {
+.home-program-card,
+.home-event-card.home-speaker-card {
   width: 100%;
 }
 

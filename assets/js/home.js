@@ -316,7 +316,9 @@
     }
 
     mount.innerHTML = items.map(renderHomeSpeakerCard).join('');
-    makeSwiper('.home-speakers-swiper', programCarouselOptions({
+    // 프로그램 카드와 같은 반응형 배치(화면당 1.5/2.5/3.5장). 폭이 같아야
+    // 두 캐러셀이 한 체계로 보인다 — ui.mjs의 '카드 폭 동일' 검사가 이를 지킨다.
+    makeSwiper('.home-speakers-swiper', homeProgramCarouselOptions({
       nextEl: '.home-speakers-next',
       prevEl: '.home-speakers-prev'
     }));
