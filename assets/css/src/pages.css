@@ -2184,34 +2184,32 @@
   text-align: center;
 }
 
-.meetup-hero {
-  margin-top: var(--space-72);
-  min-height: 580px;
-  display: grid;
-  align-items: center;
-  background:
-    linear-gradient(90deg, var(--color-alpha-brand-86), var(--color-alpha-brand-44)),
-    url("../images/archive/2025/DSC09643.jpg") center/cover no-repeat;
-  color: var(--color-white);
+.meetup-intro-section {
+  padding-bottom: var(--space-88);
 }
 
-.meetup-hero .section-title {
-  color: var(--color-white);
+.meetup-intro {
+  margin-bottom: var(--space-0);
+}
+
+.meetup-intro .subject-label {
+  height: auto;
+  min-width: 0;
+  padding: var(--space-0);
+  border-radius: var(--radius-none);
+  background: transparent;
+  color: var(--color-action-secondary);
+  font-size: var(--font-size-14);
+  line-height: var(--line-height-label);
+  text-transform: uppercase;
 }
 
 .meetup-hero-actions {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: var(--space-16);
-}
-
-.meetup-hero p {
-  max-width: 680px;
-  margin: var(--space-24) var(--space-0) var(--space-32);
-  color: var(--color-alpha-white-78);
-  font-size: var(--font-size-22);
-  font-weight: var(--font-weight-regular);
-  line-height: var(--line-height-base);
+  margin-top: var(--space-32);
 }
 
 .meetup-section {

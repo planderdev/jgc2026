@@ -334,8 +334,7 @@
     left: calc(var(--space-48) / -2);
   }
 
-  .sub-hero,
-  .meetup-hero {
+  .sub-hero {
     margin-top: var(--space-56);
   }
 
@@ -630,6 +629,18 @@
   .theme-intro {
     margin-bottom: var(--space-64);
     text-align: left;
+  }
+
+  .meetup-intro-section {
+    padding-bottom: var(--space-64);
+  }
+
+  .meetup-intro {
+    margin-bottom: var(--space-0);
+  }
+
+  .meetup-intro .meetup-hero-actions {
+    justify-content: flex-start;
   }
 
   .theme-title {
@@ -1117,14 +1128,6 @@
   .partner-section {
     padding: var(--space-40) var(--space-0) var(--space-8);
     border-bottom: 0;
-  }
-
-  .meetup-hero {
-    min-height: 520px;
-  }
-
-  .meetup-hero p {
-    font-size: var(--font-size-18);
   }
 
   .meetup-section {

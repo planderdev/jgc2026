@@ -495,7 +495,7 @@
         title: 'IR Pitching Company Field Visit',
         date: `${eventDate} 09:30-13:30`,
         location: '인스피어',
-        image: image('assets/images/archive/2025/DSC08633.jpg')
+        image: image('assets/images/program/program-1.jpg')
       },
       {
         category: 'RISING IR',
@@ -516,7 +516,7 @@
         title: 'Global Content Forum',
         date: `${eventDate} 15:00-16:00`,
         location: 'DX/AX 전환 토크쇼',
-        image: image('assets/images/archive/2025/DSC09532.jpg')
+        image: image('assets/images/program/program-4.jpg')
       },
       {
         category: 'MAIN IR',
@@ -537,14 +537,14 @@
         title: 'Business Meetup',
         date: `${eventDate} 10:00-17:00`,
         location: '제주콘텐츠진흥원 Be IN; 로비 등',
-        image: image('assets/images/archive/2025/DSC09643.jpg')
+        image: image('assets/images/program/program-2.jpg')
       },
       {
         category: 'EXHIBITION',
         title: 'Corporate Exhibition Zone',
         date: `${eventDate} 10:00-18:00`,
         location: '전시존 참여기업 22개사',
-        image: image('assets/images/archive/2025/DSC08633.jpg')
+        image: image('assets/images/program/program-3.jpg')
       }
     ],
     specialPrograms: mainIrCompanies.map((company, index) => {
@@ -571,7 +571,13 @@
         org: '제주특별자치도',
         track: 'Forum',
         image: image('assets/images/speakers/speaker-wi-sung-gon.webp'),
-        bio: '2026 제주글로벌콘텐츠포럼 글로벌 포럼 토론연사.'
+        bio: '2026 제주글로벌콘텐츠포럼 글로벌 포럼 토론연사.',
+        intro: [
+          '2024~2026.04. 제22대 국회의원(제주서귀포시/더불어민주당)',
+          '2025.08~2026.04. 국회 기후위기특별위원회 위원장',
+          '2024~2026.04. 제22대 국회 행정안정위원회 위원',
+          '2025~2026.04. 더불어민주당 탄소중립위원회 위원장'
+        ]
       },
       {
         id: 'evi-sari',
