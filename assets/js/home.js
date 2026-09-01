@@ -87,12 +87,56 @@
     };
   }
 
+  function homeProgramCarouselOptions({ nextEl, prevEl }) {
+    const edge = carouselEdgeOffsetOptions();
+
+    return {
+      loop: false,
+      rewind: true,
+      slidesPerView: 1.5,
+      spaceBetween: cssLength('--space-16', 16),
+      slidesOffsetBefore: edge.slidesOffsetBefore,
+      slidesOffsetAfter: edge.slidesOffsetAfter,
+      speed: 620,
+      grabCursor: true,
+      simulateTouch: true,
+      allowTouchMove: true,
+      threshold: 5,
+      navigation: {
+        nextEl,
+        prevEl
+      },
+      autoplay: reduceMotion ? false : {
+        delay: 2800,
+        disableOnInteraction: false,
+        pauseOnMouseEnter: true
+      },
+      breakpoints: {
+        0: {
+          ...edge.breakpoints[0],
+          slidesPerView: 1.5,
+          spaceBetween: cssLength('--space-16', 16)
+        },
+        768: {
+          ...edge.breakpoints[768],
+          slidesPerView: 2.5,
+          spaceBetween: cssLength('--space-24', 24)
+        },
+        1025: {
+          ...edge.breakpoints[1025],
+          slidesPerView: 3.5,
+          spaceBetween: cssLength('--space-32', 32)
+        }
+      }
+    };
+  }
+
   function renderHomeEventCard(item) {
     return `
       <div class="swiper-slide">
-        <article class="home-event-card">
+        <article class="home-event-card home-program-card">
           <a href="${link('program.html')}" aria-label="${escapeHtml(item.title)} program detail">
-            <span class="home-event-media">
+            <span class="home-program-media">
               <img src="${asset(item.image)}" alt="" loading="lazy" decoding="async">
             </span>
             <span class="home-event-title">${escapeHtml(item.title)}</span>
@@ -107,6 +151,9 @@
     const tags = (item.region || []).map((tag) => `<span>${escapeHtml(tag)}</span>`).join('');
     const note = item.note ? `<small>${escapeHtml(item.note)}</small>` : '';
     const loading = index < 4 ? 'eager' : 'lazy';
+    const imageClass = ['home-special-image', item.isLogo ? 'is-logo' : '', item.logoVariant || '']
+      .filter(Boolean)
+      .join(' ');
     return `
       <div class="swiper-slide">
         <article class="home-special-card" style="--program-tone: ${escapeHtml(item.tone)}">
@@ -116,7 +163,7 @@
               <strong>${escapeHtml(item.title)}</strong>
               ${note}
             </span>
-            <span class="home-special-image">
+            <span class="${escapeHtml(imageClass)}">
               <img src="${asset(item.image)}" alt="" loading="${loading}" decoding="async">
             </span>
           </a>
@@ -221,7 +268,7 @@
     if (!section || !mount || !items.length) return;
 
     mount.innerHTML = items.map(renderHomeEventCard).join('');
-    makeSwiper('.home-events-swiper', programCarouselOptions({
+    makeSwiper('.home-events-swiper', homeProgramCarouselOptions({
       nextEl: '.home-events-next',
       prevEl: '.home-events-prev'
     }));

@@ -502,7 +502,7 @@
         title: 'Rising IR Pitching',
         date: `${eventDate} 13:30-14:30`,
         location: '라이징 IR 5개 기업',
-        image: image('assets/images/archive/2025/DSC09761.jpg')
+        image: image('assets/images/program/rising-ir.jpg')
       },
       {
         category: 'OPENING',
@@ -523,14 +523,14 @@
         title: 'Main IR Pitching',
         date: `${eventDate} 16:00-17:40`,
         location: '제주 콘텐츠 기업 8개사',
-        image: image('assets/images/archive/2024/jgc-2024-013.jpg')
+        image: image('assets/images/program/main-ir.jpg')
       },
       {
         category: 'MOU',
         title: 'MOU Ceremony',
         date: `${eventDate} 17:40-18:00`,
         location: '협약 기업 MOU 체결',
-        image: image('assets/images/archive/2025/DSC09822.jpg')
+        image: image('assets/images/program/mou.jpg')
       },
       {
         category: 'MEETUP',
@@ -547,14 +547,19 @@
         image: image('assets/images/archive/2025/DSC08633.jpg')
       }
     ],
-    specialPrograms: mainIrCompanies.map((company, index) => ({
-      region: ['Main IR', company.field],
-      title: company.name,
-      note: company.points?.[0] || company.project || '',
-      href: 'program#main-ir-title',
-      image: homeIrImages[index % homeIrImages.length],
-      tone: homeIrTones[index % homeIrTones.length]
-    })),
+    specialPrograms: mainIrCompanies.map((company, index) => {
+      const logo = getCompanyLogo(company);
+      return {
+        region: ['Main IR', company.field],
+        title: company.name,
+        note: company.points?.[0] || company.project || '',
+        href: 'program#main-ir-title',
+        image: logo || homeIrImages[index % homeIrImages.length],
+        isLogo: Boolean(logo),
+        logoVariant: getCompanyLogoVariant(company).trim(),
+        tone: homeIrTones[index % homeIrTones.length]
+      };
+    }),
     homePartners: {
       groups: partnerGroups
     },
@@ -664,7 +669,7 @@
         title: '도내 기업-AC·VC 네트워킹 간담회',
         date: '9/15(화)',
         sessions: [
-          { time: '18:00 - 19:30', title: '도내 기업-AC·VC 네트워킹 간담회', meta: '행사 전날 9월 15일(화) / VC·AC, 도내 콘텐츠 기업', thumbnail: 'assets/images/archive/2025/DSC09457.jpg' }
+          { time: '18:00 - 19:30', title: '도내 기업-AC·VC 네트워킹 간담회', meta: '행사 전날 9월 15일(화) / VC·AC, 도내 콘텐츠 기업', thumbnail: 'assets/images/program/talk.jpg' }
         ]
       },
       {
@@ -680,7 +685,7 @@
         tab: '라이징IR',
         title: '라이징 IR 피칭',
         sessions: [
-          { time: '13:30 - 14:30', title: '제주도내 3년 미만 기업 5개사 피칭', meta: '사이, 계란바구니, 낭만지구인, 귤바티, 해우 / VC·AC 참여' }
+          { time: '13:30 - 14:30', title: '제주도내 3년 미만 기업 5개사 피칭', meta: '사이, 계란바구니, 낭만지구인, 귤바티, 해우 / VC·AC 참여', thumbnail: 'assets/images/program/rising-ir.jpg' }
         ]
       },
       {
@@ -704,7 +709,7 @@
         tab: '메인IR',
         title: '메인 IR 피칭',
         sessions: [
-          { time: '16:00 - 17:40', title: '제주 콘텐츠 기업 8개사 메인 IR 피칭', meta: '해녀의 부엌, 그린우드, 인스피어, 위놉스, 휴플, 그리메, 케이컴퍼니, 프리아이디어' }
+          { time: '16:00 - 17:40', title: '제주 콘텐츠 기업 8개사 메인 IR 피칭', meta: '해녀의 부엌, 그린우드, 인스피어, 위놉스, 휴플, 그리메, 케이컴퍼니, 프리아이디어', thumbnail: 'assets/images/program/main-ir.jpg' }
         ]
       },
       {
@@ -712,7 +717,7 @@
         tab: 'MOU',
         title: 'MOU 협약',
         sessions: [
-          { time: '17:40 - 18:00', title: '협약 기업 MOU 체결', meta: '참여 기업 및 기관 협약식' }
+          { time: '17:40 - 18:00', title: '협약 기업 MOU 체결', meta: '참여 기업 및 기관 협약식', thumbnail: 'assets/images/program/mou.jpg' }
         ]
       }
     ],

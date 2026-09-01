@@ -67,7 +67,7 @@
   --color-event-olive: #9aa300;
 
   /* Semantic colors */
-  --color-primary: var(--color-black);
+  --color-primary: var(--color-brand-ink);
   --color-secondary: var(--color-secondary-500);
 
   --color-bg-primary: var(--color-white);
@@ -86,7 +86,7 @@
   --color-surface-overlay: #ededed;
   --color-surface-disabled: #f3f4f8;
 
-  --color-text-primary: var(--color-black);
+  --color-text-primary: var(--color-brand-ink);
   --color-text-secondary: var(--color-neutral-600);
   --color-text-tertiary: var(--color-neutral-400);
   --color-text-disabled: var(--color-neutral-300);
