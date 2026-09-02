@@ -328,16 +328,30 @@
   // 일정이 바뀌면 홈도 같이 바뀐다. 각 묶음의 첫 시작~마지막 종료만 보여준다.
   function initHomeSchedule() {
     const mount = document.querySelector('[data-home-schedule]');
-    const groups = data().schedule || [];
+    const siteData = data();
+    const groups = siteData.schedule || [];
     if (!mount || !groups.length) return;
 
-    mount.innerHTML = groups.map((group) => {
+    const getDateLabel = (group) => group.date || '9/16(수)';
+    const schedulesByDate = groups.reduce((items, group) => {
+      const date = getDateLabel(group);
+      if (!items.has(date)) items.set(date, []);
+      items.get(date).push(group);
+      return items;
+    }, new Map());
+    const concurrentByDate = (siteData.homeConcurrentPrograms || []).reduce((items, program) => {
+      if (!items.has(program.date)) items.set(program.date, []);
+      items.get(program.date).push(program);
+      return items;
+    }, new Map());
+
+    const renderScheduleItem = (group) => {
       const first = group.sessions[0];
       const last = group.sessions[group.sessions.length - 1];
       const range = `${first.time.split(' - ')[0]} - ${last.time.split(' - ')[1] || ''}`;
       return `
         <li class="home-schedule-item">
-          <time>${group.date ? `<span>${group.date}</span> ` : ''}${range}</time>
+          <time>${range}</time>
           <div>
             <strong>${group.title}</strong>
             ${(() => {
@@ -350,7 +364,36 @@
           </div>
         </li>
       `;
-    }).join('');
+    };
+
+    const renderConcurrentProgram = (program) => `
+      <aside class="home-schedule-concurrent" aria-label="${escapeHtml(program.label)}">
+        <div class="home-schedule-concurrent-top">
+          <span class="home-schedule-concurrent-kicker">${escapeHtml(program.label)}</span>
+          <span class="home-schedule-concurrent-badge">${escapeHtml(program.badge)}</span>
+        </div>
+        <div class="home-schedule-concurrent-head">
+          <time>${escapeHtml(program.time)}</time>
+          <strong>${escapeHtml(program.title)}</strong>
+        </div>
+        <ul>
+          ${(program.points || []).map((point) => `<li>${escapeHtml(point)}</li>`).join('')}
+        </ul>
+      </aside>
+    `;
+
+    mount.innerHTML = Array.from(schedulesByDate, ([date, dayGroups], index) => `
+      <li class="home-schedule-day">
+        <h3 class="home-schedule-day-title">
+          <span>Day ${String(index + 1).padStart(2, '0')}</span>
+          <strong>${date}</strong>
+        </h3>
+        <ol class="home-schedule-day-list">
+          ${dayGroups.map(renderScheduleItem).join('')}
+        </ol>
+        ${(concurrentByDate.get(date) || []).map(renderConcurrentProgram).join('')}
+      </li>
+    `).join('');
   }
 
   function initPartnerSection() {

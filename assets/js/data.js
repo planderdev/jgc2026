@@ -563,6 +563,19 @@
     homePartners: {
       groups: partnerGroups
     },
+    homeConcurrentPrograms: [
+      {
+        date: '9/16(수)',
+        label: '동시 진행 프로그램',
+        badge: '메인 프로그램과 동시 운영',
+        time: '10:00–17:00',
+        title: '비즈밋업 · 기업 상담소',
+        points: [
+          '콘텐츠 기업 ↔ AC·VC·기관 상담',
+          '약 25분 단위 매칭 상담'
+        ]
+      }
+    ],
     speakers: [
       {
         id: 'wi-sung-gon',
@@ -683,7 +696,7 @@
         tab: '현장방문',
         title: 'IR 피칭기업 현장방문',
         sessions: [
-          { time: '09:30 - 13:30', title: '기업탐방: 인스피어', meta: 'IR 피칭기업 현장방문 / VC·AC 참여' }
+          { time: '09:30 - 13:30', title: '기업탐방: 인스피어', meta: 'IR 피칭기업 현장방문 / VC·AC 참여', thumbnail: 'assets/images/program/program-1.jpg' }
         ]
       },
       {

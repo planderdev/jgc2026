@@ -743,23 +743,62 @@
   margin: var(--space-0);
   padding: var(--space-0);
   list-style: none;
-  border-top: 2px solid var(--color-text-primary);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-40);
+}
+
+.home-schedule-day {
+  min-width: 0;
+}
+
+.home-schedule-day-title {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-16);
+  margin: var(--space-0);
+  padding: var(--space-0) var(--space-8) var(--space-24);
+  border-bottom: 2px solid var(--color-text-primary);
+  color: var(--color-text-primary);
+}
+
+.home-schedule-day-title span {
+  color: var(--color-action-secondary);
+  font-size: var(--font-size-14);
+  font-weight: var(--font-weight-black);
+  line-height: var(--line-height-label);
+  text-transform: uppercase;
+}
+
+.home-schedule-day-title strong {
+  font-size: var(--font-size-20);
+  font-weight: var(--font-weight-black);
+  line-height: var(--line-height-none);
+  font-variant-numeric: tabular-nums;
+}
+
+.home-schedule-day-list {
+  margin: var(--space-0);
+  padding: var(--space-0);
+  list-style: none;
 }
 
 .home-schedule-item {
-  display: flex;
-  align-items: baseline;
-  gap: var(--space-32);
+  display: grid;
+  grid-template-columns: 136px minmax(0, 1fr);
+  align-items: start;
+  gap: var(--space-24);
   padding: var(--space-24) var(--space-8);
   border-bottom: 1px solid var(--color-neutral-200);
 }
 
 .home-schedule-item time {
-  flex: 0 0 150px;
   font-size: var(--font-size-18);
   font-weight: var(--font-weight-black);
   font-variant-numeric: tabular-nums;
   color: var(--color-text-primary);
+  white-space: nowrap;
 }
 
 .home-schedule-item strong {
@@ -774,6 +813,95 @@
   margin-top: var(--space-8);
   font-size: var(--font-size-14);
   color: var(--color-neutral-600);
+}
+
+.home-schedule-concurrent {
+  margin-top: var(--space-24);
+  padding: var(--space-24);
+  border: 1px solid var(--color-alpha-secondary-45);
+  border-radius: var(--radius-sm);
+  background: var(--color-secondary-50);
+  color: var(--color-text-primary);
+}
+
+.home-schedule-concurrent-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-16);
+  flex-wrap: wrap;
+}
+
+.home-schedule-concurrent-kicker,
+.home-schedule-concurrent-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: var(--space-0) var(--space-16);
+  border-radius: var(--radius-pill);
+  font-size: var(--font-size-13);
+  font-weight: var(--font-weight-black);
+  line-height: var(--line-height-none);
+}
+
+.home-schedule-concurrent-kicker {
+  background: var(--color-action-secondary);
+  color: var(--color-white);
+}
+
+.home-schedule-concurrent-badge {
+  background: var(--color-white);
+  color: var(--color-action-secondary);
+}
+
+.home-schedule-concurrent-head {
+  display: grid;
+  gap: var(--space-8);
+  margin-top: var(--space-16);
+}
+
+.home-schedule-concurrent-head time {
+  color: var(--color-action-secondary);
+  font-size: var(--font-size-18);
+  font-weight: var(--font-weight-black);
+  font-variant-numeric: tabular-nums;
+  line-height: var(--line-height-none);
+}
+
+.home-schedule-concurrent-head strong {
+  color: var(--color-text-primary);
+  font-size: var(--font-size-20);
+  font-weight: var(--font-weight-black);
+  line-height: var(--line-height-tightest);
+}
+
+.home-schedule-concurrent ul {
+  display: grid;
+  gap: var(--space-8);
+  margin: var(--space-16) var(--space-0) var(--space-0);
+  padding: var(--space-0);
+  list-style: none;
+}
+
+.home-schedule-concurrent li {
+  position: relative;
+  padding-left: var(--space-16);
+  color: var(--color-text-soft);
+  font-size: var(--font-size-14);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-control);
+}
+
+.home-schedule-concurrent li::before {
+  content: "";
+  position: absolute;
+  top: 0.72em;
+  left: var(--space-0);
+  width: var(--space-8);
+  height: var(--space-8);
+  border-radius: var(--radius-pill);
+  background: var(--color-action-secondary);
+  transform: translateY(-50%);
 }
 
 /* 세션 제목을 요소로 감싸야 영문판 번역기가 개별 문구로 인식한다 */

@@ -348,14 +348,43 @@
 }
 
 @media (max-width: 768px) {
-  /* 일정 요약: 좁은 화면에서는 시간을 위로 쌓는다 */
+  /* 일정 요약: 좁은 화면에서는 날짜별 묶음을 세로로 쌓는다 */
+  .home-schedule-list {
+    grid-template-columns: 1fr;
+    gap: var(--space-40);
+  }
+
+  .home-schedule-day-title {
+    padding-bottom: var(--space-16);
+  }
+
+  .home-schedule-day-title strong {
+    font-size: var(--font-size-20);
+  }
+
   .home-schedule-item {
-    flex-direction: column;
+    grid-template-columns: 1fr;
     gap: var(--space-8);
   }
 
   .home-schedule-item time {
-    flex-basis: auto;
+    font-size: var(--font-size-16);
+  }
+
+  .home-schedule-concurrent {
+    margin-top: var(--space-16);
+    padding: var(--space-16);
+  }
+
+  .home-schedule-concurrent-top {
+    gap: var(--space-8);
+  }
+
+  .home-schedule-concurrent-kicker,
+  .home-schedule-concurrent-badge {
+    min-height: 26px;
+    padding: var(--space-0) var(--space-8);
+    font-size: var(--font-size-12);
   }
 
   .main-inner {
@@ -977,7 +1006,7 @@
   }
 
   .archive-thumb {
-    border-radius: var(--radius-xs);
+    border-radius: var(--radius-sm);
   }
 
   .archive-thumb::after {
