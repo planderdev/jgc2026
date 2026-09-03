@@ -104,7 +104,10 @@
     '제주대학교 산학협력단 기술사업화ㆍ창업지원센터': image('assets/images/program/jeju-univ.svg'),
     '제주창조경제혁신센터 스타트업원스톱지원센터': image('assets/images/program/onestop.svg'),
     '스타트업원스톱지원센터': image('assets/images/program/onestop.svg'),
-    '사이': image('assets/images/program/teahouse.svg')
+    '사이': image('assets/images/program/teahouse.svg'),
+    '지토의 숲': image('assets/images/program/jito.svg'),
+    '제주시트러스랩': image('assets/images/program/jeju-citrus.svg'),
+    '니텀': image('assets/images/program/niterm.png')
   };
 
   const companyPortraitLogoTitles = new Set(['사이', '와이앤아처']);
@@ -327,6 +330,29 @@
   const reservationBreaks = {
     '12:00': '점심시간',
     '12:30': '점심시간'
+  };
+
+  // 비즈밋업 시간표.pdf 기준 기관별 상담 불가 시간대.
+  // 점심시간처럼 선택지만 남기고 예약은 막는다.
+  const companyReservationBreaks = {
+    'kb-investment': ['10:00', '10:30', '11:00', '11:30', '13:00', '16:00', '16:30'],
+    'daekyo-investment': ['13:30', '14:00', '16:00', '16:30'],
+    'logan-ventures': ['16:00', '16:30'],
+    smartrun: ['13:30', '14:00', '16:00', '16:30'],
+    nextchallenge: ['13:30', '14:00', '16:00', '16:30'],
+    'gomao-ventures': ['10:00', '10:30', '11:00', '11:30', '13:00', '13:30', '14:00'],
+    'newkids-investment': ['10:00', '10:30', '11:00', '11:30', '13:00', '13:30', '14:00', '16:00', '16:30'],
+    'jeju-content-agency': ['14:30'],
+    'jeju-hrd': ['14:30'],
+    'kb-financial': ['14:30'],
+    'kibo-busan-content-finance': ['14:30'],
+    'jeju-economic-trade-agency': ['14:30'],
+    'jeju-credit-guarantee-foundation': ['14:30'],
+    'cheju-halla-k-hightech-platform': ['14:30'],
+    'jeju-national-tech-commercialization': ['14:30'],
+    'jeju-creative-economy': ['14:30'],
+    'jeju-startup-onestop': ['14:30'],
+    'jeju-ip-center': ['14:30']
   };
 
   const CONSULTATION_MINUTES = 25;
@@ -745,6 +771,7 @@
     archiveAlbums,
     reservationTimes,
     reservationBreaks,
+    companyReservationBreaks,
     consultationMinutes: CONSULTATION_MINUTES,
     slotRange,
     partners: partnerGroups

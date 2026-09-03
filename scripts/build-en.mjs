@@ -14,7 +14,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const SITE_ORIGIN = 'https://jgc2026.vercel.app';
+const SITE_ORIGIN = 'https://2026jejugcf.com';
 
 // 페이지별 영문 제목·설명. 여기 없는 페이지는 만들지 않는다.
 const PAGES = {

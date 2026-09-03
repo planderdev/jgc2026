@@ -1031,6 +1031,26 @@
   margin-top: var(--space-120);
 }
 
+.policy-row-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-56);
+}
+
+.policy-row-stack .about-row {
+  padding-bottom: var(--space-64);
+  border-bottom: 1px solid var(--color-border-muted);
+}
+
+.policy-row-stack .about-row + .about-row {
+  margin-top: var(--space-0);
+}
+
+.policy-row-stack .about-row:last-child {
+  padding-bottom: var(--space-0);
+  border-bottom: 0;
+}
+
 .about-stack {
   display: grid;
   gap: var(--space-32);
@@ -1039,7 +1059,7 @@
 .side-title {
   margin: var(--space-0);
   color: var(--color-text-primary);
-  font-size: var(--font-size-34);
+  font-size: var(--font-size-23);
   font-weight: var(--font-weight-black);
   line-height: var(--line-height-heading);
 }
@@ -1075,6 +1095,24 @@
   font-size: var(--font-size-17);
   font-weight: var(--font-weight-bold);
   line-height: var(--line-height-readable);
+}
+
+.overview-detail-list .secretariat-logo-line {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-8) var(--space-16);
+  min-width: 0;
+}
+
+.secretariat-logo-line > span {
+  min-width: 0;
+}
+
+.secretariat-logo-line img {
+  width: 148px;
+  height: auto;
+  flex: 0 0 auto;
 }
 
 .video-block {

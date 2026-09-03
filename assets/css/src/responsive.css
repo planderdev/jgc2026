@@ -959,8 +959,16 @@
     margin-top: var(--space-72);
   }
 
-  .side-title {
-    font-size: var(--font-size-28);
+  .policy-row-stack {
+    gap: var(--space-32);
+  }
+
+  .policy-row-stack .about-row {
+    padding-bottom: var(--space-40);
+  }
+
+  .policy-row-stack .about-row + .about-row {
+    margin-top: var(--space-0);
   }
 
   .member-grid {
