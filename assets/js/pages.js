@@ -53,8 +53,14 @@
   let speakerScrollLock = null;
   let speakerTouchY = null;
 
-  function speakerById(id) {
-    return (data().speakers || []).find((speaker) => speaker.id === id);
+  function getSpeakerItems(grid) {
+    const key = grid?.dataset?.speakerGrid || 'speakers';
+    const items = data()[key];
+    return Array.isArray(items) ? items : [];
+  }
+
+  function speakerById(id, items = data().speakers || []) {
+    return items.find((speaker) => speaker.id === id);
   }
 
   function renderSpeakerIntroList(speaker, className = 'speaker-modal-list') {
@@ -203,44 +209,48 @@
   }
 
   function renderSpeakerGrid() {
-    const grid = document.querySelector('[data-speaker-grid]');
-    if (!grid) return;
-    grid.innerHTML = data().speakers.map((speaker) => {
-      const cardClass = ['speaker-profile-card', speaker.pending ? 'is-pending' : '']
-        .filter(Boolean)
-        .join(' ');
-      return `
-        <article class="${cardClass}" id="${escapeHtml(speaker.id)}" data-speaker-id="${escapeHtml(speaker.id)}" data-aos="fade-up" tabindex="0" role="button" aria-haspopup="dialog" aria-label="${escapeHtml(speaker.name)} 약력 보기">
-          <span class="speaker-card-more" aria-hidden="true"><i class="ri-add-line" aria-hidden="true"></i></span>
-          ${speaker.pending
-            ? `<div class="speaker-placeholder" role="img" aria-label="연사 섭외 중"><i class="ri-user-line" aria-hidden="true"></i><span>TBA</span></div>`
-            : `<img src="${common().asset(speaker.image)}" alt="${escapeHtml(speaker.name)} portrait" loading="lazy" decoding="async">`}
-          <div class="speaker-info">
-            <span class="ui-badge">${escapeHtml(speaker.track)}</span>${speaker.pending ? ' <span class="ui-badge speaker-pending-badge">섭외 중</span>' : ''}
-            <h2 class="speaker-name">${escapeHtml(speaker.name)}</h2>
-            <p class="speaker-role">
-              <span>${escapeHtml(speaker.role)}</span>
-              <span aria-hidden="true">|</span>
-              <span>${escapeHtml(speaker.org)}</span>
-            </p>
-          </div>
-        </article>
-      `;
-    }).join('');
+    const grids = Array.from(document.querySelectorAll('[data-speaker-grid]'));
+    if (!grids.length) return;
 
-    if (grid.dataset.speakerModalBound) return;
-    grid.dataset.speakerModalBound = 'true';
-    grid.addEventListener('click', (event) => {
-      const card = event.target.closest('[data-speaker-id]');
-      if (!card) return;
-      openSpeakerModal(speakerById(card.dataset.speakerId), card);
-    });
-    grid.addEventListener('keydown', (event) => {
-      if (event.key !== 'Enter' && event.key !== ' ') return;
-      const card = event.target.closest('[data-speaker-id]');
-      if (!card) return;
-      event.preventDefault();
-      openSpeakerModal(speakerById(card.dataset.speakerId), card);
+    grids.forEach((grid) => {
+      const items = getSpeakerItems(grid);
+      grid.innerHTML = items.map((speaker) => {
+        const cardClass = ['speaker-profile-card', speaker.pending ? 'is-pending' : '']
+          .filter(Boolean)
+          .join(' ');
+        return `
+          <article class="${cardClass}" id="${escapeHtml(speaker.id)}" data-speaker-id="${escapeHtml(speaker.id)}" data-aos="fade-up" tabindex="0" role="button" aria-haspopup="dialog" aria-label="${escapeHtml(speaker.name)} 약력 보기">
+            <span class="speaker-card-more" aria-hidden="true"><i class="ri-add-line" aria-hidden="true"></i></span>
+            ${speaker.pending
+              ? `<div class="speaker-placeholder" role="img" aria-label="연사 섭외 중"><i class="ri-user-line" aria-hidden="true"></i><span>TBA</span></div>`
+              : `<img src="${common().asset(speaker.image)}" alt="${escapeHtml(speaker.name)} portrait" loading="lazy" decoding="async">`}
+            <div class="speaker-info">
+              <span class="ui-badge">${escapeHtml(speaker.track)}</span>${speaker.pending ? ' <span class="ui-badge speaker-pending-badge">섭외 중</span>' : ''}
+              <h2 class="speaker-name">${escapeHtml(speaker.name)}</h2>
+              <p class="speaker-role">
+                <span>${escapeHtml(speaker.role)}</span>
+                <span aria-hidden="true">|</span>
+                <span>${escapeHtml(speaker.org)}</span>
+              </p>
+            </div>
+          </article>
+        `;
+      }).join('');
+
+      if (grid.dataset.speakerModalBound) return;
+      grid.dataset.speakerModalBound = 'true';
+      grid.addEventListener('click', (event) => {
+        const card = event.target.closest('[data-speaker-id]');
+        if (!card) return;
+        openSpeakerModal(speakerById(card.dataset.speakerId, getSpeakerItems(grid)), card);
+      });
+      grid.addEventListener('keydown', (event) => {
+        if (event.key !== 'Enter' && event.key !== ' ') return;
+        const card = event.target.closest('[data-speaker-id]');
+        if (!card) return;
+        event.preventDefault();
+        openSpeakerModal(speakerById(card.dataset.speakerId, getSpeakerItems(grid)), card);
+      });
     });
   }
 

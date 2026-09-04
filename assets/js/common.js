@@ -13,6 +13,7 @@
 
   const nav = [
     { label: 'About', href: 'theme.html', key: 'aboutGroup', children: aboutLinks },
+    { label: 'Opening', href: 'opening.html', key: 'opening' },
     { label: 'Speakers', href: 'speakers.html', key: 'speakers' },
     { label: 'Program', href: 'program.html', key: 'program' },
     { label: 'Archive', href: 'archive.html', key: 'archive' },
@@ -195,6 +196,7 @@
               <summary>바로가기 <i class="ri-arrow-down-s-line" aria-hidden="true"></i></summary>
               <div class="footer-family-menu">
                 <a href="${link('register.html')}">행사 참가신청</a>
+                <a href="${link('register-confirm.html')}">참가신청 조회·취소</a>
                 <a href="${link('meetup/reserve.html')}">밋업 예약</a>
                 <a href="${link('meetup/confirm.html')}">예약 조회·취소</a>
                 <a href="${link('program.html')}">프로그램</a>

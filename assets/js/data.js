@@ -280,9 +280,7 @@
     { id: 'gyulbati-exhibit', name: '귤바티', field: '콘텐츠 / 식품', note: '못난이귤로 재해석한 제주 전통 발효 음료' },
     { id: 'haewoo-exhibit', name: '해우', field: '콘텐츠 / 제조', note: '머메이드다이빙 체험 교육 및 장비 제조' },
     { id: 'jito-forest', name: '지토의 숲', field: '콘텐츠', note: '핸드워시, 굿즈 등' },
-    { id: 'make-a-better', name: '주식회사 메이크어베러', field: '식품', note: '식품, 커피' },
     { id: 'the-green-box', name: '더그린박스', field: '콘텐츠', note: '굿즈, 업사이클 체험' },
-    { id: 'jejuseyo', name: '제주세요', field: '식품', note: '깻잎청 등' },
     { id: 'jeju-perfume-museum', name: '제주퍼퓸뮤지엄', field: '제조', note: '향수, 방향제 등' },
     { id: 'jeju-citrus-lab', name: '제주시트러스랩', field: '제조', note: '화장품' },
     { id: 'nitem', name: '니텀', field: '식품', note: '커피대체음료' }
@@ -332,14 +330,13 @@
     '12:30': '점심시간'
   };
 
-  // 비즈밋업 시간표.pdf 기준 기관별 상담 불가 시간대.
+  // 비즈밋업 시간표(수정).pdf 기준 기관별 상담 불가 시간대.
   // 점심시간처럼 선택지만 남기고 예약은 막는다.
   const companyReservationBreaks = {
     'kb-investment': ['10:00', '10:30', '11:00', '11:30', '13:00', '16:00', '16:30'],
     'daekyo-investment': ['13:30', '14:00', '16:00', '16:30'],
     'logan-ventures': ['16:00', '16:30'],
     smartrun: ['13:30', '14:00', '16:00', '16:30'],
-    nextchallenge: ['13:30', '14:00', '16:00', '16:30'],
     'gomao-ventures': ['10:00', '10:30', '11:00', '11:30', '13:00', '13:30', '14:00'],
     'newkids-investment': ['10:00', '10:30', '11:00', '11:30', '13:00', '13:30', '14:00', '16:00', '16:30'],
     'jeju-content-agency': ['14:30'],
@@ -525,37 +522,37 @@
       },
       {
         category: 'RISING IR',
-        title: 'Rising IR Pitching',
+        title: '로컬콘텐츠 기업 IR피칭(라이징세션)',
         date: `${eventDate} 13:30-14:30`,
-        location: '라이징 IR 5개 기업',
+        location: '라이징세션 5개 기업',
         image: image('assets/images/program/rising-ir.jpg')
       },
       {
         category: 'OPENING',
-        title: 'Opening Ceremony',
+        title: '글로벌콘텐츠포럼 개막식',
         date: `${eventDate} 14:30-14:45`,
         location: eventVenueDetail,
         image: image('assets/images/archive/2025/DSC09180.jpg')
       },
       {
         category: 'FORUM',
-        title: 'Global Content Forum',
+        title: '토크쇼',
         date: `${eventDate} 15:00-16:00`,
         location: 'DX/AX 전환 토크쇼',
         image: image('assets/images/program/program-4.jpg')
       },
       {
         category: 'MAIN IR',
-        title: 'Main IR Pitching',
+        title: '로컬콘텐츠 기업 IR피칭(지역 선도기업)',
         date: `${eventDate} 16:00-17:40`,
-        location: '제주 콘텐츠 기업 8개사',
+        location: '지역 선도기업 8개사',
         image: image('assets/images/program/main-ir.jpg')
       },
       {
         category: 'MOU',
-        title: 'MOU Ceremony',
+        title: '투자 유치',
         date: `${eventDate} 17:40-18:00`,
-        location: '협약 기업 MOU 체결',
+        location: '참여 기업 및 기관 투자 유치',
         image: image('assets/images/program/mou.jpg')
       },
       {
@@ -602,6 +599,53 @@
         ]
       }
     ],
+    openingSpeakers: [
+      {
+        id: 'kang-min-bu',
+        name: '강민부',
+        role: '원장',
+        org: '제주콘텐츠진흥원',
+        track: 'Opening',
+        image: image('assets/images/opening/open-2.png'),
+        bio: '제주콘텐츠진흥원 원장. 제주언론학회 기획이사, 제주특별자치도 홍보정책자문위원, KBS 제주방송총국 편성제작국장을 역임했다.',
+        intro: [
+          '제주콘텐츠진흥원 원장',
+          '제주언론학회 기획이사',
+          '제주특별자치도 홍보정책자문위원',
+          'KBS 제주방송총국 편성제작국장'
+        ]
+      },
+      {
+        id: 'wi-sung-gon-opening',
+        name: '위성곤',
+        role: '제주특별자치도지사',
+        org: '제주특별자치도',
+        track: 'Opening',
+        image: image('assets/images/opening/open-3.webp'),
+        bio: '제주특별자치도지사.',
+        intro: [
+          '2024~2026.04. 제22대 국회의원(제주서귀포시/더불어민주당)',
+          '2025.08~2026.04. 국회 기후위기특별위원회 위원장',
+          '2024~2026.04. 제22대 국회 행정안전위원회 위원',
+          '2025~2026.04. 더불어민주당 탄소중립위원회 위원장'
+        ]
+      },
+      {
+        id: 'yang-moon-seok',
+        name: '양문석',
+        role: '회장',
+        org: '제주상공회의소',
+        track: 'Opening',
+        image: image('assets/images/opening/open-1.jpg'),
+        bio: '제주상공회의소 회장. 대한상공회의소 부회장, 민주평화통일자문회의 제주지역회의 부의장, 제주인자위 공동위원장을 맡고 있다.',
+        intro: [
+          '현) 제주상공회의소 회장',
+          '현) 대한상공회의소 부회장',
+          '현) 민주평화통일자문회의 제주지역회의 부의장',
+          '현) 제주인자위 공동위원장'
+        ]
+      }
+    ],
     speakers: [
       {
         id: 'wi-sung-gon',
@@ -610,11 +654,11 @@
         org: '제주특별자치도',
         track: 'Forum',
         image: image('assets/images/speakers/speaker-wi-sung-gon.webp'),
-        bio: '2026 제주글로벌콘텐츠포럼 글로벌 포럼 토론연사.',
+        bio: '2026 제주글로벌콘텐츠포럼 토크쇼 토론연사.',
         intro: [
           '2024~2026.04. 제22대 국회의원(제주서귀포시/더불어민주당)',
           '2025.08~2026.04. 국회 기후위기특별위원회 위원장',
-          '2024~2026.04. 제22대 국회 행정안정위원회 위원',
+          '2024~2026.04. 제22대 국회 행정안전위원회 위원',
           '2025~2026.04. 더불어민주당 탄소중립위원회 위원장'
         ]
       },
@@ -624,13 +668,13 @@
         role: '글로벌 LBE(공간 기반 엔터테인먼트) 부사장',
         org: '와일드브레인 CPLG',
         track: 'LBE',
-        image: image('assets/images/speakers/speaker-evi-sari.avif'),
-        bio: '글로벌 IP 기반 공간 경험, 라이선싱, LBE 사업 전략을 총괄하며 Peanuts, Teletubbies, Dr. Seuss 등 글로벌 IP의 공간형 엔터테인먼트 사업을 전개한다.',
+        image: image('assets/images/speakers/speaker-evi-sari.jpg'),
+        bio: '글로벌 IP 라이선싱 에이전시 WildBrain CPLG에서 테마파크, 실내 엔터테인먼트 시설, 호스피탈리티, 몰입형 전시 등 IP 기반 현장형 경험을 아우르는 글로벌 LBE 사업을 총괄한다.',
         intro: [
           'WildBrain CPLG 글로벌 LBE(Location-Based Entertainment) 부사장',
-          '글로벌 IP 기반 공간 경험·라이선싱·LBE 사업 전략 총괄',
-          '아시아·태평양을 넘어 유럽·중동 등 글로벌 LBE 사업 확장 주도',
-          'Peanuts·Teletubbies·Dr. Seuss 등 글로벌 IP의 공간형 엔터테인먼트 사업 전개'
+          '테마파크·실내 엔터테인먼트 시설부터 호스피탈리티·몰입형 전시에 이르는 IP 기반 어트랙션·공간·현장형 경험 총괄',
+          '아시아·태평양, 유럽, 중동 등 글로벌 시장에서 지역별 크리에이티브·비즈니스 전략 기반 LBE 사업 주도',
+          'Peanuts·Teletubbies·Dr. Seuss·Miffy·Miraculous 등 주요 글로벌 IP의 LBE 사업 담당'
         ]
       },
       {
@@ -692,7 +736,7 @@
         image: image('assets/images/archive/2025/DSC09532.jpg')
       },
       {
-        title: '제주 콘텐츠 기업 8개사 메인 IR 피칭',
+        title: '로컬콘텐츠 기업 IR피칭(지역 선도기업)',
         category: 'Main IR',
         image: image('assets/images/archive/2024/jgc-2024-013.jpg')
       },
@@ -727,42 +771,42 @@
       },
       {
         id: 'rising-ir',
-        tab: '라이징IR',
-        title: '라이징 IR 피칭',
+        tab: '라이징세션',
+        title: '로컬콘텐츠 기업 IR피칭(라이징세션)',
         sessions: [
-          { time: '13:30 - 14:30', title: '제주도내 3년 미만 기업 5개사 피칭', meta: '사이, 계란바구니, 낭만지구인, 귤바티, 해우 / VC·AC 참여', thumbnail: 'assets/images/program/rising-ir.jpg' }
+          { time: '13:30 - 14:30', title: '로컬콘텐츠 기업 IR피칭(라이징세션)', meta: '사이, 계란바구니, 낭만지구인, 귤바티, 해우 / VC·AC 참여', thumbnail: 'assets/images/program/rising-ir.jpg' }
         ]
       },
       {
         id: 'opening',
-        tab: '개막식',
-        title: '개막식',
+        tab: '글로벌콘텐츠포럼 개막식',
+        title: '글로벌콘텐츠포럼 개막식',
         sessions: [
-          { time: '14:30 - 14:45', title: '개막식', meta: '제주글로벌콘텐츠포럼 및 비즈니스 네트워킹 개막' }
+          { time: '14:30 - 14:45', title: '글로벌콘텐츠포럼 개막식', meta: '제주글로벌콘텐츠포럼 및 비즈니스 네트워킹 개막' }
         ]
       },
       {
         id: 'global-forum',
-        tab: '글로벌포럼',
-        title: '글로벌 포럼',
+        tab: '토크쇼',
+        title: '토크쇼',
         sessions: [
           { time: '15:00 - 16:00', title: 'DX/AX 전환에 따른 로컬 콘텐츠 산업(기업)의 대응방안', meta: '위성곤 제주특별자치도지사, Evi Sari 부사장, 김영록 대표, 조수현 대표, 사무엘로르카 조직위원' }
         ]
       },
       {
         id: 'main-ir',
-        tab: '메인IR',
-        title: '메인 IR 피칭',
+        tab: '지역 선도기업',
+        title: '로컬콘텐츠 기업 IR피칭(지역 선도기업)',
         sessions: [
-          { time: '16:00 - 17:40', title: '제주 콘텐츠 기업 8개사 메인 IR 피칭', meta: '해녀의 부엌, 그린우드, 인스피어, 위놉스, 휴플, 그리메, 케이컴퍼니, 프리아이디어', thumbnail: 'assets/images/program/main-ir.jpg' }
+          { time: '16:00 - 17:40', title: '로컬콘텐츠 기업 IR피칭(지역 선도기업)', meta: '해녀의 부엌, 그린우드, 인스피어, 위놉스, 휴플, 그리메, 케이컴퍼니, 프리아이디어', thumbnail: 'assets/images/program/main-ir.jpg' }
         ]
       },
       {
         id: 'mou',
-        tab: 'MOU',
-        title: 'MOU 협약',
+        tab: '투자 유치',
+        title: '투자 유치',
         sessions: [
-          { time: '17:40 - 18:00', title: '협약 기업 MOU 체결', meta: '참여 기업 및 기관 협약식', thumbnail: 'assets/images/program/mou.jpg' }
+          { time: '17:40 - 18:00', title: '투자 유치', meta: '참여 기업 및 기관 투자 유치', thumbnail: 'assets/images/program/mou.jpg' }
         ]
       }
     ],

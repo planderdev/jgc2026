@@ -56,7 +56,7 @@ export default () => runSuite('기능 플로우', async ({ browser, r }) => {
   await b.page.waitForSelector('[data-time-choices] input', { timeout: 15000 }); await b.page.waitForTimeout(400);
   r.check(await b.page.locator(`[data-time-choices] input[value="${slot}"]`).isDisabled(), '다른 브라우저에서도 슬롯 마감 반영', slot);
   // 같은 담당자가 같은 기관을 다른 시간에 다시 → company_duplicate
-  await b.page.locator('[data-time-choices] input:not([disabled])').nth(3).check();
+  await b.page.locator('[data-time-choices] input:not([disabled])').first().check();
   await b.page.click('[data-step="2"] [data-step-action="next"]'); await b.page.waitForTimeout(400);
   await b.page.fill('[name=applicantCompany]', `${QA_TAG} 중복시도`);
   await b.page.fill('[name=managerName]', '검증담당');
@@ -97,14 +97,16 @@ export default () => runSuite('기능 플로우', async ({ browser, r }) => {
   // ── 참가신청
   const e = await newPage(browser);
   await e.page.goto(`${base}/register`, { waitUntil: 'load' }); await e.page.waitForTimeout(900);
+  const regPhone = qaPhone(stamp());
+  const regEmail = `qa${stamp()}@example.com`;
   await e.page.locator('[data-event-type-option][value=general]').check(); await e.page.waitForTimeout(300);
   await e.page.fill('[name=generalName]', `${QA_TAG} 자동검증`);
-  await e.page.fill('[name=phone]', qaPhone(stamp()));
+  await e.page.fill('[name=phone]', regPhone);
   await e.page.fill('[data-event-register-form] [name=email]', 'not-an-email');
   await e.page.check('[data-event-register-form] [name=privacy]');
   await e.page.click('[data-event-register-form] button[type=submit]'); await e.page.waitForTimeout(600);
   r.check(!e.page.url().includes('register-complete'), '참가신청 잘못된 메일 주소 차단');
-  await e.page.fill('[data-event-register-form] [name=email]', `qa${stamp()}@example.com`);
+  await e.page.fill('[data-event-register-form] [name=email]', regEmail);
   await e.page.click('[data-event-register-form] button[type=submit]');
   await e.page.waitForURL('**/register-complete**', { timeout: 15000 }).catch(() => {});
   await e.page.waitForTimeout(900);
@@ -112,6 +114,17 @@ export default () => runSuite('기능 플로우', async ({ browser, r }) => {
   r.check(/^JGCF-ATTEND-[A-Z2-9]{6}$/.test(regNo), '참가신청 서버 저장 + 완료 페이지', regNo || e.page.url());
   const body = await e.page.locator('[data-register-complete-result]').innerText().catch(() => '');
   r.check(!/홍길동/.test(body), '완료 페이지에 예시 데이터 없음');
+  await e.page.goto(`${base}/register-confirm`, { waitUntil: 'load' }); await e.page.waitForTimeout(900);
+  await e.page.fill('[name=registrationNumber]', regNo); await e.page.fill('[name=phone]', '010-0000-0000');
+  await e.page.click('[data-registration-lookup-form] button[type=submit]'); await e.page.waitForTimeout(2000);
+  r.check(/일치하는 참가신청이 없/.test(await e.page.locator('[data-registration-lookup-result]').innerText()), '연락처 불일치 참가신청 조회 차단');
+  await e.page.fill('[name=phone]', regPhone);
+  await e.page.click('[data-registration-lookup-form] button[type=submit]'); await e.page.waitForTimeout(2000);
+  r.check(/신청 확정/.test(await e.page.locator('[data-registration-lookup-result]').innerText()), '참가신청 조회 성공');
+  await e.page.click('[data-open-registration-cancel]'); await e.page.waitForTimeout(300);
+  r.check(await e.page.locator('[data-registration-cancel-dialog]').evaluate((d) => d.open === true && d.contains(document.activeElement)), '참가신청 취소 다이얼로그 열림 + 포커스 진입');
+  await e.page.click('[data-confirm-registration-cancel]'); await e.page.waitForTimeout(2000);
+  r.check(/신청 취소/.test(await e.page.locator('[data-registration-lookup-result]').innerText()), '참가신청 취소 반영');
   await e.context.close();
 
   // ── 마감 상태 UI (서버 응답 가로채기 — 실제 마감 시각과 무관하게 검증)

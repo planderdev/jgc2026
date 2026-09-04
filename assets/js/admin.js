@@ -136,7 +136,12 @@
         .filter((r) => match(r, ['reservation_no', 'applicant_company', 'manager_name', 'phone', 'email', 'company_name']));
     }
     if (tab === 'registrations') {
-      return registrations.filter((r) => match(r, ['registration_no', 'name', 'organization', 'phone', 'email']));
+      return registrations
+        .filter((r) => !status
+          || (status === 'attended' ? !!r.attended_at
+            : status === 'absent' ? (r.status === 'confirmed' && !r.attended_at)
+            : r.status === status))
+        .filter((r) => match(r, ['registration_no', 'name', 'organization', 'phone', 'email']));
     }
     if (tab === 'overview') return [overview()];
     // summary — data.js의 상담기관 전체를 기준으로 예약이 없는 기관도 0건으로 보여준다
@@ -171,8 +176,10 @@
     const capacity = companies.length * slots.length;
     const confirmed = reservations.filter((r) => r.status === 'confirmed');
     const cancelled = reservations.length - confirmed.length;
+    const confirmedRegistrations = registrations.filter((r) => r.status !== 'cancelled');
+    const cancelledRegistrations = registrations.length - confirmedRegistrations.length;
     const byType = { company: 0, general: 0, student: 0 };
-    registrations.forEach((r) => { byType[r.participant_type] = (byType[r.participant_type] || 0) + 1; });
+    confirmedRegistrations.forEach((r) => { byType[r.participant_type] = (byType[r.participant_type] || 0) + 1; });
 
     const today = kstDay(Date.now());
     const newToday = reservations.filter((r) => kstDay(r.created_at) === today).length
@@ -189,11 +196,11 @@
     const msLeft = MEETUP_CUTOFF - Date.now();
 
     const attendedMeetup = confirmed.filter((r) => r.attended_at).length;
-    const attendedEvent = registrations.filter((r) => r.attended_at).length;
+    const attendedEvent = confirmedRegistrations.filter((r) => r.attended_at).length;
 
     return { capacity, confirmed: confirmed.length, cancelled, rate: capacity ? confirmed.length / capacity : 0,
       attendedMeetup, attendedEvent,
-      registrations: registrations.length, byType, newToday, days, slotLoad, companies: companies.length,
+      registrations: confirmedRegistrations.length, cancelledRegistrations, byType, newToday, days, slotLoad, companies: companies.length,
       dday: Math.ceil(msLeft / 86400000), closed: msLeft <= 0,
       emptyCompanies: companies.filter((c) => !confirmed.some((r) => r.company_id === c.id)).length };
   }
@@ -217,7 +224,7 @@
     return `
       <div class="ov-tiles">
         <div class="ov-tile"><small>밋업 예약률</small><strong>${pct(o.rate)}<em>${o.confirmed} / ${o.capacity}</em></strong><p>확정 ${o.confirmed}건 · 취소 ${o.cancelled}건</p></div>
-        <div class="ov-tile"><small>행사 참가신청</small><strong>${o.registrations}<em>명</em></strong><p>기업 ${o.byType.company} · 일반 ${o.byType.general} · 학생 ${o.byType.student}</p></div>
+        <div class="ov-tile"><small>행사 참가신청</small><strong>${o.registrations}<em>명</em></strong><p>기업 ${o.byType.company} · 일반 ${o.byType.general} · 학생 ${o.byType.student} · 취소 ${o.cancelledRegistrations}</p></div>
         <div class="ov-tile"><small>오늘 신규</small><strong>${o.newToday}<em>건</em></strong><p>예약 + 참가신청 (KST 기준)</p></div>
         <div class="ov-tile ${o.closed ? '' : 'warn'}"><small>밋업 예약 마감</small><strong>${o.closed ? '마감' : `D-${o.dday}`}</strong><p>9/15(화) 자정 · ${o.closed ? '접수 종료됨' : '이후엔 사무국 대신 취소만'}</p></div>
         <div class="ov-tile"><small>행사 당일 출석</small><strong>${o.attendedMeetup + o.attendedEvent}<em>명</em></strong><p>밋업 ${o.attendedMeetup}/${o.confirmed} · 참가 ${o.attendedEvent}/${o.registrations}</p></div>
@@ -304,11 +311,13 @@
       </article>`).join('')}</div>`;
     }
     if (tab === 'registrations') {
-      return `<div class="admin-cards">${rows.map((r) => `<article class="admin-card">
-        <header><strong>${esc(TYPE_LABEL[r.participant_type] || r.participant_type)}</strong>${attendButton('registration', r.registration_no, r.attended_at)}</header>
+      return `<div class="admin-cards">${rows.map((r) => `<article class="admin-card ${r.status === 'confirmed' ? '' : 'is-off'}">
+        <header><strong>${esc(TYPE_LABEL[r.participant_type] || r.participant_type)}</strong><span class="admin-badge ${r.status === 'confirmed' ? 'ok' : 'off'}">${r.status === 'confirmed' ? '확정' : '취소'}</span>
+          ${r.status === 'confirmed' ? attendButton('registration', r.registration_no, r.attended_at) : ''}</header>
         <h4>${esc(r.name)}${r.organization ? ` <small>${esc(r.organization)}</small>` : ''}</h4>
         <p>${telLink(r.phone)}${r.email ? ` · ${esc(r.email)}` : ''}</p>
         <p class="muted">${esc(r.registration_no)} · ${kst(r.created_at)}</p>
+        <footer>${r.status === 'confirmed' ? `<button class="admin-mini" data-cancel-registration="${esc(r.registration_no)}">취소</button>` : ''}</footer>
       </article>`).join('')}</div>`;
     }
     return null;
@@ -320,7 +329,7 @@
     $('[data-search]').hidden = mode !== 'partner' && tab === 'overview';
     $('[data-csv]').hidden = mode !== 'partner' && tab === 'overview';
     $('[data-filter-company]').hidden = mode === 'partner' || tab !== 'reservations';
-    $('[data-filter-status]').hidden = mode === 'partner' || tab !== 'reservations';
+    $('[data-filter-status]').hidden = mode === 'partner' || !['reservations', 'registrations'].includes(tab);
     const mount = $('[data-table-mount]');
 
     if (tab === 'overview' && mode !== 'partner') { mount.innerHTML = renderOverview(rows[0]); return; }
@@ -369,12 +378,15 @@
 
     if (tab === 'registrations') {
       mount.innerHTML = `<table class="admin-table"><thead><tr>
-        <th>신청번호</th><th>구분</th><th>이름</th><th>소속</th><th>연락처</th><th>신청일시</th><th>출석</th>
+        <th>신청번호</th><th>상태</th><th>구분</th><th>이름</th><th>소속</th><th>연락처</th><th>메일</th><th>신청일시</th><th>취소일시</th><th>출석</th><th></th>
       </tr></thead><tbody>${rows.map((r) => `<tr>
-        <td>${esc(r.registration_no)}</td><td>${esc(TYPE_LABEL[r.participant_type] || r.participant_type)}</td>
+        <td>${esc(r.registration_no)}</td>
+        <td><span class="admin-badge ${r.status === 'confirmed' ? 'ok' : 'off'}">${r.status === 'confirmed' ? '확정' : '취소'}</span></td>
+        <td>${esc(TYPE_LABEL[r.participant_type] || r.participant_type)}</td>
         <td>${esc(r.name)}</td><td>${esc(r.organization || '-')}</td>
-        <td>${esc(r.phone)}</td><td>${kst(r.created_at)}</td>
-        <td>${attendButton('registration', r.registration_no, r.attended_at)}</td>
+        <td>${esc(r.phone)}</td><td>${esc(r.email || '-')}</td><td>${kst(r.created_at)}</td><td>${kst(r.cancelled_at)}</td>
+        <td>${r.status === 'confirmed' ? attendButton('registration', r.registration_no, r.attended_at) : ''}</td>
+        <td>${r.status === 'confirmed' ? `<button class="admin-mini" data-cancel-registration="${esc(r.registration_no)}">취소</button>` : ''}</td>
       </tr>`).join('')}</tbody></table>`;
       return;
     }
@@ -395,8 +407,9 @@
         r.applicant_company, r.manager_name, r.phone, r.email, r.inquiry, r.attachment_name || '', kst(r.created_at), kst(r.cancelled_at),
         r.attended_at ? '출석' : '', kst(r.attended_at)];
     } else if (tab === 'registrations') {
-      header = ['신청번호','구분','이름','소속','연락처','메일','신청일시','출석','출석시각'];
-      line = (r) => [r.registration_no, TYPE_LABEL[r.participant_type] || r.participant_type, r.name, r.organization || '', r.phone, r.email || '', kst(r.created_at),
+      header = ['신청번호','상태','구분','이름','소속','연락처','메일','신청일시','취소일시','출석','출석시각'];
+      line = (r) => [r.registration_no, r.status === 'confirmed' ? '확정' : '취소', TYPE_LABEL[r.participant_type] || r.participant_type,
+        r.name, r.organization || '', r.phone, r.email || '', kst(r.created_at), kst(r.cancelled_at),
         r.attended_at ? '출석' : '', kst(r.attended_at)];
     } else {
       header = ['상담기관','예약률','확정','취소','확정 시간대'];
@@ -430,6 +443,7 @@
     const adminPanel = $('[data-admin-panel]');
     const dialog = $('[data-admin-cancel-dialog]');
     let cancelTarget = null;
+    let cancelKind = 'reservation';
 
     async function enter() {
       const who = await rpc('jgcf_whoami');
@@ -532,7 +546,18 @@
       const cancel = e.target.closest('[data-cancel]');
       if (cancel) {
         cancelTarget = cancel.dataset.cancel;
+        cancelKind = 'reservation';
+        $('#admin-cancel-title').textContent = '이 예약을 취소할까요?';
         $('[data-cancel-target]').textContent = `${cancelTarget} — 취소하면 해당 시간대가 다시 열립니다.`;
+        dialog.showModal();
+        return;
+      }
+      const cancelRegistration = e.target.closest('[data-cancel-registration]');
+      if (cancelRegistration) {
+        cancelTarget = cancelRegistration.dataset.cancelRegistration;
+        cancelKind = 'registration';
+        $('#admin-cancel-title').textContent = '이 참가신청을 취소할까요?';
+        $('[data-cancel-target]').textContent = `${cancelTarget} — 취소하면 현장 체크인 명단에서 제외됩니다.`;
         dialog.showModal();
       }
     });
@@ -541,7 +566,9 @@
       if (e.target.matches('[data-dialog-close]') || e.target === dialog) { dialog.close(); return; }
       if (e.target.matches('[data-confirm-cancel]') && cancelTarget) {
         e.target.disabled = true;
-        const r = await rpc('jgcf_admin_cancel', { p_reservation_no: cancelTarget });
+        const r = cancelKind === 'registration'
+          ? await rpc('jgcf_admin_cancel_registration', { p_registration_no: cancelTarget })
+          : await rpc('jgcf_admin_cancel', { p_reservation_no: cancelTarget });
         e.target.disabled = false;
         dialog.close();
         if (!r.ok && r.reason !== 'expired') alert('취소하지 못했습니다: ' + (r.reason || '')); 

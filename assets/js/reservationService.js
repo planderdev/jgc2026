@@ -18,6 +18,7 @@
     time_conflict: '같은 시간에 이미 다른 상담이 예약되어 있습니다. 다른 시간을 선택해 주세요.',
     company_duplicate: '이 상담기관은 이미 예약하셨습니다. 다른 기관을 선택해 주세요.',
     already_registered: '이미 참가신청이 접수된 연락처입니다.',
+    registration_cancel_closed: '참가신청 취소가 마감되었습니다. 변경·취소가 필요하면 운영사무국에 문의해 주세요.',
     invalid_email: '메일 주소를 정확하게 입력해 주세요.',
     invalid_phone: '연락처를 정확하게 입력해 주세요.',
     invalid_slot: '선택할 수 없는 시간대입니다. 다른 시간을 선택해 주세요.',
@@ -26,6 +27,8 @@
     invalid_type: '참가 구분을 다시 선택해 주세요.',
     not_found: '예약번호와 담당자 연락처가 일치하는 예약이 없습니다.',
     not_found_or_already_cancelled: '이미 취소되었거나 일치하는 예약이 없습니다.',
+    registration_not_found: '신청번호와 연락처가 일치하는 참가신청이 없습니다.',
+    registration_not_found_or_already_cancelled: '이미 취소되었거나 일치하는 참가신청이 없습니다.',
     code_generation_failed: '예약번호 발급에 실패했습니다. 잠시 후 다시 시도해 주세요.',
     network: '서버에 연결하지 못했습니다. 네트워크를 확인하고 다시 시도해 주세요.'
   };
@@ -155,6 +158,20 @@
     });
   }
 
+  async function findRegistrationForLookup(registrationNo, phone) {
+    return callFunction('jgcf_lookup_registration', {
+      p_registration_no: registrationNo,
+      p_phone: phone
+    });
+  }
+
+  async function cancelRegistration(registrationNo, phone) {
+    return callFunction('jgcf_cancel_registration', {
+      p_registration_no: registrationNo,
+      p_phone: phone
+    });
+  }
+
   window.ReservationService = {
     isOpen,
     isRegistrationOpen,
@@ -164,6 +181,8 @@
     findForLookup,
     cancel,
     createRegistration,
+    findRegistrationForLookup,
+    cancelRegistration,
     messageFor
   };
 })();

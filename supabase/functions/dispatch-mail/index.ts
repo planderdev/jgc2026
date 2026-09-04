@@ -2,7 +2,7 @@
  * 메일 발송기.
  *
  * public.mail_outbox 에 쌓인 대기 건을 꺼내 Resend로 보낸다.
- * 호출자: DB의 jgcf_dispatch_mail() — 예약 확정·취소 직후, 그리고 1분마다 cron.
+ * 호출자: DB의 jgcf_dispatch_mail() — 예약/참가신청 확정·취소 직후, 그리고 1분마다 cron.
  *
  * 필요한 비밀값(Supabase → Edge Functions → Secrets):
  *   RESEND_API_KEY  Resend API 키
@@ -130,8 +130,26 @@ function render(row: Row): { subject: string; html: string } | null {
         <p>${button(`${SITE}/meetup/reserve`, '비즈니스 밋업 예약')}</p>
         <p style="color:#666;font-size:13.5px;margin-top:20px">
           · 행사 당일 접수 데스크에서 <strong>신청번호</strong>를 말씀해 주세요.<br>
+          · 참석이 어려우시면 <a href="${SITE}/register-confirm" style="color:#1a1a1a">참가신청 조회·취소</a>에서 취소해 주세요.<br>
           · 프로그램은 <a href="${SITE}/program" style="color:#1a1a1a">행사 사이트</a>에서 확인하실 수 있습니다.
         </p>`)
+    };
+  }
+
+  if (row.kind === 'registration_cancelled') {
+    const typeLabel = { company: '기업', general: '일반', student: '학생' }[p.participant_type ?? ''] ?? '';
+    return {
+      subject: `[JGCF 2026] 행사 참가신청이 취소되었습니다 (${p.registration_no ?? ''})`,
+      html: layout('행사 참가신청 취소', `
+        <p>${esc(p.name)} 님, 아래 참가신청이 취소되었습니다.</p>
+        ${detailTable([
+          ['신청번호', String(p.registration_no ?? '')],
+          ['구분', typeLabel],
+          ...(p.organization ? ([['소속', String(p.organization)]] as [string, string][]) : []),
+          ['행사 일시', '2026년 9월 16일(수) 10:00–18:00']
+        ])}
+        <p>직접 취소하지 않으셨다면 사무국으로 연락해 주세요.</p>
+        <p style="margin-top:16px">${button(`${SITE}/register`, '다시 참가신청하기')}</p>`)
     };
   }
 

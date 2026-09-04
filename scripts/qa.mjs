@@ -165,6 +165,7 @@ async function checkRoutes(page) {
     'program.html',
     'archive.html',
     'register.html',
+    'register-confirm.html',
     'register-complete.html',
     'venue.html',
     'partners.html',
@@ -213,7 +214,9 @@ async function checkProgramContent(page) {
 async function checkRegistration(page) {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto(pageUrl('register.html'), { waitUntil: 'networkidle' });
-  const phone = `010-2222-${String(Date.now()).slice(-4)}`;
+  const stamp = Date.now();
+  const phone = `010-2222-${String(stamp).slice(-4)}`;
+  const email = `qa-register-${stamp}@example.com`;
   await page.evaluate(() => {
     localStorage.removeItem('jgcf2026.eventApplications');
     localStorage.removeItem('jgcf2026.eventApplicationSequence');
@@ -222,14 +225,24 @@ async function checkRegistration(page) {
   await page.fill('input[name="companyName"]', '__QA__ 콘텐츠'); // __QA__ 표시가 있어야 뒷정리가 지운다
   await page.fill('input[name="companyManagerName"]', '참가 신청자');
   await page.fill('input[name="phone"]', phone);
+  await page.fill('input[name="email"]', email);
   await page.check('input[name="privacy"]');
   await page.getByRole('button', { name: /신청 완료/ }).click();
   await page.waitForURL(/register-complete/);
+  const registrationNumber = await page.locator('[data-copy-source]').innerText();
   const resultText = await page.locator('[data-register-complete-result]').innerText();
+  await page.goto(pageUrl('register-confirm.html'), { waitUntil: 'networkidle' });
+  await page.fill('input[name="registrationNumber"]', registrationNumber);
+  await page.fill('input[name="phone"]', phone);
+  await page.getByRole('button', { name: /조회하기/ }).click();
+  await page.getByRole('button', { name: /참가신청 취소/ }).click();
+  await page.getByRole('button', { name: /취소 확정/ }).click();
+  const lookupText = await page.locator('[data-registration-lookup-result]').innerText();
   return {
     completed: resultText.includes('JGCF-ATTEND-'),
     typeVisible: resultText.includes('기업'),
-    applicantVisible: resultText.includes('참가 신청자')
+    applicantVisible: resultText.includes('참가 신청자'),
+    cancelled: lookupText.includes('신청 취소')
   };
 }
 
@@ -332,8 +345,8 @@ async function main() {
     report.mobileMenu.open ? null : 'Mobile menu did not open',
     report.mobileMenu.expanded === 'true' ? null : 'Mobile menu aria-expanded failed',
     report.faq.items === 0 && report.faq.openItems === 0 ? null : 'FAQ list should be empty',
-    report.programContent.scheduleTabs >= 6 && report.programContent.institutionOrgs >= 25 && report.programContent.mainIrCompanies >= 8 && report.programContent.risingIrCompanies >= 5 && report.programContent.exhibitionCompanies >= 23 ? null : 'Program manuscript content not rendered',
-    report.registration.completed && report.registration.typeVisible && report.registration.applicantVisible ? null : 'Event registration flow failed',
+    report.programContent.scheduleTabs >= 6 && report.programContent.institutionOrgs >= 25 && report.programContent.mainIrCompanies >= 8 && report.programContent.risingIrCompanies >= 5 && report.programContent.exhibitionCompanies >= 20 ? null : 'Program manuscript content not rendered',
+    report.registration.completed && report.registration.typeVisible && report.registration.applicantVisible && report.registration.cancelled ? null : 'Event registration flow failed',
     ...report.routes.filter((item) => item.horizontalOverflow).map((item) => `Horizontal overflow on ${item.route} at ${item.viewport.width}`),
     ...report.routes.filter((item) => !item.header || !item.footer).map((item) => `Missing shell on ${item.route} at ${item.viewport.width}`),
     report.reservation.completed && report.reservation.cancelled ? null : 'Reservation flow failed',

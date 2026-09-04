@@ -1,0 +1,87 @@
+<!doctype html>
+<!-- 자동 생성: node scripts/build-en.mjs — 한국어 원본을 고친 뒤 다시 실행하세요 -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg">
+  <title>Check / Cancel Registration | JGCF 2026</title>
+  <meta name="description" content="Check or cancel your JGCF 2026 event registration with your registration number and phone number.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="JGCF 2026">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:title" content="Check / Cancel Registration | JGCF 2026">
+  <meta property="og:description" content="Check or cancel your JGCF 2026 event registration with your registration number and phone number.">
+  <link rel="canonical" href="https://2026jejugcf.com/en/register-confirm">
+  <link rel="alternate" hreflang="ko" href="https://2026jejugcf.com/register-confirm">
+  <link rel="alternate" hreflang="en" href="https://2026jejugcf.com/en/register-confirm">
+  <link rel="alternate" hreflang="x-default" href="https://2026jejugcf.com/register-confirm">
+  <meta property="og:url" content="https://2026jejugcf.com/en/register-confirm">
+  <meta property="og:image" content="https://2026jejugcf.com/assets/images/og/og-default.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="/assets/css/design-system.css">
+  <link rel="stylesheet" href="/assets/css/styles.css">
+  <link rel="stylesheet" href="/assets/vendor/remixicon/remixicon-subset.css">
+</head>
+<body data-page="registration-confirm">
+  <div id="site-header"></div>
+  <main class="reserve-page">
+    <div class="main-inner">
+      <div class="lookup-head">
+        <div>
+          <p class="section-kicker">Registration Lookup</p>
+          <h1 class="side-title">참가신청 조회·취소</h1>
+          <p class="section-subtitle">신청번호와 신청 시 입력한 연락처로 참가신청 상태를 확인하고, 행사 종료 전이면 취소할 수 있습니다.</p>
+        </div>
+        <a class="ui-button secondary" href="/en/register"><i class="ri-edit-box-line" aria-hidden="true"></i>새 참가신청</a>
+      </div>
+      <div class="lookup-layout">
+        <form class="lookup-card" data-registration-lookup-form novalidate>
+          <h2 class="lookup-card-title">신청 조회</h2>
+          <div class="form-grid lookup-fields">
+            <label class="form-field full">
+              <span class="form-label">신청번호</span>
+              <input class="ui-input" name="registrationNumber" placeholder="예: JGCF-ATTEND-ABC123" autocomplete="off" autocapitalize="characters" required>
+              <span class="form-help">참가신청 완료 화면과 안내 메일에 표시된 번호입니다.</span>
+            </label>
+            <label class="form-field full">
+              <span class="form-label">연락처</span>
+              <input class="ui-input" name="phone" type="tel" inputmode="tel" placeholder="예: 010-1234-5678" autocomplete="tel" required>
+            </label>
+          </div>
+          <button class="ui-button coral lookup-submit" type="submit"><i class="ri-search-line" aria-hidden="true"></i>조회하기</button>
+        </form>
+        <section class="lookup-result" data-registration-lookup-result tabindex="-1" aria-live="polite">
+          <div class="lookup-empty">
+            <i class="ri-calendar-check-line" aria-hidden="true"></i>
+            <p>신청번호와 연락처를 입력하면<br>여기에 참가신청 내용이 표시됩니다.</p>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+  <div id="site-footer"></div>
+
+  <dialog class="dialog-backdrop" data-registration-cancel-dialog aria-labelledby="registration-cancel-title">
+    <div class="ui-dialog">
+      <h2 id="registration-cancel-title">참가신청을 취소할까요?</h2>
+      <p>취소 후에는 현장 체크인 명단에서 제외됩니다. 다시 참석하려면 새로 참가신청을 진행해 주세요.</p>
+      <div class="dialog-actions">
+        <button class="ui-button secondary" type="button" data-dialog-close>닫기</button>
+        <button class="ui-button coral" type="button" data-confirm-registration-cancel>취소 확정</button>
+      </div>
+    </div>
+  </dialog>
+
+  <script src="/assets/js/i18n.en.js" defer></script>
+
+  <script src="/assets/js/data.js" defer></script>
+  <script src="/assets/js/supabaseConfig.js" defer></script>
+  <script src="/assets/js/reservationService.js" defer></script>
+  <script src="/assets/vendor/qrcode/qrcode.min.js" defer></script>
+  <script src="/assets/js/common.js" defer></script>
+  <script src="/assets/js/register.js" defer></script>
+</body>
+</html>
