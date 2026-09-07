@@ -653,7 +653,7 @@
         role: '제주특별자치도지사',
         org: '제주특별자치도',
         track: 'Forum',
-        image: image('assets/images/speakers/speaker-wi-sung-gon.webp'),
+        image: image('assets/images/speakers/speaker-wi-sung-gon.jpg'),
         bio: '2026 제주글로벌콘텐츠포럼 토크쇼 토론연사.',
         intro: [
           '2024~2026.04. 제22대 국회의원(제주서귀포시/더불어민주당)',
