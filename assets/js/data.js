@@ -108,7 +108,7 @@
     '사이': image('assets/images/program/teahouse.svg'),
     '지토의 숲': image('assets/images/program/jito.svg'),
     '제주시트러스랩': image('assets/images/program/jeju-citrus.svg'),
-    '니텀': image('assets/images/program/niterm.png')
+    '까무': image('assets/images/program/niterm.png')
   };
 
   const companyPortraitLogoTitles = new Set(['사이', '와이앤아처']);
@@ -276,7 +276,7 @@
     { id: 'the-green-box', name: '더그린박스', field: '콘텐츠', note: '굿즈, 업사이클 체험' },
     { id: 'jeju-perfume-museum', name: '제주퍼퓸뮤지엄', field: '제조', note: '향수, 방향제 등' },
     { id: 'jeju-citrus-lab', name: '제주시트러스랩', field: '제조', note: '화장품' },
-    { id: 'nitem', name: '니텀', field: '식품', note: '커피대체음료' }
+    { id: 'nitem', name: '까무', field: '식품', note: '제주 메밀과 곡물을 블렌딩하여 커피 대신 마시는 무카페인 음료 브랜드' }
   ];
 
   const institutionOrgs = [

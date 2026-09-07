@@ -358,7 +358,8 @@
     '로컬식품 및 샤베트': 'Local foods and sorbet',
     '제주시트러스랩': 'Jeju Citrus Lab',
     '화장품': 'Cosmetics',
-    '니텀': 'Niteom',
+    '까무': 'Kkamu',
+    '제주 메밀과 곡물을 블렌딩하여 커피 대신 마시는 무카페인 음료 브랜드': 'A caffeine-free beverage brand blending Jeju buckwheat and grains as an alternative to coffee',
     '커피대체음료': 'Coffee-alternative beverages',
 
     // ── 밋업 안내
