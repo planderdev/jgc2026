@@ -437,6 +437,10 @@
     '제주창조경제혁신센터 스타트업원스톱지원센터': 'Jeju Center for Creative Economy & Innovation Startup One-Stop Support Center',
     '콘텐츠 스타트업 상표권, 저작권 현장상담': 'On-site trademark and copyright consultation for content startups',
     '제주지식재산센터': 'Jeju Intellectual Property Center',
+    '제주스타트업원스톱지원센터 x 제주지식재산센터': 'Jeju Startup One-Stop Support Center x Jeju Intellectual Property Center',
+    '콘텐츠 스타트업 저작권 (변리사 상담)': 'Copyright for content startups (patent attorney consultation)',
+    '콘텐츠 스타트업 상표권 (변리사 상담)': 'Trademarks for content startups (patent attorney consultation)',
+    '지식재산 지원사업 상담 및 컨설팅': 'Consultation and consulting on intellectual property support programs',
 
     // ── 아카이브
     '지난 행사 사진': 'Past Event Photos',

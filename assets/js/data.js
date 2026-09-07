@@ -104,6 +104,7 @@
     '제주대학교 산학협력단 기술사업화ㆍ창업지원센터': image('assets/images/program/jeju-univ.svg'),
     '제주창조경제혁신센터 스타트업원스톱지원센터': image('assets/images/program/onestop.svg'),
     '스타트업원스톱지원센터': image('assets/images/program/onestop.svg'),
+    '제주스타트업원스톱지원센터 x 제주지식재산센터': image('assets/images/program/onestop.svg'),
     '사이': image('assets/images/program/teahouse.svg'),
     '지토의 숲': image('assets/images/program/jito.svg'),
     '제주시트러스랩': image('assets/images/program/jeju-citrus.svg'),
@@ -309,9 +310,9 @@
     { id: 'jeju-credit-guarantee-foundation', name: '제주특별자치도 신용보증재단', field: '도내 기업 보증ㆍ자금조달', note: '보증 및 자금조달 상담' },
     { id: 'cheju-halla-k-hightech-platform', name: '제주한라대학교 K-하이테크플랫폼사업단', field: '기업 재직자교육 및 역량강화 지원 컨설팅', note: '재직자교육 및 역량강화 상담' },
     { id: 'jeju-national-tech-commercialization', name: '제주대학교 산학협력단 기술사업화ㆍ창업지원센터', field: '기술사업화 및 창업지원 컨설팅', note: '기술사업화 및 창업지원 상담' },
-    { id: 'jeju-creative-economy', name: '제주창조경제혁신센터', field: '콘텐츠 스타트업 상표권, 저작권 현장상담', note: '상표권 및 저작권 현장 상담' },
-    { id: 'jeju-startup-onestop', name: '제주창조경제혁신센터 스타트업원스톱지원센터', field: '콘텐츠 스타트업 상표권, 저작권 현장상담', note: '상표권 및 저작권 현장 상담' },
-    { id: 'jeju-ip-center', name: '제주지식재산센터', field: '', note: '' }
+    { id: 'jeju-creative-economy', name: '제주스타트업원스톱지원센터 x 제주지식재산센터', field: '콘텐츠 스타트업 저작권 (변리사 상담)', note: '콘텐츠 스타트업 저작권 (변리사 상담)' },
+    { id: 'jeju-startup-onestop', name: '제주스타트업원스톱지원센터 x 제주지식재산센터', field: '콘텐츠 스타트업 상표권 (변리사 상담)', note: '콘텐츠 스타트업 상표권 (변리사 상담)' },
+    { id: 'jeju-ip-center', name: '제주스타트업원스톱지원센터 x 제주지식재산센터', field: '지식재산 지원사업 상담 및 컨설팅', note: '지식재산 지원사업 상담 및 컨설팅' }
   ];
 
   // 원고 p9 기준. 와이앤아처·패스트벤처스는 VC·AC 목록에는 있지만
@@ -347,9 +348,9 @@
     'jeju-credit-guarantee-foundation': ['14:30'],
     'cheju-halla-k-hightech-platform': ['14:30'],
     'jeju-national-tech-commercialization': ['14:30'],
-    'jeju-creative-economy': ['14:30'],
-    'jeju-startup-onestop': ['14:30'],
-    'jeju-ip-center': ['14:30']
+    'jeju-creative-economy': ['13:00', '13:30', '16:00', '16:30'],
+    'jeju-startup-onestop': ['13:00', '13:30', '16:00', '16:30'],
+    'jeju-ip-center': ['13:00', '13:30', '16:00', '16:30']
   };
 
   const CONSULTATION_MINUTES = 25;
