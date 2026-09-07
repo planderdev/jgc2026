@@ -348,9 +348,9 @@
     'jeju-credit-guarantee-foundation': ['14:30'],
     'cheju-halla-k-hightech-platform': ['14:30'],
     'jeju-national-tech-commercialization': ['14:30'],
-    'jeju-creative-economy': ['13:00', '13:30', '16:00', '16:30'],
-    'jeju-startup-onestop': ['13:00', '13:30', '16:00', '16:30'],
-    'jeju-ip-center': ['13:00', '13:30', '16:00', '16:30']
+    'jeju-creative-economy': ['13:00', '13:30', '16:30'],
+    'jeju-startup-onestop': ['13:00', '13:30', '16:30'],
+    'jeju-ip-center': ['13:00', '13:30', '16:30']
   };
 
   const CONSULTATION_MINUTES = 25;
