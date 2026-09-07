@@ -249,13 +249,6 @@
       points: ['제주신화역사 기반 서귀포 원도심 살강길 메타로드']
     },
     {
-      id: 'gyulbati',
-      name: '귤바티',
-      project: '진행중',
-      field: '식품 / 콘텐츠',
-      points: ['못난이귤로 재해석한 제주 전통 발효 음료']
-    },
-    {
       id: 'haewoo',
       name: '해우',
       project: '진행중',
@@ -278,7 +271,6 @@
     { id: 'sai-exhibit', name: '사이', field: '식품', note: '제주 로컬 원료 블렌딩티 체험과 감정 기록을 결합해 기록 콘텐츠로 제공하는 프로그램' },
     { id: 'egg-basket-exhibit', name: '계란바구니', field: '콘텐츠', note: '인터뷰 기반 콘텐츠 생성 기록 서비스' },
     { id: 'romantic-earthian-exhibit', name: '낭만지구인', field: '콘텐츠', note: '제주신화역사 기반 서귀포 원도심 살강길 메타로드' },
-    { id: 'gyulbati-exhibit', name: '귤바티', field: '콘텐츠 / 식품', note: '못난이귤로 재해석한 제주 전통 발효 음료' },
     { id: 'haewoo-exhibit', name: '해우', field: '콘텐츠 / 제조', note: '머메이드다이빙 체험 교육 및 장비 제조' },
     { id: 'jito-forest', name: '지토의 숲', field: '콘텐츠', note: '핸드워시, 굿즈 등' },
     { id: 'the-green-box', name: '더그린박스', field: '콘텐츠', note: '굿즈, 업사이클 체험' },
@@ -607,7 +599,7 @@
         role: '원장',
         org: '제주콘텐츠진흥원',
         track: 'Opening',
-        image: image('assets/images/opening/open-2.png'),
+        image: image('assets/images/opening/open-1.jpg'),
         bio: '제주콘텐츠진흥원 원장. 제주언론학회 기획이사, 제주특별자치도 홍보정책자문위원, KBS 제주방송총국 편성제작국장을 역임했다.',
         intro: [
           '제주콘텐츠진흥원 원장',
@@ -637,7 +629,7 @@
         role: '회장',
         org: '제주상공회의소',
         track: 'Opening',
-        image: image('assets/images/opening/open-1.jpg'),
+        image: image('assets/images/opening/open-2.png'),
         bio: '제주상공회의소 회장. 대한상공회의소 부회장, 민주평화통일자문회의 제주지역회의 부의장, 제주인자위 공동위원장을 맡고 있다.',
         intro: [
           '현) 제주상공회의소 회장',
@@ -775,7 +767,7 @@
         tab: '라이징세션',
         title: '로컬콘텐츠 기업 IR피칭(라이징세션)',
         sessions: [
-          { time: '13:30 - 14:30', title: '로컬콘텐츠 기업 IR피칭(라이징세션)', meta: '사이, 계란바구니, 낭만지구인, 귤바티, 해우 / VC·AC 참여', thumbnail: 'assets/images/program/rising-ir.jpg' }
+          { time: '13:30 - 14:30', title: '로컬콘텐츠 기업 IR피칭(라이징세션)', meta: '사이, 계란바구니, 낭만지구인, 해우 / VC·AC 참여', thumbnail: 'assets/images/program/rising-ir.jpg' }
         ]
       },
       {

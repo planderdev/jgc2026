@@ -56,7 +56,10 @@
   function getSpeakerItems(grid) {
     const key = grid?.dataset?.speakerGrid || 'speakers';
     const items = data()[key];
-    return Array.isArray(items) ? items : [];
+    if (!Array.isArray(items)) return [];
+    return document.body.dataset.page === 'speakers'
+      ? items.filter((speaker) => speaker.id !== 'wi-sung-gon')
+      : items;
   }
 
   function speakerById(id, items = data().speakers || []) {
