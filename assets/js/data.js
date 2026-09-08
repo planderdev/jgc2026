@@ -464,6 +464,8 @@
     title: `${year}년 아카이브`,
     images: files.map((file, index) => ({
       src: image(`assets/images/archive/${year}/${file}`),
+      // 그리드용 축소본(scripts/build-archive-thumbs.mjs 생성). 라이트박스는 원본을 쓴다.
+      thumb: image(`assets/images/archive/thumbs/${year}/${file.replace(/\.(png|webp)$/i, '.jpg')}`),
       alt: `${year} 아카이브 이미지 ${String(index + 1).padStart(2, '0')}`
     }))
   }));

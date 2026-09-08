@@ -46,4 +46,5 @@ node scripts/build-sitemap.mjs https://새주소
 | `node scripts/set-share-urls.mjs <base>` | OG·canonical·hreflang 절대 URL 갱신(멱등) |
 | `node scripts/build-sitemap.mjs <base>` | sitemap.xml(ko+en)·robots.txt |
 | `node scripts/build-docs.mjs` | 이 가이드 생성 (`docs-src/` → `docs/`) |
+| `node scripts/build-archive-thumbs.mjs` | 아카이브 그리드용 축소본(긴 변 800px). 원본 사진을 추가·교체하면 실행 |
 | `npm run qa` / `npm run qa:live` | 회귀 테스트 (로컬 / 프로덕션) |

@@ -571,7 +571,7 @@
             <div class="archive-grid">
               ${album.images.map((item, index) => `
                 <button class="archive-thumb" type="button" data-archive-year="${escapeHtml(album.year)}" data-archive-index="${index}" aria-label="${escapeHtml(item.alt)} 보기">
-                  <img src="${escapeHtml(common().asset(item.src))}" alt="${escapeHtml(item.alt)}" loading="lazy" decoding="async" fetchpriority="low">
+                  <img src="${escapeHtml(common().asset(item.thumb || item.src))}" alt="${escapeHtml(item.alt)}" loading="lazy" decoding="async" fetchpriority="low">
                 </button>
               `).join('')}
             </div>
