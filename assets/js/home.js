@@ -179,7 +179,9 @@
         <article class="home-event-card home-speaker-card">
           <a href="${detail}">
             <span class="home-event-media">
-              <img src="${asset(speaker.image)}" alt="" loading="lazy" decoding="async">
+              ${speaker.pending
+                ? '<span class="speaker-placeholder" role="img" aria-label="TBA"><i class="ri-user-line" aria-hidden="true"></i><span>TBA</span></span>'
+                : `<img src="${asset(speaker.image)}" alt="" loading="lazy" decoding="async">`}
               <span class="home-speaker-track">${escapeHtml(speaker.track)}</span>
             </span>
             <span class="home-event-title">${escapeHtml(speaker.name)}</span>
@@ -306,8 +308,9 @@
   function initHomeSpeakers() {
     const section = document.querySelector('.home-speakers');
     const mount = section?.querySelector('[data-home-speakers]');
-    // 홈에는 확정 연사만. 섭외 중 자리표시 카드는 연사 페이지에서만 보여준다.
-    const items = (data().speakers || []).filter((speaker) => !speaker.pending);
+    // 교체 예정 연사는 요청된 자리표시 카드를 유지한다.
+    const items = (data().speakers || []).filter((speaker) =>
+      speaker.id !== 'wi-sung-gon' && (!speaker.pending || speaker.showOnHome));
     if (!section || !mount) return;
     if (!items.length) {
       // 연사 데이터가 비면 섹션 자체를 내린다. 빈 캐러셀을 남기지 않는다.

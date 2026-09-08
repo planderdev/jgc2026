@@ -655,6 +655,7 @@
           '2025~2026.04. 더불어민주당 탄소중립위원회 위원장'
         ]
       },
+      /* 교체 예정 연사의 기존 프로필을 보관한다.
       {
         id: 'evi-sari',
         name: 'Evi Sari',
@@ -669,6 +670,19 @@
           '아시아·태평양, 유럽, 중동 등 글로벌 시장에서 지역별 크리에이티브·비즈니스 전략 기반 LBE 사업 주도',
           'Peanuts·Teletubbies·Dr. Seuss·Miffy·Miraculous 등 주요 글로벌 IP의 LBE 사업 담당'
         ]
+      },
+      */
+      {
+        id: 'speaker-tba',
+        name: 'TBA',
+        role: '',
+        org: '',
+        track: 'Speaker',
+        pending: true,
+        showOnHome: true,
+        image: '',
+        bio: '',
+        intro: []
       },
       {
         id: 'kim-young-rok',
@@ -783,7 +797,8 @@
         tab: '토크쇼',
         title: '토크쇼',
         sessions: [
-          { time: '15:00 - 16:00', title: 'DX/AX 전환에 따른 로컬 콘텐츠 산업(기업)의 대응방안', meta: '위성곤 제주특별자치도지사, Evi Sari 부사장, 김영록 대표, 조수현 대표, 사무엘로르카 조직위원' }
+          // 기존 참여 연사: 위성곤 제주특별자치도지사, Evi Sari 부사장, 김영록 대표, 조수현 대표, 사무엘로르카 조직위원
+          { time: '15:00 - 16:00', title: 'DX/AX 전환에 따른 로컬 콘텐츠 산업(기업)의 대응방안', meta: '위성곤 제주특별자치도지사, TBA, 김영록 대표, 조수현 대표, 사무엘로르카 조직위원' }
         ]
       },
       {
