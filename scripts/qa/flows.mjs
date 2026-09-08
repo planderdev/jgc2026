@@ -23,9 +23,21 @@ export default () => runSuite('기능 플로우', async ({ browser, r }) => {
   // ── 밋업 예약
   const a = await newPage(browser);
   await a.page.goto(`${base}/meetup/reserve`, { waitUntil: 'load' }); await a.page.waitForTimeout(1200);
-  await a.page.locator('[data-company-choices] input').first().check();
-  await a.page.click('[data-step="1"] [data-step-action="next"]');
-  await a.page.waitForSelector('[data-time-choices] input', { timeout: 15000 }); await a.page.waitForTimeout(400);
+  // 모집이 열린 뒤에는 실예약·기관별 불가 시간 때문에 첫 기관의 빈 슬롯이
+  // 모자랄 수 있다. 빈 슬롯이 5칸 이상인 기관을 골라 검사한다(중복 차단
+  // 단계까지 슬롯 2개 + 여유가 필요).
+  const companyCount = await a.page.locator('[data-company-choices] input').count();
+  let picked = -1;
+  for (let ci = 0; ci < companyCount; ci += 1) {
+    await a.page.locator('[data-company-choices] input').nth(ci).check();
+    await a.page.click('[data-step="1"] [data-step-action="next"]');
+    await a.page.waitForSelector('[data-time-choices] input', { timeout: 15000 }); await a.page.waitForTimeout(400);
+    const free = await a.page.locator('[data-time-choices] input:not([disabled])').count();
+    if (free >= 5) { picked = ci; break; }
+    await a.page.click('[data-step="2"] [data-step-action="prev"]').catch(() => {});
+    await a.page.waitForTimeout(200);
+  }
+  if (picked < 0) throw new Error('빈 슬롯이 5칸 이상인 상담기관이 없습니다 — 검사를 진행할 수 없습니다');
   r.check(await a.page.locator('[data-time-choices] input[value="12:00"]').isDisabled(), '점심시간 슬롯 비활성');
   const slotEl = a.page.locator('[data-time-choices] input:not([disabled])').first();
   const slot = await slotEl.getAttribute('value'); await slotEl.check();
@@ -51,7 +63,7 @@ export default () => runSuite('기능 플로우', async ({ browser, r }) => {
   // 타 브라우저에서 마감 반영 + 중복 신청 차단
   const b = await newPage(browser);
   await b.page.goto(`${base}/meetup/reserve`, { waitUntil: 'load' }); await b.page.waitForTimeout(1000);
-  await b.page.locator('[data-company-choices] input').first().check();
+  await b.page.locator('[data-company-choices] input').nth(picked).check();
   await b.page.click('[data-step="1"] [data-step-action="next"]');
   await b.page.waitForSelector('[data-time-choices] input', { timeout: 15000 }); await b.page.waitForTimeout(400);
   r.check(await b.page.locator(`[data-time-choices] input[value="${slot}"]`).isDisabled(), '다른 브라우저에서도 슬롯 마감 반영', slot);
@@ -88,7 +100,7 @@ export default () => runSuite('기능 플로우', async ({ browser, r }) => {
 
   const d = await newPage(browser);
   await d.page.goto(`${base}/meetup/reserve`, { waitUntil: 'load' }); await d.page.waitForTimeout(1000);
-  await d.page.locator('[data-company-choices] input').first().check();
+  await d.page.locator('[data-company-choices] input').nth(picked).check();
   await d.page.click('[data-step="1"] [data-step-action="next"]');
   await d.page.waitForSelector('[data-time-choices] input', { timeout: 15000 }); await d.page.waitForTimeout(400);
   r.check(await d.page.locator(`[data-time-choices] input[value="${slot}"]`).isEnabled(), '취소 후 슬롯 재개방', slot);

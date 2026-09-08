@@ -114,7 +114,9 @@ where reservation_no = 'JGCF-2026-XXXXXX';
 - **상담 25분, 점심 제외** — 10:00~17:00, 30분 간격으로 시작하는 14슬롯 중 12:00·12:30은
   `assets/js/data.js`의 `reservationBreaks`로 화면에서 막고, 서버의
   `jgcf_valid_slot()`이 같은 규칙(정규식)으로 목록 밖 시간을 거부합니다(`invalid_slot`).
-  단위를 바꾸려면 두 곳을 함께 바꿉니다. 상담기관 22곳 × 12슬롯 = 264석.
+  단위를 바꾸려면 두 곳을 함께 바꿉니다. 기본 22곳 × 12슬롯에서 기관별 불가
+  시간(`jgcf_company_slot_blocked()`, data.js companyReservationBreaks와 동일)
+  40칸을 뺀 총 224석.
 
 ## 마이그레이션
 
