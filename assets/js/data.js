@@ -666,7 +666,7 @@
         role: '창립자·회장',
         org: 'LAVA',
         track: 'Speaker',
-        image: '',
+        image: image('assets/images/speakers/hooi.jpg'),
         bio: 'LAVA 창립자·회장 / 금융 및 글로벌 엔터테인먼트·테크놀로지 분야 전문가',
         intro: [
           'LAVA 창립자·회장 / 금융 및 글로벌 엔터테인먼트·테크놀로지 분야 전문가',
