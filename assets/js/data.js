@@ -76,8 +76,7 @@
     '제주특별자치도경제통상진흥원': image('assets/images/program/jeju-business.svg'),
     '창조경제혁신센터': image('assets/images/program/ccei.svg'),
     '제주창조경제혁신센터': image('assets/images/program/jeju-creative.svg'),
-    // 새 로고 파일을 받으면 아래 경로를 교체한다
-    '(재)제주창조경제혁신센터': image('assets/images/program/jeju-creative.svg'),
+    '(재)제주창조경제혁신센터': image('assets/images/program/jeju-ccei.png'),
     '제주지식재산센터': image('assets/images/program/jeju-intelle.svg'),
     '케이컴퍼니': image('assets/images/program/kcompany.svg'),
     '기술보증기금 부산문화콘텐츠금융센터': image('assets/images/program/kibo.svg'),
