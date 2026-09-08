@@ -179,8 +179,8 @@
         <article class="home-event-card home-speaker-card">
           <a href="${detail}">
             <span class="home-event-media">
-              ${speaker.pending
-                ? '<span class="speaker-placeholder" role="img" aria-label="TBA"><i class="ri-user-line" aria-hidden="true"></i><span>TBA</span></span>'
+              ${speaker.pending || !speaker.image
+                ? `<span class="speaker-placeholder" aria-hidden="true"><i class="ri-user-line"></i>${speaker.pending ? '<span>TBA</span>' : ''}</span>`
                 : `<img src="${asset(speaker.image)}" alt="" loading="lazy" decoding="async">`}
               <span class="home-speaker-track">${escapeHtml(speaker.track)}</span>
             </span>

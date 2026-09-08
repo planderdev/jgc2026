@@ -108,6 +108,7 @@
     '사이': image('assets/images/program/teahouse.svg'),
     '지토의 숲': image('assets/images/program/jito.svg'),
     '제주시트러스랩': image('assets/images/program/jeju-citrus.svg'),
+    '제주퍼퓸뮤지엄': image('assets/images/program/perfume-museum.svg'),
     '까무': image('assets/images/program/niterm.png')
   };
 
@@ -611,21 +612,6 @@
         ]
       },
       {
-        id: 'wi-sung-gon-opening',
-        name: '위성곤',
-        role: '제주특별자치도지사',
-        org: '제주특별자치도',
-        track: 'Opening',
-        image: image('assets/images/opening/open-3.webp'),
-        bio: '제주특별자치도지사.',
-        intro: [
-          '2024~2026.04. 제22대 국회의원(제주서귀포시/더불어민주당)',
-          '2025.08~2026.04. 국회 기후위기특별위원회 위원장',
-          '2024~2026.04. 제22대 국회 행정안전위원회 위원',
-          '2025~2026.04. 더불어민주당 탄소중립위원회 위원장'
-        ]
-      },
-      {
         id: 'yang-moon-seok',
         name: '양문석',
         role: '회장',
@@ -675,16 +661,20 @@
       },
       */
       {
-        id: 'speaker-tba',
-        name: 'TBA',
-        role: '',
-        org: '',
+        id: 'henry-hooi',
+        name: 'Henry Hooi (헨리 후이)',
+        role: '창립자·회장',
+        org: 'LAVA',
         track: 'Speaker',
-        pending: true,
-        showOnHome: true,
         image: '',
-        bio: '',
-        intro: []
+        bio: 'LAVA 창립자·회장 / 금융 및 글로벌 엔터테인먼트·테크놀로지 분야 전문가',
+        intro: [
+          'LAVA 창립자·회장 / 금융 및 글로벌 엔터테인먼트·테크놀로지 분야 전문가',
+          '금융·은행 분야 30년 이상 경력 / Standard Chartered Bank Taiwan 최고리스크책임자(CRO), Cushman & Wakefield Capital Asia 매니징 디렉터 역임',
+          'Digital Domain Holdings 사외이사·최고전략고문 및 이사회 의장 역임 / 「Titanic」, 「Avengers」 시리즈 등 글로벌 VFX 프로젝트',
+          'AI 기반 버추얼 휴먼·디지털 아바타·메타버스 등 차세대 기술 분야 사업 확장',
+          'Neon Global(구 Cityneon Holdings) 선임 사외이사·감사위원회 위원장 역임 / Marvel·Jurassic Park·Avatar 등 글로벌 IP 기반 몰입형 전시·체험 엔터테인먼트 사업'
+        ]
       },
       {
         id: 'kim-young-rok',
@@ -800,7 +790,7 @@
         title: '토크쇼',
         sessions: [
           // 기존 참여 연사: 위성곤 제주특별자치도지사, Evi Sari 부사장, 김영록 대표, 조수현 대표, 사무엘로르카 조직위원
-          { time: '15:00 - 16:00', title: 'DX/AX 전환에 따른 로컬 콘텐츠 산업(기업)의 대응방안', meta: '위성곤 제주특별자치도지사, TBA, 김영록 대표, 조수현 대표, 사무엘로르카 조직위원' }
+          { time: '15:00 - 16:00', title: 'DX/AX 전환에 따른 로컬 콘텐츠 산업(기업)의 대응방안', meta: 'TBA, 김영록 대표, 조수현 대표, 사무엘로르카 조직위원' }
         ]
       },
       {
