@@ -105,11 +105,27 @@
     render();
   }
 
+  // 이름이 완전히 같은 기관이 존재한다(원스톱지원센터 x 지식재산센터 3개 테이블).
+  // 필터·집계·표시는 이름 대신 company_id로 구분하고, 겹치는 이름에는 분야를 붙인다.
+  let labelMap = null;
+  function companyLabel(id, fallback) {
+    if (!labelMap) {
+      labelMap = new Map();
+      const list = window.JGCF?.companies || [];
+      const seen = new Map();
+      list.forEach((c) => seen.set(c.name, (seen.get(c.name) || 0) + 1));
+      list.forEach((c) => labelMap.set(c.id, seen.get(c.name) > 1 && c.field ? `${c.name} — ${c.field}` : c.name));
+    }
+    return labelMap.get(id) || fallback || '';
+  }
+
   function fillCompanyFilter() {
     const select = $('[data-filter-company]');
-    const names = [...new Set(reservations.map((r) => r.company_name))].sort();
+    const seen = new Map();
+    reservations.forEach((r) => { if (!seen.has(r.company_id)) seen.set(r.company_id, companyLabel(r.company_id, r.company_name)); });
+    const options = [...seen].sort((a, b) => a[1].localeCompare(b[1], 'ko'));
     select.innerHTML = '<option value="">전체 상담기관</option>'
-      + names.map((n) => `<option value="${esc(n)}">${esc(n)}</option>`).join('');
+      + options.map(([id, label]) => `<option value="${esc(id)}">${esc(label)}</option>`).join('');
   }
 
   function kst(iso) {
@@ -128,7 +144,7 @@
         return reservations.filter((r) => match(r, ['reservation_no', 'applicant_company', 'manager_name', 'phone', 'email']));
       }
       return reservations
-        .filter((r) => (!company || r.company_name === company))
+        .filter((r) => (!company || r.company_id === company))
         .filter((r) => !status
           || (status === 'attended' ? !!r.attended_at
             : status === 'absent' ? (r.status === 'confirmed' && !r.attended_at)
@@ -147,12 +163,12 @@
     // summary — data.js의 상담기관 전체를 기준으로 예약이 없는 기관도 0건으로 보여준다
     const map = new Map();
     for (const c of (window.JGCF?.companies || [])) {
-      map.set(c.name, { company_id: c.id, company_name: c.name, confirmed: 0, cancelled: 0, slots: [], by: {} });
+      map.set(c.id, { company_id: c.id, company_name: companyLabel(c.id, c.name), confirmed: 0, cancelled: 0, slots: [], by: {} });
     }
     for (const r of reservations) {
-      const s = map.get(r.company_name) || { company_id: r.company_id, company_name: r.company_name, confirmed: 0, cancelled: 0, slots: [], by: {} };
+      const s = map.get(r.company_id) || { company_id: r.company_id, company_name: companyLabel(r.company_id, r.company_name), confirmed: 0, cancelled: 0, slots: [], by: {} };
       if (r.status === 'confirmed') { s.confirmed += 1; s.slots.push(r.time_slot); s.by[r.time_slot] = r.applicant_company; } else s.cancelled += 1;
-      map.set(r.company_name, s);
+      map.set(r.company_id, s);
     }
     return [...map.values()].sort((a, b) => b.confirmed - a.confirmed || a.company_name.localeCompare(b.company_name, 'ko'));
   }
@@ -300,7 +316,7 @@
       return `<div class="admin-cards">${rows.map((r) => `<article class="admin-card ${r.status === 'confirmed' ? '' : 'is-off'}">
         <header><strong>${esc(r.time_slot)}</strong><span class="admin-badge ${r.status === 'confirmed' ? 'ok' : 'off'}">${r.status === 'confirmed' ? '확정' : '취소'}</span>
           ${r.status === 'confirmed' ? attendButton('reservation', r.reservation_no, r.attended_at) : ''}</header>
-        <h4>${esc(r.applicant_company)} <small>→ ${esc(r.company_name)}</small></h4>
+        <h4>${esc(r.applicant_company)} <small>→ ${esc(companyLabel(r.company_id, r.company_name))}</small></h4>
         <p>${esc(r.manager_name)} · ${telLink(r.phone)}</p>
         <p class="muted">${esc(r.reservation_no)} · ${esc(r.email)}</p>
         <p class="inquiry">${esc(r.inquiry)}</p>
@@ -364,7 +380,7 @@
       </tr></thead><tbody>${rows.map((r) => `<tr>
         <td>${esc(r.reservation_no)}</td>
         <td><span class="admin-badge ${r.status === 'confirmed' ? 'ok' : 'off'}">${r.status === 'confirmed' ? '확정' : '취소'}</span></td>
-        <td>${esc(r.company_name)}</td><td>${esc(r.time_slot)}</td>
+        <td>${esc(companyLabel(r.company_id, r.company_name))}</td><td>${esc(r.time_slot)}</td>
         <td>${esc(r.applicant_company)}</td><td>${esc(r.manager_name)}</td>
         <td>${esc(r.phone)}</td><td>${esc(r.email)}</td>
         <td class="wrap">${esc(r.inquiry)}</td>
@@ -403,7 +419,7 @@
       line = (r) => [r.time_slot, r.attended_at ? '출석' : '', r.applicant_company, r.manager_name, r.phone, r.email, r.inquiry, r.attachment_name || '', kst(r.created_at)];
     } else if (tab === 'reservations') {
       header = ['예약번호','상태','상담기관','시간','신청기업','담당자','연락처','메일','상담내용','첨부파일','신청일시','취소일시','출석','출석시각'];
-      line = (r) => [r.reservation_no, r.status === 'confirmed' ? '확정' : '취소', r.company_name, r.time_slot,
+      line = (r) => [r.reservation_no, r.status === 'confirmed' ? '확정' : '취소', companyLabel(r.company_id, r.company_name), r.time_slot,
         r.applicant_company, r.manager_name, r.phone, r.email, r.inquiry, r.attachment_name || '', kst(r.created_at), kst(r.cancelled_at),
         r.attended_at ? '출석' : '', kst(r.attended_at)];
     } else if (tab === 'registrations') {

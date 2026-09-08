@@ -82,6 +82,7 @@ function render(row: Row): { subject: string; html: string } | null {
         ${detailTable([
           ['예약번호', String(p.reservation_no ?? '')],
           ['상담기관', String(p.company_name ?? '')],
+          ...(p.company_field ? ([['상담 분야', String(p.company_field)]] as [string, string][]) : []),
           ['상담 시간', slot],
           ['신청 기업', String(p.applicant_company ?? '')],
           ['장소', VENUE]
@@ -104,6 +105,7 @@ function render(row: Row): { subject: string; html: string } | null {
         ${detailTable([
           ['예약번호', String(p.reservation_no ?? '')],
           ['상담기관', String(p.company_name ?? '')],
+          ...(p.company_field ? ([['상담 분야', String(p.company_field)]] as [string, string][]) : []),
           ['상담 시간', slot],
           ['신청 기업', String(p.applicant_company ?? '')]
         ])}
@@ -161,6 +163,7 @@ function render(row: Row): { subject: string; html: string } | null {
         <p>사무국 담당자님, <strong>${esc(p.company_name)}</strong>에 배정된 상담 한 건이 취소되었습니다.</p>
         ${detailTable([
           ['상담기관', String(p.company_name ?? '')],
+          ...(p.company_field ? ([['상담 분야', String(p.company_field)]] as [string, string][]) : []),
           ['상담 시간', slot],
           ['신청 기업', String(p.applicant_company ?? '')],
           ['담당자', String(p.manager_name ?? '')],
