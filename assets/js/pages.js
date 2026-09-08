@@ -183,7 +183,7 @@
     lastSpeakerTrigger = trigger || null;
     const intro = renderSpeakerIntroList(speaker);
     const media = speaker.pending
-      ? `<div class="speaker-placeholder" role="img" aria-label="연사 섭외 중"><i class="ri-user-line" aria-hidden="true"></i><span>TBA</span></div>`
+      ? `<div class="speaker-placeholder" role="img" aria-label="TBA"><i class="ri-user-line" aria-hidden="true"></i><span>TBA</span></div>`
       : `<img src="${common().asset(speaker.image)}" alt="${escapeHtml(speaker.name)} portrait" decoding="async">`;
 
     modal.innerHTML = `
@@ -225,10 +225,10 @@
           <article class="${cardClass}" id="${escapeHtml(speaker.id)}" data-speaker-id="${escapeHtml(speaker.id)}" data-aos="fade-up" tabindex="0" role="button" aria-haspopup="dialog" aria-label="${escapeHtml(speaker.name)} 약력 보기">
             <span class="speaker-card-more" aria-hidden="true"><i class="ri-add-line" aria-hidden="true"></i></span>
             ${speaker.pending
-              ? `<div class="speaker-placeholder" role="img" aria-label="연사 섭외 중"><i class="ri-user-line" aria-hidden="true"></i><span>TBA</span></div>`
+              ? `<div class="speaker-placeholder" role="img" aria-label="TBA"><i class="ri-user-line" aria-hidden="true"></i><span>TBA</span></div>`
               : `<img src="${common().asset(speaker.image)}" alt="${escapeHtml(speaker.name)} portrait" loading="lazy" decoding="async">`}
             <div class="speaker-info">
-              <span class="ui-badge">${escapeHtml(speaker.track)}</span>${speaker.pending ? ' <span class="ui-badge speaker-pending-badge">섭외 중</span>' : ''}
+              <span class="ui-badge">${escapeHtml(speaker.track)}</span>
               <h2 class="speaker-name">${escapeHtml(speaker.name)}</h2>
               <p class="speaker-role">
                 <span>${escapeHtml(speaker.role)}</span>
