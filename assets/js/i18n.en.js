@@ -268,7 +268,7 @@
     '9/16(수)': 'Sep 16 (Wed)',
     '글로벌 포럼': 'Global Forum',
     'DX/AX 전환에 따른 로컬 콘텐츠 산업(기업)의 대응방안': 'How local content companies should respond to the DX/AX transition',
-    '위성곤 제주특별자치도지사, TBA, 김영록 대표, 조수현 대표, 사무엘로르카 조직위원': 'Governor Wi Sung-gon, TBA, CEO Kim Young-rok, CEO Cho Soo-hyun, Committee Member Samuel Lorca',
+    'TBA, 김영록 대표, 조수현 대표, 사무엘로르카 조직위원': 'TBA, CEO Kim Young-rok, CEO Cho Soo-hyun, Committee Member Samuel Lorca',
     '메인 IR 피칭': 'Main IR Pitching',
     '제주 콘텐츠 기업 8개사 메인 IR 피칭': 'Main IR pitches by 8 Jeju content companies',
     '해녀의 부엌, 그린우드, 인스피어, 위놉스, 휴플, 그리메, 케이컴퍼니, 프리아이디어': "Haenyeo's Kitchen, Greenwood, Inspire, Winops, Huple, Grime, K Company, Free Idea",
