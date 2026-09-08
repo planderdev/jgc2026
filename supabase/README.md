@@ -116,7 +116,7 @@ where reservation_no = 'JGCF-2026-XXXXXX';
   `jgcf_valid_slot()`이 같은 규칙(정규식)으로 목록 밖 시간을 거부합니다(`invalid_slot`).
   단위를 바꾸려면 두 곳을 함께 바꿉니다. 기본 22곳 × 12슬롯에서 기관별 불가
   시간(`jgcf_company_slot_blocked()`, data.js companyReservationBreaks와 동일)
-  50칸을 뺀 총 214석.
+  48칸을 뺀 총 216석.
 
 ## 마이그레이션
 
