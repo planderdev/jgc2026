@@ -428,6 +428,7 @@
     '인력양성, 일자리지원 등': 'Workforce development and employment support',
     '창조경제혁신센터': 'Center for Creative Economy & Innovation',
     '제주창조경제혁신센터': 'Jeju Center for Creative Economy & Innovation',
+    '(재)제주창조경제혁신센터': 'Jeju Center for Creative Economy & Innovation',
     '엑셀러레이팅, 투자연계, TIPS': 'Acceleration, investment matching, TIPS',
     '액셀러레이팅, 투자연계, TIPS': 'Acceleration, investment matching, TIPS',
     'KB제주종합금융센터': 'KB Jeju Financial Center',

@@ -76,6 +76,8 @@
     '제주특별자치도경제통상진흥원': image('assets/images/program/jeju-business.svg'),
     '창조경제혁신센터': image('assets/images/program/ccei.svg'),
     '제주창조경제혁신센터': image('assets/images/program/jeju-creative.svg'),
+    // 새 로고 파일을 받으면 아래 경로를 교체한다
+    '(재)제주창조경제혁신센터': image('assets/images/program/jeju-creative.svg'),
     '제주지식재산센터': image('assets/images/program/jeju-intelle.svg'),
     '케이컴퍼니': image('assets/images/program/kcompany.svg'),
     '기술보증기금 부산문화콘텐츠금융센터': image('assets/images/program/kibo.svg'),
@@ -295,8 +297,8 @@
     { id: 'spring-water', name: '스프링 워터', field: '액셀러레이팅, 투자연계', note: '액셀러레이팅 및 투자연계 상담' },
     { id: 'jeju-content-agency', name: '제주콘텐츠진흥원', field: '지역 특화 콘텐츠 제작 지원 상담 및 사업화 연계', note: '제작지원 및 사업화 상담' },
     { id: 'jeju-hrd', name: '제주지역인적자원개발위원회', field: '인력양성, 일자리지원 등', note: '인력양성 및 일자리 지원 상담' },
-    // 2026-09-08 명칭 정정: 창조경제혁신센터 → 제주창조경제혁신센터 (같은 기관, 같은 계정)
-    { id: 'creative-economy', name: '제주창조경제혁신센터', field: '엑셀러레이팅, 투자연계, TIPS', note: '액셀러레이팅 및 TIPS 연계 상담' },
+    // 2026-09-08 명칭 정정: 창조경제혁신센터 → (재)제주창조경제혁신센터 (같은 기관, 같은 계정)
+    { id: 'creative-economy', name: '(재)제주창조경제혁신센터', field: '엑셀러레이팅, 투자연계, TIPS', note: '액셀러레이팅 및 TIPS 연계 상담' },
     // 2026-09-08 KB제주종합금융센터와 기술보증기금이 한 테이블로 합쳐짐. 기존 예약이 있는 기보 쪽 id를 유지한다
     { id: 'kibo-busan-content-finance', name: 'KB제주종합금융센터-기술보증기금', field: '기업 융자·투자·사업협력, 콘텐츠 금융·보증·자금조달', note: '기업 금융 및 콘텐츠 보증 상담' },
     { id: 'jeju-economic-trade-agency', name: '제주특별자치도경제통상진흥원', field: '도내 기업 글로벌 유통 및 마케팅 지원', note: '글로벌 유통 및 마케팅 상담' },
