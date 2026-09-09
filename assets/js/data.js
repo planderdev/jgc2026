@@ -100,7 +100,7 @@
     '제주콘텐츠진흥원': image('assets/images/program/jeju-content.svg'),
     '제주지역인적자원개발위원회': image('assets/images/program/jeju-people.svg'),
     'KB제주종합금융센터': image('assets/images/program/kb-bank.svg'),
-    'KB제주종합금융센터-기술보증기금': image('assets/images/program/kb-bank.svg'),
+    'KB국민은행 제주종합금융센터': image('assets/images/program/kb-bank.svg'),
     '제주특별자치도 신용보증재단': image('assets/images/program/jeju-credit.png'),
     '제주한라대학교 K-하이테크플랫폼사업단': image('assets/images/program/k-hightech.webp'),
     '제주대학교 산학협력단 기술사업화ㆍ창업지원센터': image('assets/images/program/jeju-univ.svg'),
@@ -298,8 +298,9 @@
     { id: 'jeju-hrd', name: '제주지역인적자원개발위원회', field: '인력양성, 일자리지원 등', note: '인력양성 및 일자리 지원 상담' },
     // 2026-09-08 명칭 정정: 창조경제혁신센터 → (재)제주창조경제혁신센터 (같은 기관, 같은 계정)
     { id: 'creative-economy', name: '(재)제주창조경제혁신센터', field: '엑셀러레이팅, 투자연계, TIPS', note: '액셀러레이팅 및 TIPS 연계 상담' },
-    // 2026-09-08 KB제주종합금융센터와 기술보증기금이 한 테이블로 합쳐짐. 기존 예약이 있는 기보 쪽 id를 유지한다
-    { id: 'kibo-busan-content-finance', name: 'KB제주종합금융센터-기술보증기금', field: '기업 융자·투자·사업협력, 콘텐츠 금융·보증·자금조달', note: '기업 금융 및 콘텐츠 보증 상담' },
+    // 2026-09-09 KB·기보 다시 분리 운영. KB는 'KB국민은행 제주종합금융센터'로 명칭 수정
+    { id: 'kb-financial', name: 'KB국민은행 제주종합금융센터', field: '기업 융자·투자·사업협력', note: '기업 금융 및 사업협력 상담' },
+    { id: 'kibo-busan-content-finance', name: '기술보증기금 부산문화콘텐츠금융센터', field: '콘텐츠 금융·보증·자금조달', note: '콘텐츠 금융 및 보증 상담' },
     { id: 'jeju-economic-trade-agency', name: '제주특별자치도경제통상진흥원', field: '도내 기업 글로벌 유통 및 마케팅 지원', note: '글로벌 유통 및 마케팅 상담' },
     { id: 'jeju-credit-guarantee-foundation', name: '제주특별자치도 신용보증재단', field: '도내 기업 보증ㆍ자금조달', note: '보증 및 자금조달 상담' },
     { id: 'cheju-halla-k-hightech-platform', name: '제주한라대학교 K-하이테크플랫폼사업단', field: '기업 재직자교육 및 역량강화 지원 컨설팅', note: '재직자교육 및 역량강화 상담' },
@@ -337,6 +338,7 @@
     'newkids-investment': ['10:00', '10:30', '11:00', '11:30', '13:00', '13:30', '14:00'],
     'jeju-content-agency': ['14:30'],
     'jeju-hrd': ['14:30'],
+    'kb-financial': ['14:30'],
     'kibo-busan-content-finance': ['14:30'],
     'jeju-economic-trade-agency': ['14:30'],
     'jeju-credit-guarantee-foundation': ['14:30'],
